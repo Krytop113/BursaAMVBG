@@ -4,6 +4,12 @@ import { User } from '@prisma/client';
 export type { User };
 
 export const userModel = {
+    async findByEmail(email:string): Promise<User | null>{
+        return prisma.user.findUnique({
+            where: {email},
+        });
+    },
+    
     async findById(id: number): Promise<User | null> {
         return prisma.user.findUnique({
             where: { id },
