@@ -14,33 +14,33 @@ model Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String
-  password  String
-  roleId    Int
-  role      Role   @relation(fields: [roleId], references: [id])
+  id Int @id @default(autoincrement())
+  email String @unique
+  username String
+  password String
+  roleId Int
+  role Role @relation(fields: [roleId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
+  id Int @id @default(autoincrement())
+  name String
   description String
-  price       Float
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  price Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   transactions Transaction[]
 }
 
 model Transaction {
-  id       String   @id @default(uuid())
+  id String @id @default(uuid())
   customer String
-  email    String
+  email String
   productId Int
-  product  Product @relation(fields: [productId], references: [id])
-  amount   Float
-  status   String   @default("Pending")
-  date     DateTime @default(now())
+  product Product @relation(fields: [productId], references: [id])
+  amount Float
+  status String @default("Pending")
+  date DateTime @default(now())
 }

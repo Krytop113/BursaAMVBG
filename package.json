@@ -31,6 +31,7 @@
     "typescript": "^5"
   },
   "prisma": {
-    "schema": "src/prisma/schema.prisma"
+    "schema": "src/prisma/schema.prisma",
+    "seed": "npx tsx src/prisma/seeds/seed.ts"
   }
 }
