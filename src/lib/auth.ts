@@ -7,7 +7,7 @@ const COOKIE_NAME = 'user_session';
 export interface UserSessionPayload {
   id: number;
   username: string;
-  role?: string;
+  role?: number;
 }
 
 export function signToken(payload: UserSessionPayload): string {
@@ -36,7 +36,7 @@ export async function setSession(payload: UserSessionPayload): Promise<void> {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 2, // 2 hours
+    maxAge: 60 * 60 * 2,
     path: '/',
   });
 }

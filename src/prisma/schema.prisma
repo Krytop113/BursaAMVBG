@@ -29,6 +29,7 @@ model Product {
   name String
   description String
   price Float
+  qr String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   transactions Transaction[]
