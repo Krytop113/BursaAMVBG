@@ -10,6 +10,6 @@ export async function forgotPasswordRouteHandler(request: Request): Promise<Resp
     return forgotPasswordController.forgotPassword(request);
 }
 
-export async function logoutRouteHandler(request: Request): Promise<Response> {
+export async function logoutRouteHandler(): Promise<Response> {
     return logoutController.logout();
 }

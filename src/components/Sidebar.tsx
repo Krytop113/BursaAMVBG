@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Settings, 
-  ShoppingBag, 
-  BarChart3, 
-  LogOut, 
-  FileText, 
-  CreditCard 
-} from 'lucide-react';
+import React from "react";
+import {
+  LayoutDashboard,
+  Users,
+  Settings,
+  ShoppingBag,
+  BarChart3,
+  LogOut,
+  FileText,
+  CreditCard,
+} from "lucide-react";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -18,10 +18,20 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
+  const handleLogout = async () => {
+    const res = await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    if (res.ok) {
+      window.location.href = "/login";
+    }
+  };
+
   return (
     <aside
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72 flex-col overflow-y-hidden bg-gray-900 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* SIDEBAR HEADER */}
@@ -145,7 +155,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
               <li>
                 <button
-                  onClick={() => alert('Log out clicked!')}
+                  onClick={handleLogout}
                   className="w-full group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-red-400 duration-300 ease-in-out hover:bg-red-950/30 hover:text-red-300"
                 >
                   <LogOut className="w-5 h-5" />

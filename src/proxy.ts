@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { withAuth } from './middlewares/withAuth';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     return await withAuth(request, async () => {
         return NextResponse.next();
     });
