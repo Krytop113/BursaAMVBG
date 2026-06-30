@@ -4,7 +4,7 @@ export const logoutController = {
     async logout(): Promise<NextResponse> {
         try {
             const response = NextResponse.json({ message: 'Logout berhasil!' });
-            response.cookies.delete('session');
+            response.cookies.delete('user_session');
             return response;
         } catch (error) {
             console.error('Error saat logout:', error);

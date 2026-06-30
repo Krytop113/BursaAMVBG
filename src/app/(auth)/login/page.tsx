@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Mail, Lock, Eye, EyeOff, Loader2, KeyRound } from 'lucide-react';
-import { validateLogin } from '@/validators/authValidator';
-import { ROUTES } from '@/routes/paths';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Mail, Lock, Eye, EyeOff, Loader2, KeyRound } from "lucide-react";
+import { validateLogin } from "@/validators/authValidator";
+import { ROUTES } from "@/routes/paths";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,9 +28,9 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(ROUTES.api.login, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
@@ -38,13 +38,12 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login gagal. Silakan coba lagi.');
+        throw new Error(data.error || "Login gagal. Silakan coba lagi.");
       }
 
-      router.push(ROUTES.dashboard);
-      router.refresh();
+      window.location.href = ROUTES.dashboard;
     } catch (err: any) {
-      setError(err.message || 'Terjadi kesalahan jaringan.');
+      setError(err.message || "Terjadi kesalahan jaringan.");
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +62,11 @@ export default function LoginPage() {
             <KeyRound className="h-6 w-6" />
           </div>
           <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            Bursa<span className="bg-gradient-to-r from-teal-450 to-indigo-400 bg-clip-text text-transparent">AMVBG</span>
+            Bursa
+            <span className="bg-gradient-to-r from-teal-450 to-indigo-400 bg-clip-text text-transparent">
+              {" "}
+              AMVBG
+            </span>
           </h1>
           <p className="mt-2 text-sm text-slate-400">
             Admin Portal &amp; Management Dashboard
@@ -72,7 +75,6 @@ export default function LoginPage() {
 
         <div className="mt-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 p-8 backdrop-blur-xl shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
-            
             {error && (
               <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400 animate-pulse duration-1000">
                 <div className="flex">
@@ -87,7 +89,10 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <label
+                htmlFor="email"
+                className="block text-xs font-semibold uppercase tracking-wider text-slate-400"
+              >
                 Alamat Email
               </label>
               <div className="relative mt-2">
@@ -109,7 +114,10 @@ export default function LoginPage() {
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                <label
+                  htmlFor="password"
+                  className="block text-xs font-semibold uppercase tracking-wider text-slate-400"
+                >
                   Password
                 </label>
                 <a href="#" className="text-xs text-teal-400 hover:underline">
@@ -123,7 +131,7 @@ export default function LoginPage() {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -135,7 +143,11 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500 hover:text-white transition duration-200"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -151,15 +163,11 @@ export default function LoginPage() {
                   Memproses...
                 </>
               ) : (
-                'Masuk ke Dashboard'
+                "Masuk ke Dashboard"
               )}
             </button>
           </form>
         </div>
-
-        <p className="mt-8 text-center text-xs text-slate-500">
-          &copy; {new Date().getFullYear()} BursaAMVBG. All rights reserved.
-        </p>
       </div>
     </div>
   );

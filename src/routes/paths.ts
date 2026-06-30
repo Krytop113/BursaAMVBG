@@ -2,7 +2,7 @@ export const ROUTES = {
   dashboard: '/',
   login: '/login',
   api: {
-    login: '/api/auth/login',
+    login: '/api/auth',
   },
 } as const;
 
