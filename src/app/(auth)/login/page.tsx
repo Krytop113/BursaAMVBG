@@ -2,17 +2,25 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, Eye, EyeOff, Loader2, KeyRound } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Mail, Lock, Eye, EyeOff, Loader2, KeyRound, ShieldAlert } from "lucide-react";
 import { validateLogin } from "@/validators/authValidator";
 import { ROUTES } from "@/routes/paths";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionExpired = searchParams.get("reason") === "session_expired";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  React.useEffect(() => {
+    document.cookie = "user_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,9 +82,11 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 p-8 backdrop-blur-xl shadow-2xl">
+
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400 animate-pulse duration-1000">
+              <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400">
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <span className="font-bold">⚠️</span>
