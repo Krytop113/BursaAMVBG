@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server';
 import { userModel } from '@/models/userModel';
 import { validateLogin } from '@/validators/authValidator';
 import bcrypt from 'bcryptjs';
-import { signToken } from '@/lib/auth';
-
-const COOKIE_NAME = 'user_session';
+import { sessionService } from "@/lib/session";
 
 export const loginController = {
     async login(request: Request): Promise<NextResponse> {
@@ -37,23 +35,19 @@ export const loginController = {
                 );
             }
 
-            const token = await signToken({
-                id: user.id,
-                username: user.username,
-                role: user.roleId,
-            });
+            const jwt = await sessionService.create(user.id, user.username, user.roleId);
 
             const response = NextResponse.json({
                 message: 'Login berhasil!',
                 user: { id: user.id, username: user.username, role: user.roleId },
             });
 
-            response.cookies.set(COOKIE_NAME, token, {
+            response.cookies.set(sessionService.COOKIE_NAME, jwt, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
                 maxAge: 60 * 60 * 2,
-                path: '/',
+                path: '/'
             });
 
             return response;

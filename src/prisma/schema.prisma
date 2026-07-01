@@ -4,44 +4,62 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Role {
-  id Int @id @default(autoincrement())
-  name String @unique
+  id    Int    @id @default(autoincrement())
+  name  String @unique
   users User[]
 }
 
+model Session {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  users        User     @relation(fields: [userId], references: [id])
+  sessionToken String   @unique
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+}
+
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  username String
-  password String
-  roleId Int
-  role Role @relation(fields: [roleId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  username  String
+  password  String
+  roleId    Int
+  role      Role      @relation(fields: [roleId], references: [id])
+  sessions  Session[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-  name String
-  description String
-  price Float
-  qr String @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  transactions Transaction[]
+  id           Int             @id @default(autoincrement())
+  name         String
+  description  String
+  stock        Int
+  price        Decimal         @db.Decimal(15, 2)
+  qrCode       String          @unique
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  transactions StockMovement[]
 }
 
-model Transaction {
-  id String @id @default(uuid())
-  customer String
-  email String
+model StockMovement {
+  id        String       @id @default(uuid())
   productId Int
-  product Product @relation(fields: [productId], references: [id])
-  amount Float
-  status String @default("Pending")
-  date DateTime @default(now())
+  product   Product      @relation(fields: [productId], references: [id])
+  type      MovementType
+  quantity  Int
+  note      String
+  createdAt DateTime     @default(now())
+}
+
+enum MovementType {
+  IN
+  OUT
 }

@@ -1,22 +1,32 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { verifyTokenEdge } from '@/lib/auth';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { verifyTokenEdge } from "@/lib/auth";
+import { COOKIE_NAME } from "@/lib/auth";
 
 export async function withAuth(request: NextRequest, next: () => Promise<NextResponse>) {
-    const sessionToken = request.cookies.get('user_session')?.value;
-    const user = sessionToken ? await verifyTokenEdge(sessionToken) : null;
+    const token = request.cookies.get(COOKIE_NAME)?.value;
+
     const { pathname } = request.nextUrl;
 
-    const publicRoutes = ['/login', '/register'];
+    const publicRoutes = ["/login", "/forgot-password"];
     const isPublicRoute = publicRoutes.includes(pathname);
 
-    if (user && isPublicRoute) {
-        return NextResponse.redirect(new URL('/', request.url));
+    if (isPublicRoute) {
+        return next();
     }
 
-    if (!user && !isPublicRoute) {
-        return NextResponse.redirect(new URL('/login', request.url));
+    if (!token) {
+        return NextResponse.redirect(new URL("/login", request.url));
     }
+
+    const payload = await verifyTokenEdge(token);
+
+    if (!payload) {
+        return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set("x-user-id", String(payload?.id || ""));
 
     return next();
 }

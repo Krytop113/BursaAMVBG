@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { jwtVerify, SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 
@@ -10,6 +9,7 @@ export interface UserSessionPayload {
   id: number;
   username: string;
   role?: number;
+  sessionToken: string;
 }
 
 export async function signToken(payload: UserSessionPayload): Promise<string> {
@@ -18,14 +18,6 @@ export async function signToken(payload: UserSessionPayload): Promise<string> {
     .setIssuedAt()
     .setExpirationTime('2h')
     .sign(JWT_SECRET_BYTES);
-}
-
-export function verifyToken(token: string): UserSessionPayload | null {
-  try {
-    return jwt.verify(token, JWT_SECRET_STRING) as UserSessionPayload;
-  } catch {
-    return null;
-  }
 }
 
 export async function verifyTokenEdge(token: string): Promise<UserSessionPayload | null> {
@@ -48,3 +40,5 @@ export async function destroySession(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete(COOKIE_NAME);
 }
+
+export { COOKIE_NAME };
