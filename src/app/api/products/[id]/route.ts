@@ -1,0 +1,9 @@
+import { deleteProductRouteHandler } from "@/routes/3.productRoutes";
+
+export async function DELETE(
+    _request: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    const { id } = await params;
+    return deleteProductRouteHandler(Number(id));
+}

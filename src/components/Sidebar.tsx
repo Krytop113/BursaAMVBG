@@ -1,6 +1,9 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ROUTES } from "@/routes/paths";
 import {
   LayoutDashboard,
   Users,
@@ -18,14 +21,20 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
+  const pathname = usePathname();
+
   const handleLogout = async () => {
-    const res = await fetch("/api/auth/logout", {
+    const res = await fetch(ROUTES.api.logout, {
       method: "POST",
     });
 
     if (res.ok) {
-      window.location.href = "/login";
+      window.location.href = ROUTES.login;
     }
+  };
+
+  const isActive = (path: string) => {
+    return pathname === path;
   };
 
   return (
@@ -36,12 +45,12 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     >
       {/* SIDEBAR HEADER */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <a href="/" className="flex items-center gap-2">
+        <Link href={ROUTES.dashboard} className="flex items-center gap-2">
           <span className="text-2xl font-bold text-white tracking-wider flex items-center gap-2">
             <ShoppingBag className="text-teal-400 w-8 h-8" />
             BursaAMVBG
           </span>
-        </a>
+        </Link>
 
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -75,24 +84,33 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.dashboard}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.dashboard) ? "bg-gray-800 text-teal-400" : "text-gray-300"
+                  }`}
                 >
-                  <LayoutDashboard className="w-5 h-5 group-hover:text-teal-400" />
+                  <LayoutDashboard className={`w-5 h-5 group-hover:text-teal-400 ${
+                    isActive(ROUTES.dashboard) ? "text-teal-400" : "text-gray-400"
+                  }`} />
                   Dashboard
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.products}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.products) ? "bg-gray-800 text-teal-400" : "text-gray-300"
+                  }`}
                 >
-                  <ShoppingBag className="w-5 h-5 group-hover:text-teal-400" />
+                  <ShoppingBag className={`w-5 h-5 group-hover:text-teal-400 ${
+                    isActive(ROUTES.products) ? "text-teal-400" : "text-gray-400"
+                  }`} />
                   Produk
-                </a>
+                </Link>
               </li>
+
 
               <li>
                 <a
@@ -169,3 +187,4 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     </aside>
   );
 }
+

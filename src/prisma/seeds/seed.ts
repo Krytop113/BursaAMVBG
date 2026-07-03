@@ -1,12 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { seedRoles } from "./1.role";
 import { seedUsers } from "./2.user";
+import { seedCategory } from "./3.category";
+import { seedProduct } from "./4.product";
 
 const prisma = new PrismaClient();
 
 async function main() {
   await seedRoles(prisma);
   await seedUsers(prisma);
+  await seedCategory(prisma);
+  await seedProduct(prisma);
 }
 
 main()
