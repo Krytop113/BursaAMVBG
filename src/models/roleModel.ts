@@ -14,5 +14,11 @@ export const roleModel = {
         return prisma.role.findUnique({
             where: { id },
         });
-    }
+    },
+
+    async getAll(): Promise<Role[]> {
+        return prisma.role.findMany({
+            orderBy: { name: 'asc' },
+        });
+    },
 }

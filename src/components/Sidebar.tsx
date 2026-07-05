@@ -88,12 +88,18 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                 <Link
                   href={ROUTES.dashboard}
                   className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
-                    isActive(ROUTES.dashboard) ? "bg-gray-800 text-teal-400" : "text-gray-300"
+                    isActive(ROUTES.dashboard)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
                   }`}
                 >
-                  <LayoutDashboard className={`w-5 h-5 group-hover:text-teal-400 ${
-                    isActive(ROUTES.dashboard) ? "text-teal-400" : "text-gray-400"
-                  }`} />
+                  <LayoutDashboard
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.dashboard)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Dashboard
                 </Link>
               </li>
@@ -102,12 +108,18 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                 <Link
                   href={ROUTES.products}
                   className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
-                    isActive(ROUTES.products) ? "bg-gray-800 text-teal-400" : "text-gray-300"
+                    isActive(ROUTES.products)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
                   }`}
                 >
-                  <ShoppingBag className={`w-5 h-5 group-hover:text-teal-400 ${
-                    isActive(ROUTES.products) ? "text-teal-400" : "text-gray-400"
-                  }`} />
+                  <ShoppingBag
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.products)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Produk
                 </Link>
               </li>
@@ -116,25 +128,44 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                 <Link
                   href={ROUTES.categories}
                   className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
-                    isActive(ROUTES.categories) ? "bg-gray-800 text-teal-400" : "text-gray-300"
+                    isActive(ROUTES.categories)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
                   }`}
                 >
-                  <Tags className={`w-5 h-5 group-hover:text-teal-400 ${
-                    isActive(ROUTES.categories) ? "text-teal-400" : "text-gray-400"
-                  }`} />
+                  <Tags
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.categories)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Kategori
                 </Link>
               </li>
 
+              <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                ADMIN
+              </h3>
 
-              <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+              <li className="flex flex-col gap-1.5" > 
+                <Link
+                  href={ROUTES.users}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.users)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <Users className="w-5 h-5 group-hover:text-teal-400" />
-                  Pelanggan
-                </a>
+                  <Users
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.users)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  Kelola Pengguna
+                </Link>
               </li>
 
               <li>
@@ -202,4 +233,3 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     </aside>
   );
 }
-
