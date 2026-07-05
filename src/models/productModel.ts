@@ -10,8 +10,13 @@ export const productModel = {
         });
     },
 
-    async getAll(): Promise<Product[]> {
-        return prisma.product.findMany();
+    async getAllWithCategories(): Promise<Product[]> {
+        return prisma.product.findMany({
+            include: {
+                category: true,
+            },
+            orderBy: { createdAt: 'asc' },
+        });
     },
 
     async insert(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {

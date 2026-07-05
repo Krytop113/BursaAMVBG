@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { userModel } from '@/models/userModel';
 
 export const userController = {
-  async getUserById(request: Request, userId: number): Promise<NextResponse> {
+  async getUserById(userId: number): Promise<NextResponse> {
     try {
       const user = await userModel.findById(userId);
       if (!user) {

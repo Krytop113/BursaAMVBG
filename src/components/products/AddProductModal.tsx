@@ -18,15 +18,11 @@ import {
   type ProductFieldErrors,
 } from "@/validators/productValidator";
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface AddProductModalProps {
   categories: Category[];
   onClose: () => void;
   onSuccess: () => void;
 }
-
-// ─── Initial state ────────────────────────────────────────────────────────────
 
 const INITIAL_FORM = {
   name: "",
@@ -36,8 +32,6 @@ const INITIAL_FORM = {
   qrCode: "",
   categoryId: "",
 };
-
-// ─── Reusable field error message ─────────────────────────────────────────────
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
@@ -49,8 +43,6 @@ function FieldError({ message }: { message?: string }) {
   );
 }
 
-// ─── Input class builder ──────────────────────────────────────────────────────
-
 function inputCls(hasError: boolean, extra = "") {
   return `w-full px-3.5 py-2.5 bg-slate-950 border rounded-lg text-white placeholder-gray-600 text-sm focus:outline-none focus:ring-1 transition-all ${extra} ${
     hasError
@@ -58,8 +50,6 @@ function inputCls(hasError: boolean, extra = "") {
       : "border-gray-700 focus:border-teal-500 focus:ring-teal-500/30"
   }`;
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AddProductModal({
   categories,
@@ -72,7 +62,6 @@ export default function AddProductModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // ─── Handle field change + clear its error ──────────────────────────────────
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -88,7 +77,6 @@ export default function AddProductModal({
     if (serverError) setServerError("");
   };
 
-  // ─── Handle blur: validate single field on leave ────────────────────────────
   const handleBlur = (
     e: React.FocusEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -182,7 +170,6 @@ export default function AddProductModal({
           </button>
         </div>
 
-        {/* ─── Success State ──────────────────────────────────────────────── */}
         {success ? (
           <div className="p-14 flex flex-col items-center justify-center gap-4">
             <div className="p-4 bg-teal-500/10 rounded-full border border-teal-500/20 animate-bounce">
@@ -196,7 +183,6 @@ export default function AddProductModal({
             </p>
           </div>
         ) : (
-          /* ─── Form ─────────────────────────────────────────────────────── */
           <form
             onSubmit={handleSubmit}
             noValidate
@@ -209,8 +195,6 @@ export default function AddProductModal({
                 <span>{serverError}</span>
               </div>
             )}
-
-            {/* ── Nama Produk ──────────────────────────────────────────────── */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-300">
                 Nama Produk <span className="text-red-400">*</span>
@@ -227,7 +211,6 @@ export default function AddProductModal({
               <FieldError message={fieldErrors.name} />
             </div>
 
-            {/* ── Deskripsi ────────────────────────────────────────────────── */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-300">
                 Deskripsi <span className="text-red-400">*</span>
@@ -255,7 +238,6 @@ export default function AddProductModal({
               </div>
             </div>
 
-            {/* ── Harga & Stok ─────────────────────────────────────────────── */}
             <div className="grid grid-cols-2 gap-3">
               {/* Harga */}
               <div className="space-y-1">
@@ -299,7 +281,6 @@ export default function AddProductModal({
               </div>
             </div>
 
-            {/* ── QR Code ──────────────────────────────────────────────────── */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-300 flex items-center gap-1.5">
                 <QrCode className="w-3.5 h-3.5" />
@@ -320,7 +301,6 @@ export default function AddProductModal({
               <FieldError message={fieldErrors.qrCode} />
             </div>
 
-            {/* ── Kategori ─────────────────────────────────────────────────── */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-300 flex items-center gap-1.5">
                 <Tag className="w-3.5 h-3.5" />
@@ -362,7 +342,6 @@ export default function AddProductModal({
               )}
             </div>
 
-            {/* ── Form Actions ──────────────────────────────────────────────── */}
             <div className="flex gap-3 pt-2">
               <button
                 type="button"

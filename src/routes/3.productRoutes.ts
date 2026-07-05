@@ -1,4 +1,5 @@
-import { productController, categoryController } from "@/controllers/productController";
+import { productController } from "@/controllers/productController";
+import { categoryController } from "@/controllers/categoryController";
 
 export async function getProductsRouteHandler(): Promise<Response> {
     return productController.getAllProducts();

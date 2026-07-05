@@ -13,6 +13,7 @@ import {
   LogOut,
   FileText,
   CreditCard,
+  Tags,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -108,6 +109,20 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                     isActive(ROUTES.products) ? "text-teal-400" : "text-gray-400"
                   }`} />
                   Produk
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href={ROUTES.categories}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.categories) ? "bg-gray-800 text-teal-400" : "text-gray-300"
+                  }`}
+                >
+                  <Tags className={`w-5 h-5 group-hover:text-teal-400 ${
+                    isActive(ROUTES.categories) ? "text-teal-400" : "text-gray-400"
+                  }`} />
+                  Kategori
                 </Link>
               </li>
 

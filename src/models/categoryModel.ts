@@ -22,13 +22,6 @@ export const categoryModel = {
         });
     },
 
-    async update(id: number, data: Partial<Omit<Category, 'id'>>): Promise<Category> {
-        return prisma.category.update({
-            where: { id },
-            data,
-        });
-    },
-
     async delete(id: number): Promise<Category> {
         return prisma.category.delete({
             where: { id },

@@ -1,18 +1,11 @@
 import { NextResponse } from 'next/server';
 import { productModel } from "@/models/productModel";
-import { categoryModel } from "@/models/categoryModel";
 import { validateCreateProduct } from "@/validators/productValidator";
-import prisma from '@/lib/db';
 
 export const productController = {
     async getAllProducts(): Promise<NextResponse> {
         try {
-            const products = await prisma.product.findMany({
-                include: {
-                    category: true,
-                },
-                orderBy: { createdAt: 'desc' },
-            });
+            const products = await productModel.getAllWithCategories();
             return NextResponse.json({
                 message: 'Daftar produk berhasil diambil!',
                 products: products.map(product => ({
@@ -41,7 +34,6 @@ export const productController = {
         try {
             const body = await request.json();
 
-            // ─── Validate with Zod ───────────────────────────────────────────
             const validation = validateCreateProduct({
                 name: body.name,
                 description: body.description,
@@ -61,7 +53,6 @@ export const productController = {
                 );
             }
 
-            // ─── Insert to DB ────────────────────────────────────────────────
             const product = await productModel.insert(validation.data);
 
             return NextResponse.json(
@@ -90,30 +81,12 @@ export const productController = {
     async deleteProduct(id: number): Promise<NextResponse> {
         try {
             await productModel.delete(id);
-            return NextResponse.json({ message: 'Produk berhasil dihapus!' });
+            return NextResponse.json(
+                { message: 'Produk berhasil dihapus!' },
+                { status: 200 }
+            );
         } catch (error) {
             console.error('Error saat menghapus produk:', error);
-            return NextResponse.json(
-                { error: 'Terjadi kesalahan internal server.' },
-                { status: 500 }
-            );
-        }
-    },
-};
-
-export const categoryController = {
-    async getAllCategories(): Promise<NextResponse> {
-        try {
-            const categories = await categoryModel.getAll();
-            return NextResponse.json({
-                message: 'Daftar kategori berhasil diambil!',
-                categories: categories.map(cat => ({
-                    id: cat.id,
-                    name: cat.name,
-                })),
-            });
-        } catch (error) {
-            console.error('Error saat mengambil daftar kategori:', error);
             return NextResponse.json(
                 { error: 'Terjadi kesalahan internal server.' },
                 { status: 500 }
