@@ -4,6 +4,7 @@ export const ROUTES = {
   categories: '/categories',
   users: '/users',
   login: '/login',
+  roles: '/roles',
   api: {
     login: '/api/auth/login',
     logout: '/api/auth/logout'

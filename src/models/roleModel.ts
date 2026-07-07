@@ -21,4 +21,23 @@ export const roleModel = {
             orderBy: { name: 'asc' },
         });
     },
+
+    async insert(data: Omit<Role, 'id' | 'createdAt' | 'updatedAt'>): Promise<Role> {
+        return prisma.role.create({
+            data,
+        });
+    },
+
+    async update(id: number, data: Omit<Partial<Role>, 'id' | 'createdAt' | 'updatedAt'>): Promise<Role> {
+        return prisma.role.update({
+            where: { id },
+            data,
+        });
+    },
+
+    async delete(id: number): Promise<Role> {
+        return prisma.role.delete({
+            where: { id },
+        });
+    },
 }
