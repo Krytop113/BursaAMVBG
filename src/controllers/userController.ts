@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { userModel } from '@/models/userModel';
+import bcrypt from 'bcryptjs';
 
 export const userController = {
   async getUserById(userId: number): Promise<NextResponse> {
@@ -51,11 +52,22 @@ export const userController = {
   async createUser(request: Request): Promise<NextResponse> {
     try {
       const body = await request.json();
+      
+      if (!body.password) {
+        return NextResponse.json(
+          { error: 'Password wajib diisi!' },
+          { status: 400 }
+        );
+      }
+
+      const hashedPassword = await bcrypt.hash(body.password, 10);
+
       const user = await userModel.insert({
         username: body.username,
         email: body.email,
-        password: body.password,
-        roleId: body.roleId,
+        password: hashedPassword,
+        roleId: Number(body.roleId),
+        status: body.status || 'active',
       });
 
       return NextResponse.json({

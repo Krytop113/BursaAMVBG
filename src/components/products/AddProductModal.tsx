@@ -29,7 +29,6 @@ const INITIAL_FORM = {
   description: "",
   price: "",
   stock: "",
-  qrCode: "",
   categoryId: "",
 };
 
@@ -57,6 +56,8 @@ export default function AddProductModal({
   onSuccess,
 }: AddProductModalProps) {
   const [form, setForm] = useState(INITIAL_FORM);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const [fieldErrors, setFieldErrors] = useState<ProductFieldErrors>({});
   const [serverError, setServerError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,7 +71,6 @@ export default function AddProductModal({
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
 
-    // Clear the error for this field as the user types
     if (fieldErrors[name as keyof ProductFieldErrors]) {
       setFieldErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -99,17 +99,19 @@ export default function AddProductModal({
 
     setIsSubmitting(true);
     try {
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("description", form.description);
+      formData.append("price", form.price);
+      formData.append("stock", form.stock);
+      formData.append("categoryId", form.categoryId);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
       const res = await fetch("/api/products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          description: form.description,
-          price: Number(form.price),
-          stock: Number(form.stock),
-          qrCode: form.qrCode,
-          categoryId: Number(form.categoryId),
-        }),
+        body: formData,
       });
 
       const data = await res.json();
@@ -281,24 +283,47 @@ export default function AddProductModal({
               </div>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               <label className="text-sm font-medium text-gray-300 flex items-center gap-1.5">
-                <QrCode className="w-3.5 h-3.5" />
-                QR Code <span className="text-red-400">*</span>
-                <span className="text-gray-500 font-normal text-xs">
-                  (harus unik)
-                </span>
+                <Package className="w-3.5 h-3.5" />
+                Gambar Produk <span className="text-gray-500 font-normal text-xs">(opsional)</span>
               </label>
-              <input
-                type="text"
-                name="qrCode"
-                value={form.qrCode}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Contoh: QR-AMVBG-001"
-                className={inputCls(!!fieldErrors.qrCode, "font-mono")}
-              />
-              <FieldError message={fieldErrors.qrCode} />
+              <div className="flex gap-4 items-center">
+                {imagePreview ? (
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-700 shrink-0">
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setImageFile(null);
+                        setImagePreview("");
+                      }}
+                      className="absolute -top-1 -right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-0.5"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-16 h-16 rounded-lg bg-slate-950 border border-dashed border-gray-700 flex items-center justify-center text-gray-600 shrink-0">
+                    <Package className="w-6 h-6" />
+                  </div>
+                )}
+                <label className="flex-1 cursor-pointer">
+                  <span className="sr-only">Pilih file gambar</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setImageFile(file);
+                        setImagePreview(URL.createObjectURL(file));
+                      }
+                    }}
+                    className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-800 file:text-gray-300 hover:file:bg-gray-700 cursor-pointer"
+                  />
+                </label>
+              </div>
             </div>
 
             <div className="space-y-1">

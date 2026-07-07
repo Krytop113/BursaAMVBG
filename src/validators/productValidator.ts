@@ -26,7 +26,8 @@ export const createProductSchema = z.object({
         .string({ message: 'QR Code wajib diisi!' })
         .min(3, 'QR Code minimal 3 karakter!')
         .max(50, 'QR Code maksimal 50 karakter!')
-        .regex(/^[A-Za-z0-9\-_]+$/, 'QR Code hanya boleh berisi huruf, angka, strip (-), dan underscore (_)!'),
+        .regex(/^[A-Za-z0-9\-_]+$/, 'QR Code hanya boleh berisi huruf, angka, strip (-), dan underscore (_)!')
+        .optional(),
 
     categoryId: z
         .number({ message: 'Kategori wajib dipilih!' })
@@ -63,7 +64,7 @@ export function validateProductForm(raw: {
     description: string;
     price: string;
     stock: string;
-    qrCode: string;
+    qrCode?: string;
     categoryId: string;
 }): ProductFieldErrors {
     const parsed = {
@@ -71,7 +72,7 @@ export function validateProductForm(raw: {
         description: raw.description,
         price: raw.price === '' ? undefined : Number(raw.price),
         stock: raw.stock === '' ? undefined : Number(raw.stock),
-        qrCode: raw.qrCode,
+        qrCode: raw.qrCode === '' ? undefined : raw.qrCode,
         categoryId: raw.categoryId === '' ? undefined : Number(raw.categoryId),
     };
 

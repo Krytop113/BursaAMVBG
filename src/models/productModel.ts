@@ -10,6 +10,12 @@ export const productModel = {
         });
     },
 
+    async findByQrCode(qrCode: string): Promise<Product | null> {
+        return prisma.product.findUnique({
+            where: { qrCode },
+        });
+    },
+
     async getAllWithCategories() {
         return prisma.product.findMany({
             include: {

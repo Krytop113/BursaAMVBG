@@ -23,7 +23,7 @@ export const userModel = {
         });
     },
 
-    async insert(data: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
+    async insert(data: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'status'> & { status?: string }): Promise<User> {
         return prisma.user.create({
             data,
         });
