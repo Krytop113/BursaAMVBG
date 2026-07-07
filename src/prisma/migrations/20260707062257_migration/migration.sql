@@ -2,6 +2,7 @@
 CREATE TABLE `Role` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `status` VARCHAR(191) NOT NULL DEFAULT 'active',
 
     UNIQUE INDEX `Role_name_key`(`name`),
     PRIMARY KEY (`id`)
@@ -28,6 +29,7 @@ CREATE TABLE `User` (
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `roleId` INTEGER NOT NULL,
+    `status` VARCHAR(191) NOT NULL DEFAULT 'active',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -42,10 +44,11 @@ CREATE TABLE `Product` (
     `description` VARCHAR(191) NOT NULL,
     `stock` INTEGER NOT NULL,
     `price` DECIMAL(15, 2) NOT NULL,
+    `image_url` VARCHAR(191) NOT NULL,
     `qrCode` VARCHAR(191) NOT NULL,
+    `categoryId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `categoryId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Product_qrCode_key`(`qrCode`),
     PRIMARY KEY (`id`)
