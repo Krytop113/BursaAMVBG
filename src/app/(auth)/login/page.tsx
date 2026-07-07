@@ -1,17 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, Loader2, KeyRound, ShieldAlert } from "lucide-react";
 import { validateLogin } from "@/validators/authValidator";
 import { ROUTES } from "@/routes/paths";
 
 export default function LoginPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const sessionExpired = searchParams.get("reason") === "session_expired";
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

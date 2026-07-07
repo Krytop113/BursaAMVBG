@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/routes/paths";
@@ -23,6 +23,24 @@ interface SidebarProps {
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
   const pathname = usePathname();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.role === 1) {
+            setIsAdmin(true);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal memeriksa role:", err);
+      }
+    };
+    checkRole();
+  }, []);
 
   const handleLogout = async () => {
     const res = await fetch(ROUTES.api.logout, {
@@ -144,30 +162,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                 </Link>
               </li>
 
-              <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
-                ADMIN
-              </h3>
-
-              <li className="flex flex-col gap-1.5" > 
-                <Link
-                  href={ROUTES.users}
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
-                    isActive(ROUTES.users)
-                      ? "bg-gray-800 text-teal-400"
-                      : "text-gray-300"
-                  }`}
-                >
-                  <Users
-                    className={`w-5 h-5 group-hover:text-teal-400 ${
-                      isActive(ROUTES.users)
-                        ? "text-teal-400"
-                        : "text-gray-400"
-                    }`}
-                  />
-                  Kelola Pengguna
-                </Link>
-              </li>
-
               <li>
                 <a
                   href="#"
@@ -197,6 +191,34 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                   Invoice
                 </a>
               </li>
+
+              {isAdmin && (
+                <>
+                  <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    ADMIN
+                  </h3>
+
+                  <li className="flex flex-col gap-1.5">
+                    <Link
+                      href={ROUTES.users}
+                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                        isActive(ROUTES.users)
+                          ? "bg-gray-800 text-teal-400"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      <Users
+                        className={`w-5 h-5 group-hover:text-teal-400 ${
+                          isActive(ROUTES.users)
+                            ? "text-teal-400"
+                            : "text-gray-400"
+                        }`}
+                      />
+                      Kelola Pengguna
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 

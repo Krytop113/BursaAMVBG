@@ -36,12 +36,6 @@ function ActionButtons({
   return (
     <div className="flex items-center justify-center gap-2">
       <button
-        title="Lihat Detail"
-        className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-white transition-colors"
-      >
-        <Eye className="w-4 h-4" />
-      </button>
-      <button
         title="Edit Produk"
         className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-teal-400 transition-colors"
       >

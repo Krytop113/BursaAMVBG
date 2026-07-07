@@ -10,7 +10,7 @@ export const productModel = {
         });
     },
 
-    async getAllWithCategories(): Promise<Product[]> {
+    async getAllWithCategories() {
         return prisma.product.findMany({
             include: {
                 category: true,
@@ -19,13 +19,13 @@ export const productModel = {
         });
     },
 
-    async insert(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    async insert(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'price'> & { price: any }): Promise<Product> {
         return prisma.product.create({
             data,
         });
     },
 
-    async update(id: number, data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Product> {
+    async update(id: number, data: Omit<Partial<Product>, 'id' | 'createdAt' | 'updatedAt' | 'price'> & { price?: any }): Promise<Product> {
         return prisma.product.update({
             where: { id },
             data,
