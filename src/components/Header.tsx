@@ -27,22 +27,6 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
           </button>
         </div>
 
-        {/* Search Bar */}
-        <div className="hidden sm:block">
-          <form action="#" method="POST">
-            <div className="relative">
-              <button className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
-                <Search className="w-5 h-5" />
-              </button>
-              <input
-                type="text"
-                placeholder="Cari sesuatu..."
-                className="w-full bg-transparent pl-9 pr-4 font-medium text-white focus:outline-none xl:w-125 placeholder:text-gray-500 text-sm"
-              />
-            </div>
-          </form>
-        </div>
-
         {/* Header Actions */}
         <div className="flex items-center gap-3 2x1:gap-7 ml-auto">
           {/* Notifications */}

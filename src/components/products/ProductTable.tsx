@@ -145,7 +145,7 @@ export default function ProductTable({
                   key={product.id}
                   className="text-gray-300 hover:bg-slate-800/30 transition-colors group"
                 >
-                  <td className="px-4 py-3.5 text-gray-600 text-xs">{idx + 1}</td>
+                  <td className="px-4 py-3.5 text-gray-600 text-xs">{product.id}</td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
                       {product.imageUrl ? (

@@ -10,7 +10,7 @@ async function main() {
   await seedRoles(prisma);
   await seedUsers(prisma);
   await seedCategory(prisma);
-  await seedProduct(prisma);
+  // await seedProduct(prisma);
 }
 
 main()

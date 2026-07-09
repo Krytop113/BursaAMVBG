@@ -8,6 +8,6 @@ export async function createProductRouteHandler(request: Request): Promise<Respo
     return productController.createProduct(request);
 }
 
-export async function deleteProductRouteHandler(id: number): Promise<Response> {
+export async function deleteProductRouteHandler(id: string): Promise<Response> {
     return productController.deleteProduct(id);
 }

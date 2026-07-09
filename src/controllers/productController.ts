@@ -121,8 +121,11 @@ export const productController = {
                 imageUrl = `/uploads/${fileName}`;
             }
 
+            const productId = await productModel.getNextProductId();
+
             const product = await productModel.insert({
                 ...validation.data,
+                id: productId,
                 qrCode,
                 image_url: imageUrl,
             });
@@ -150,8 +153,11 @@ export const productController = {
         }
     },
 
-    async deleteProduct(id: number): Promise<NextResponse> {
+    async deleteProduct(id: string): Promise<NextResponse> {
         try {
+            if (id) {
+                await productModel.deleteImage(id);
+            }
             await productModel.delete(id);
             return NextResponse.json(
                 { message: 'Produk berhasil dihapus!' },

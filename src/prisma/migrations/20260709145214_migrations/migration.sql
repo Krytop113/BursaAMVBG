@@ -39,7 +39,7 @@ CREATE TABLE `User` (
 
 -- CreateTable
 CREATE TABLE `Product` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
     `stock` INTEGER NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE `Category` (
 -- CreateTable
 CREATE TABLE `StockMovement` (
     `id` VARCHAR(191) NOT NULL,
-    `productId` INTEGER NOT NULL,
+    `productId` VARCHAR(191) NOT NULL,
     `type` ENUM('IN', 'OUT') NOT NULL,
     `quantity` INTEGER NOT NULL,
     `note` VARCHAR(191) NOT NULL,
