@@ -140,9 +140,8 @@ export default function ProductTable({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800/50">
-              {filteredProducts.map((product, idx) => (
+              {filteredProducts.map((product) => (
                 <tr
-                  key={product.id}
                   className="text-gray-300 hover:bg-slate-800/30 transition-colors group"
                 >
                   <td className="px-4 py-3.5 text-gray-600 text-xs">{product.id}</td>
