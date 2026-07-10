@@ -9,12 +9,12 @@ import {
   Users,
   Settings,
   ShoppingBag,
-  BarChart3,
   LogOut,
   FileText,
   CreditCard,
   Tags,
   BadgeCheck,
+  QrCode,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -164,13 +164,23 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.transactions}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.transactions)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <CreditCard className="w-5 h-5 group-hover:text-teal-400" />
+                  <CreditCard
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.transactions)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Transaksi
-                </a>
+                </Link>
               </li>
 
               <li>
@@ -178,8 +188,8 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                   href="#"
                   className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
                 >
-                  <BarChart3 className="w-5 h-5 group-hover:text-teal-400" />
-                  Laporan
+                  <QrCode className="w-5 h-5 group-hover:text-teal-400" />
+                  QR Scanner
                 </a>
               </li>
 

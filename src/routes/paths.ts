@@ -5,6 +5,7 @@ export const ROUTES = {
   users: '/users',
   login: '/login',
   roles: '/roles',
+  transactions: '/transactions',
   api: {
     login: '/api/auth/login',
     logout: '/api/auth/logout'

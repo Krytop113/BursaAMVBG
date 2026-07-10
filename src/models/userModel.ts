@@ -16,7 +16,7 @@ export const userModel = {
         });
     },
 
-    async getAllWithRole(): Promise<User[]> {
+    async getAllWithRole() {
         return prisma.user.findMany({
             include: { role: true },
             orderBy: { createdAt: 'asc' },

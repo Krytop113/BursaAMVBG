@@ -22,7 +22,7 @@ export const roleModel = {
         });
     },
 
-    async insert(data: Omit<Role, 'id' | 'createdAt' | 'updatedAt'>): Promise<Role> {
+    async insert(data: Omit<Role, 'id' | 'createdAt' | 'updatedAt' | 'status'> & { status?: string }): Promise<Role> {
         return prisma.role.create({
             data,
         });
