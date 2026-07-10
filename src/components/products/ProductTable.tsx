@@ -14,8 +14,8 @@ import {
   QrCode,
 } from "lucide-react";
 import type { Product } from "./types";
+import { QRModal } from "./QRModal";
 
-/* ─── Image Lightbox ──────────────────────────────────────────── */
 function ImageLightbox({
   src,
   alt,
@@ -27,7 +27,6 @@ function ImageLightbox({
 }) {
   const [scale, setScale] = useState(1);
 
-  // Tutup dengan Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -36,7 +35,6 @@ function ImageLightbox({
     return () => window.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  // Scroll wheel zoom
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     setScale((prev) => {
@@ -168,21 +166,24 @@ function StatusBadge({ status, stock }: { status: string; stock: number }) {
 function ActionButtons({
   product,
   onDeleteClick,
+  onQRClick,
 }: {
   product: Product;
   onDeleteClick: (p: Product) => void;
+  onQRClick: (p: Product) => void;
 }) {
   return (
     <div className="flex items-center justify-center gap-1">
       <button
-        title="Lihat Detail"
-        className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-white transition-colors"
+        title="Lihat QR Code"
+        onClick={() => onQRClick(product)}
+        className="p-1.5 hover:bg-teal-500/10 rounded-md text-gray-500 hover:text-teal-400 transition-colors"
       >
         <QrCode className="w-4 h-4" />
       </button>
       <button
         title="Edit Produk"
-        className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-teal-400 transition-colors"
+        className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-blue-400 transition-colors"
       >
         <Edit2 className="w-4 h-4" />
       </button>
@@ -218,6 +219,7 @@ export default function ProductTable({
     [],
   );
   const closeLightbox = useCallback(() => setLightboxImage(null), []);
+  const [qrProduct, setQrProduct] = useState<Product | null>(null);
 
   return (
     <div className="bg-slate-900 border border-gray-800 rounded-xl overflow-hidden">
@@ -230,7 +232,6 @@ export default function ProductTable({
                 <th className="px-4 py-3.5">#</th>
                 <th className="px-4 py-3.5">Nama Produk</th>
                 <th className="px-4 py-3.5">Kategori</th>
-                <th className="px-4 py-3.5">QR Code</th>
                 <th className="px-4 py-3.5">Harga</th>
                 <th className="px-4 py-3.5">Stok / Status</th>
                 <th className="px-4 py-3.5 text-center">Aksi</th>
@@ -275,7 +276,6 @@ export default function ProductTable({
                 <th className="px-4 py-3.5">#</th>
                 <th className="px-4 py-3.5">Nama Produk</th>
                 <th className="px-4 py-3.5">Kategori</th>
-                <th className="px-4 py-3.5">QR Code</th>
                 <th className="px-4 py-3.5">Harga</th>
                 <th className="px-4 py-3.5">Stok / Status</th>
                 <th className="px-4 py-3.5 text-center">Aksi</th>
@@ -330,11 +330,6 @@ export default function ProductTable({
                       {product.categoryName}
                     </span>
                   </td>
-                  <td className="px-4 py-3.5">
-                    <span className="font-mono text-xs text-gray-400 bg-slate-950 px-2 py-1 rounded border border-gray-800">
-                      {product.qrCode}
-                    </span>
-                  </td>
                   <td className="px-4 py-3.5 font-semibold text-white">
                     Rp {product.price.toLocaleString("id-ID")}
                   </td>
@@ -348,6 +343,7 @@ export default function ProductTable({
                     <ActionButtons
                       product={product}
                       onDeleteClick={onDeleteClick}
+                      onQRClick={(p) => setQrProduct(p)}
                     />
                   </td>
                 </tr>
@@ -386,6 +382,14 @@ export default function ProductTable({
           src={lightboxImage.src}
           alt={lightboxImage.alt}
           onClose={closeLightbox}
+        />
+      )}
+
+      {/* QR Code Modal */}
+      {qrProduct && (
+        <QRModal
+          product={qrProduct}
+          onClose={() => setQrProduct(null)}
         />
       )}
     </div>
