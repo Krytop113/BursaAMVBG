@@ -177,6 +177,58 @@ export default function AddProductModal({
           </div>
         </div>
 
+        {/* Gambar Produk */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-300 flex items-center gap-1.5">
+            <Package className="w-3.5 h-3.5" />
+            Gambar Produk{" "}
+            <span className="text-gray-500 font-normal text-xs">(opsional)</span>
+          </label>
+          <div className="flex gap-4 items-center">
+            {imagePreview ? (
+              <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-700 shrink-0">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImageFile(null);
+                    setImagePreview("");
+                  }}
+                  className="absolute -top-1 -right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-0.5 transition-colors"
+                >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <div className="w-16 h-16 rounded-lg bg-slate-950 border border-dashed border-gray-700 flex items-center justify-center text-gray-600 shrink-0">
+                <Package className="w-6 h-6" />
+              </div>
+            )}
+            <label className="flex-1 cursor-pointer">
+              <span className="sr-only">Pilih file gambar</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setImageFile(file);
+                    setImagePreview(URL.createObjectURL(file));
+                  }
+                }}
+                className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-800 file:text-gray-300 hover:file:bg-gray-700 cursor-pointer transition-colors"
+              />
+              <p className="text-xs text-gray-600 mt-1.5">PNG, JPG, WEBP hingga 5MB</p>
+            </label>
+          </div>
+        </div>
+
         <div className="space-y-1">
           <label className="text-sm font-medium text-gray-300">Kategori *</label>
           <select

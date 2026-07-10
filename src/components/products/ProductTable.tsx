@@ -1,8 +1,130 @@
 "use client";
 
-import React from "react";
-import { Edit2, Trash2, Eye, AlertCircle, Loader2, Tag, Package } from "lucide-react";
+import React, { useState, useCallback, useEffect } from "react";
+import {
+  Edit2,
+  Trash2,
+  AlertCircle,
+  Tag,
+  Package,
+  ZoomIn,
+  X,
+  ZoomOut,
+  RotateCcw,
+  QrCode,
+} from "lucide-react";
 import type { Product } from "./types";
+
+/* ─── Image Lightbox ──────────────────────────────────────────── */
+function ImageLightbox({
+  src,
+  alt,
+  onClose,
+}: {
+  src: string;
+  alt: string;
+  onClose: () => void;
+}) {
+  const [scale, setScale] = useState(1);
+
+  // Tutup dengan Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  // Scroll wheel zoom
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    setScale((prev) => {
+      const next = prev - e.deltaY * 0.001;
+      return Math.min(Math.max(next, 0.5), 4);
+    });
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Backdrop blur */}
+      <div className="absolute inset-0 bg-black/85 backdrop-blur-md" />
+
+      {/* Toolbar */}
+      <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setScale((s) => Math.min(s + 0.25, 4));
+          }}
+          className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white transition-colors"
+          title="Perbesar"
+        >
+          <ZoomIn className="w-4 h-4" />
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setScale((s) => Math.max(s - 0.25, 0.5));
+          }}
+          className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white transition-colors"
+          title="Perkecil"
+        >
+          <ZoomOut className="w-4 h-4" />
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setScale(1);
+          }}
+          className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white transition-colors"
+          title="Reset Zoom"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </button>
+        <button
+          onClick={onClose}
+          className="p-2 bg-white/10 hover:bg-red-500/60 rounded-lg text-white transition-colors"
+          title="Tutup (Esc)"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Zoom hint */}
+      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/40 z-10 select-none">
+        Scroll untuk zoom · Klik di luar untuk tutup · Esc untuk keluar
+      </p>
+
+      {/* Image */}
+      <div
+        className="relative z-10 max-w-[90vw] max-h-[85vh] overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+        onWheel={handleWheel}
+      >
+        <img
+          src={src}
+          alt={alt}
+          style={{
+            transform: `scale(${scale})`,
+            transition: "transform 0.15s ease",
+            transformOrigin: "center center",
+          }}
+          className="max-w-[88vw] max-h-[82vh] object-contain rounded-xl shadow-2xl shadow-black/60 block"
+          draggable={false}
+        />
+      </div>
+
+      {/* Scale indicator */}
+      <div className="absolute bottom-10 right-4 text-xs text-white/40 z-10 tabular-nums">
+        {Math.round(scale * 100)}%
+      </div>
+    </div>
+  );
+}
 
 interface ProductTableProps {
   products: Product[];
@@ -43,14 +165,20 @@ function StatusBadge({ status, stock }: { status: string; stock: number }) {
   );
 }
 
-function ActionButtons({ product, onDeleteClick }: { product: Product; onDeleteClick: (p: Product) => void }) {
+function ActionButtons({
+  product,
+  onDeleteClick,
+}: {
+  product: Product;
+  onDeleteClick: (p: Product) => void;
+}) {
   return (
     <div className="flex items-center justify-center gap-1">
       <button
         title="Lihat Detail"
         className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-white transition-colors"
       >
-        <Eye className="w-4 h-4" />
+        <QrCode className="w-4 h-4" />
       </button>
       <button
         title="Edit Produk"
@@ -79,7 +207,17 @@ export default function ProductTable({
   onDeleteClick,
 }: ProductTableProps) {
   const isEmpty = !isLoading && filteredProducts.length === 0;
-  const hasActiveFilter = searchQuery.length > 0 || selectedCategory !== "Semua";
+  const hasActiveFilter =
+    searchQuery.length > 0 || selectedCategory !== "Semua";
+  const [lightboxImage, setLightboxImage] = useState<{
+    src: string;
+    alt: string;
+  } | null>(null);
+  const openLightbox = useCallback(
+    (src: string, alt: string) => setLightboxImage({ src, alt }),
+    [],
+  );
+  const closeLightbox = useCallback(() => setLightboxImage(null), []);
 
   return (
     <div className="bg-slate-900 border border-gray-800 rounded-xl overflow-hidden">
@@ -99,7 +237,9 @@ export default function ProductTable({
               </tr>
             </thead>
             <tbody>
-              {[...Array(4)].map((_, i) => <SkeletonRow key={i} />)}
+              {[...Array(4)].map((_, i) => (
+                <SkeletonRow key={i} />
+              ))}
             </tbody>
           </table>
         </div>
@@ -109,7 +249,9 @@ export default function ProductTable({
           <div className="p-4 bg-gray-800/40 rounded-full">
             <AlertCircle className="w-10 h-10 text-gray-600" />
           </div>
-          <h3 className="text-base font-semibold text-white">Produk Tidak Ditemukan</h3>
+          <h3 className="text-base font-semibold text-white">
+            Produk Tidak Ditemukan
+          </h3>
           <p className="text-gray-500 text-sm max-w-sm">
             {hasActiveFilter
               ? "Coba gunakan kata kunci lain atau pilih kategori berbeda."
@@ -141,18 +283,32 @@ export default function ProductTable({
             </thead>
             <tbody className="divide-y divide-gray-800/50">
               {filteredProducts.map((product) => (
-                <tr
-                  className="text-gray-300 hover:bg-slate-800/30 transition-colors group"
-                >
-                  <td className="px-4 py-3.5 text-gray-600 text-xs">{product.id}</td>
+                <tr className="text-gray-300 hover:bg-slate-800/30 transition-colors group">
+                  <td className="px-4 py-3.5 text-gray-600 text-xs">
+                    {product.id}
+                  </td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
                       {product.imageUrl ? (
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="w-10 h-10 object-cover rounded-lg border border-gray-800 shrink-0"
-                        />
+                        <button
+                          type="button"
+                          title="Klik untuk memperbesar gambar"
+                          onClick={() =>
+                            openLightbox(product.imageUrl!, product.name)
+                          }
+                          className="relative w-10 h-10 shrink-0 group/img focus:outline-none"
+                          style={{ cursor: "zoom-in" }}
+                        >
+                          <img
+                            src={product.imageUrl}
+                            alt={product.name}
+                            className="w-10 h-10 object-cover rounded-lg border border-gray-800 transition-all duration-200 group-hover/img:brightness-75 group-hover/img:scale-105"
+                          />
+                          {/* Overlay magnifier icon */}
+                          <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
+                            <ZoomIn className="w-4 h-4 text-white drop-shadow" />
+                          </span>
+                        </button>
                       ) : (
                         <div className="w-10 h-10 bg-slate-950 border border-gray-800 rounded-lg flex items-center justify-center shrink-0">
                           <Package className="w-5 h-5 text-gray-600" />
@@ -183,10 +339,16 @@ export default function ProductTable({
                     Rp {product.price.toLocaleString("id-ID")}
                   </td>
                   <td className="px-4 py-3.5">
-                    <StatusBadge status={product.status} stock={product.stock} />
+                    <StatusBadge
+                      status={product.status}
+                      stock={product.stock}
+                    />
                   </td>
                   <td className="px-4 py-3.5">
-                    <ActionButtons product={product} onDeleteClick={onDeleteClick} />
+                    <ActionButtons
+                      product={product}
+                      onDeleteClick={onDeleteClick}
+                    />
                   </td>
                 </tr>
               ))}
@@ -199,15 +361,32 @@ export default function ProductTable({
       {!isLoading && filteredProducts.length > 0 && (
         <div className="px-4 py-3 border-t border-gray-800 flex items-center justify-between text-xs text-gray-500">
           <span>
-            Menampilkan <span className="text-gray-300 font-medium">{filteredProducts.length}</span> dari{" "}
-            <span className="text-gray-300 font-medium">{products.length}</span> produk
+            Menampilkan{" "}
+            <span className="text-gray-300 font-medium">
+              {filteredProducts.length}
+            </span>{" "}
+            dari{" "}
+            <span className="text-gray-300 font-medium">{products.length}</span>{" "}
+            produk
           </span>
           {selectedCategory !== "Semua" && (
-            <button onClick={onResetFilter} className="text-teal-400 hover:underline">
+            <button
+              onClick={onResetFilter}
+              className="text-teal-400 hover:underline"
+            >
               Reset filter
             </button>
           )}
         </div>
+      )}
+
+      {/* Image Lightbox */}
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          onClose={closeLightbox}
+        />
       )}
     </div>
   );
