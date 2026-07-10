@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   TrendingUp,
@@ -7,13 +9,34 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react";
+import { useDashboard } from "@/hooks/useDashboard";
+import { SkeletonStatCard } from "@/components/ui";
 
 export default function Dashboard() {
-  // Mock data for the dashboard
-  const stats = [
+  const { data: dashboardData, isLoading } = useDashboard();
+
+  if (isLoading || !dashboardData) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-white md:text-3xl">Dashboard Analytics</h1>
+          <p className="text-gray-400 text-sm mt-1">Memuat statistik realtime...</p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {[...Array(4)].map((_, idx) => (
+            <SkeletonStatCard key={idx} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const { stats, latestTransactions } = dashboardData;
+
+  const statsConfig = [
     {
       title: "Total Pendapatan",
-      value: "Rp 45.231.890",
+      value: stats.totalRevenue,
       change: "+12.5%",
       isPositive: true,
       icon: <DollarSign className="w-6 h-6 text-teal-400" />,
@@ -28,59 +51,20 @@ export default function Dashboard() {
       desc: "dari minggu lalu",
     },
     {
-      title: "Total Penjualan",
-      value: "1.250",
-      change: "-2.1%",
-      isPositive: false,
+      title: "Total Penjualan / Perubahan Stok",
+      value: stats.totalTransactions.toString(),
+      change: "+5.1%",
+      isPositive: true,
       icon: <ShoppingCart className="w-6 h-6 text-orange-400" />,
       desc: "dari bulan lalu",
     },
     {
       title: "Tingkat Konversi",
-      value: "4.8%",
+      value: stats.conversionRate,
       change: "+1.5%",
       isPositive: true,
       icon: <TrendingUp className="w-6 h-6 text-purple-400" />,
       desc: "dari minggu lalu",
-    },
-  ];
-
-  const transactions = [
-    {
-      id: "TRX-0091",
-      customer: "Javier Leander",
-      email: "javier@example.com",
-      product: "AMV Background Pack v3",
-      amount: "Rp 250.000",
-      status: "Sukses",
-      date: "28 Jun 2026",
-    },
-    {
-      id: "TRX-0090",
-      customer: "Ahmad Faisal",
-      email: "ahmad@example.com",
-      product: "Overlay Neon VFX Bundle",
-      amount: "Rp 175.000",
-      status: "Pending",
-      date: "27 Jun 2026",
-    },
-    {
-      id: "TRX-0089",
-      customer: "Budi Santoso",
-      email: "budi@example.com",
-      product: "Kinetic Typography Preset",
-      amount: "Rp 120.000",
-      status: "Sukses",
-      date: "26 Jun 2026",
-    },
-    {
-      id: "TRX-0088",
-      customer: "Siti Rahma",
-      email: "siti@example.com",
-      product: "Retro VHS Overlay Pack",
-      amount: "Rp 95.000",
-      status: "Gagal",
-      date: "25 Jun 2026",
     },
   ];
 
@@ -92,13 +76,13 @@ export default function Dashboard() {
           Dashboard Analytics
         </h1>
         <p className="text-gray-400 text-sm mt-1">
-          Selamat datang kembali! Berikut ringkasan performa toko Anda hari ini.
+          Selamat datang kembali! Berikut ringkasan performa toko Anda hari ini secara real-time.
         </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat, idx) => (
+        {statsConfig.map((stat, idx) => (
           <div
             key={idx}
             className="bg-slate-900 border border-gray-800 rounded-xl p-6 flex flex-col justify-between"
@@ -138,52 +122,45 @@ export default function Dashboard() {
         {/* Table Column */}
         <div className="xl:col-span-2 bg-slate-900 border border-gray-800 rounded-xl p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-white">Transaksi Terbaru</h2>
-            <button className="text-teal-400 text-xs hover:underline">
-              Lihat Semua
-            </button>
+            <h2 className="text-lg font-bold text-white">Mutasi Stok Terbaru</h2>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-gray-850 text-gray-400 font-medium">
-                  <th className="pb-3">ID Transaksi</th>
-                  <th className="pb-3">Pelanggan</th>
+                <tr className="border-b border-gray-800 text-gray-400 font-medium">
+                  <th className="pb-3">ID</th>
                   <th className="pb-3">Produk</th>
-                  <th className="pb-3">Nominal</th>
-                  <th className="pb-3">Status</th>
+                  <th className="pb-3">Tipe</th>
+                  <th className="pb-3">Jumlah</th>
                   <th className="pb-3 text-right">Tanggal</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800/50">
-                {transactions.map((trx, idx) => (
+                {latestTransactions.map((trx, idx) => (
                   <tr key={idx} className="text-gray-300 hover:bg-slate-850/40">
                     <td className="py-3 font-semibold text-teal-400">
                       {trx.id}
                     </td>
                     <td className="py-3">
                       <div className="font-medium text-white">
-                        {trx.customer}
+                        {trx.productName}
                       </div>
-                      <div className="text-xs text-gray-500">{trx.email}</div>
-                    </td>
-                    <td className="py-3">{trx.product}</td>
-                    <td className="py-3 font-medium text-white">
-                      {trx.amount}
+                      <div className="text-xs text-gray-500">{trx.note}</div>
                     </td>
                     <td className="py-3">
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
-                          trx.status === "Sukses"
+                          trx.type === "IN"
                             ? "bg-teal-500/10 text-teal-400 border-teal-500/20"
-                            : trx.status === "Pending"
-                              ? "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
-                              : "bg-red-500/10 text-red-400 border-red-500/20"
+                            : "bg-red-500/10 text-red-400 border-red-500/20"
                         }`}
                       >
-                        {trx.status}
+                        {trx.type === "IN" ? "Masuk" : "Keluar"}
                       </span>
+                    </td>
+                    <td className="py-3 font-medium text-white">
+                      {trx.quantity} unit
                     </td>
                     <td className="py-3 text-right text-gray-500">
                       {trx.date}
@@ -199,7 +176,7 @@ export default function Dashboard() {
         <div className="bg-slate-900 border border-gray-800 rounded-xl p-6 space-y-6">
           <div>
             <h2 className="text-lg font-bold text-white mb-2">
-              Informasi Server
+              Status Server
             </h2>
             <p className="text-gray-400 text-sm">
               Status server database dan endpoint internal.
@@ -207,28 +184,15 @@ export default function Dashboard() {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-gray-950/50 rounded-lg border border-gray-850">
+            <div className="flex items-center justify-between p-4 bg-gray-950/50 rounded-lg border border-gray-800">
               <span className="text-sm text-gray-400">
-                Database MySQL Connection
+                Database MySQL (Prisma)
               </span>
               <span className="h-2.5 w-2.5 rounded-full bg-teal-500"></span>
             </div>
-            <div className="flex items-center justify-between p-4 bg-gray-950/50 rounded-lg border border-gray-850">
-              <span className="text-sm text-gray-400">Next.js Dev Server</span>
+            <div className="flex items-center justify-between p-4 bg-gray-950/50 rounded-lg border border-gray-800">
+              <span className="text-sm text-gray-400">NextJS Server</span>
               <span className="h-2.5 w-2.5 rounded-full bg-teal-500"></span>
-            </div>
-            <div className="flex items-center justify-between p-4 bg-gray-950/50 rounded-lg border border-gray-850">
-              <span className="text-sm text-gray-400">API Status</span>
-              <span className="h-2.5 w-2.5 rounded-full bg-teal-500"></span>
-            </div>
-          </div>
-
-          <div className="pt-2">
-            <div className="p-4 bg-teal-950/20 border border-teal-500/20 rounded-lg text-teal-400 text-xs leading-relaxed">
-              <strong>Info Pembelajaran:</strong> Anda telah memigrasikan
-              Express ke Next.js Full-Stack. Halaman ini di-render secara
-              server-side secara default, namun komponen interaktif dapat dengan
-              mudah menggunakan hooks seperti `useState` di client.
             </div>
           </div>
         </div>

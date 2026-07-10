@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Trash2, Loader2, AlertTriangle } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import type { Transaction } from "./types";
+import { Modal, Button } from "@/components/ui";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface DeleteTransactionModalProps {
   transaction: Transaction;
@@ -15,105 +17,67 @@ export default function DeleteTransactionModal({
   onClose,
   onSuccess,
 }: DeleteTransactionModalProps) {
-  const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState("");
+  const queryClient = useQueryClient();
 
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    setError("");
-    try {
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
       const res = await fetch(`/api/transactions/${transaction.id}`, {
         method: "DELETE",
       });
-
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || "Gagal menghapus transaksi.");
-        return;
+        throw new Error(data.error || "Gagal menghapus transaksi.");
       }
-
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
       onSuccess();
       onClose();
-    } catch {
-      setError("Gagal terhubung ke server.");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+    },
+    onError: (err: any) => {
+      setError(err.message);
+    },
+  });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Panel */}
-      <div className="relative w-full max-w-sm bg-slate-900 border border-gray-800 rounded-2xl shadow-2xl p-6 space-y-5">
-        {/* Header */}
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-red-500/10 rounded-xl border border-red-500/20">
-            <Trash2 className="w-5 h-5 text-red-400" />
-          </div>
-          <div>
-            <h3 className="font-bold text-white">Hapus Transaksi</h3>
-            <p className="text-xs text-gray-500">Tindakan ini akan memulihkan stok</p>
-          </div>
+    <Modal
+      title="Hapus Transaksi"
+      icon={<Trash2 className="w-5 h-5" />}
+      accent="red"
+      size="sm"
+      subtitle="Tindakan ini akan memulihkan stok"
+      onClose={onClose}
+    >
+      <div className="p-6 space-y-5">
+        <div className="p-3.5 bg-red-500/5 border border-red-500/15 rounded-xl text-sm text-gray-300">
+          Apakah Anda yakin ingin menghapus transaksi produk{" "}
+          <span className="font-semibold text-white">&quot;{transaction.productName}&quot;</span>{" "}
+          sebanyak <span className="font-semibold text-white">{transaction.quantity} unit</span>?
         </div>
 
-        {/* Warning message */}
-        <div className="p-3.5 bg-red-500/5 border border-red-500/15 rounded-xl">
-          <p className="text-sm text-gray-300 leading-relaxed">
-            Apakah Anda yakin ingin menghapus transaksi produk{" "}
-            <span className="font-semibold text-white">
-              &quot;{transaction.productName}&quot;
-            </span>{" "}
-            sebanyak <span className="font-semibold text-white">{transaction.quantity} unit</span>?
-          </p>
-          <div className="flex items-start gap-1.5 mt-3 text-xs text-amber-400">
-            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-            <span>
-              Menghapus transaksi ini akan secara otomatis membalikkan penyesuaian stok produk (stok {transaction.type === 'IN' ? 'berkurang' : 'bertambah'} kembali).
-            </span>
-          </div>
-        </div>
-
-        {/* Error */}
         {error && (
-          <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
             {error}
-          </p>
+          </div>
         )}
 
-        {/* Actions */}
         <div className="flex gap-3">
-          <button
-            onClick={onClose}
-            disabled={isDeleting}
-            className="flex-1 px-4 py-2.5 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-700 disabled:opacity-50 transition-colors"
-          >
+          <Button variant="secondary" onClick={onClose} className="flex-1">
             Batal
-          </button>
-          <button
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500 text-white rounded-lg text-sm font-semibold hover:bg-red-400 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => deleteMutation.mutate()}
+            isLoading={deleteMutation.isPending}
+            className="flex-1"
           >
-            {isDeleting ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Menghapus...
-              </>
-            ) : (
-              <>
-                <Trash2 className="w-4 h-4" />
-                Ya, Hapus
-              </>
-            )}
-          </button>
+            Ya, Hapus
+          </Button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }

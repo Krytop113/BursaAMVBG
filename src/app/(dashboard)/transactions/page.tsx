@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import {
   TransactionPageHeader,
   TransactionFilters,
@@ -8,40 +8,21 @@ import {
   AddTransactionModal,
   DeleteTransactionModal,
 } from "@/components/transactions";
-import type { Transaction, Product } from "@/components/transactions";
+import type { Transaction } from "@/components/transactions";
+import { useTransactions } from "@/hooks/useTransactions";
+import { useProducts } from "@/hooks/useProducts";
 
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: transactionsData, isLoading: isTxLoading, refetch: refetchTransactions } = useTransactions();
+  const { data: productsData } = useProducts();
+
+  const transactions = transactionsData?.transactions ?? [];
+  const products = productsData?.products ?? [];
+
   const [selectedType, setSelectedType] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Transaction | null>(null);
-
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const [txRes, prodRes] = await Promise.all([
-        fetch("/api/transactions"),
-        fetch("/api/products"),
-      ]);
-      const [txData, prodData] = await Promise.all([
-        txRes.json(),
-        prodRes.json(),
-      ]);
-      if (txRes.ok) setTransactions(txData.transactions ?? []);
-      if (prodRes.ok) setProducts(prodData.products ?? []);
-    } catch (err) {
-      console.error("Gagal mengambil data:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
   const filteredTransactions = transactions.filter((t) => {
     const matchesType =
@@ -75,7 +56,7 @@ export default function TransactionsPage() {
         <TransactionTable
           transactions={transactions}
           filteredTransactions={filteredTransactions}
-          isLoading={isLoading}
+          isLoading={isTxLoading}
           searchQuery={searchQuery}
           selectedType={selectedType}
           onResetFilter={handleResetFilter}
@@ -83,12 +64,11 @@ export default function TransactionsPage() {
         />
       </div>
 
-      {/* Modals */}
       {showAddModal && (
         <AddTransactionModal
           products={products}
           onClose={() => setShowAddModal(false)}
-          onSuccess={fetchData}
+          onSuccess={() => refetchTransactions()}
         />
       )}
 
@@ -96,7 +76,7 @@ export default function TransactionsPage() {
         <DeleteTransactionModal
           transaction={deleteTarget}
           onClose={() => setDeleteTarget(null)}
-          onSuccess={fetchData}
+          onSuccess={() => refetchTransactions()}
         />
       )}
     </>
