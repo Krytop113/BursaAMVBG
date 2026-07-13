@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { X, Plus, Loader2, Tag, AlertCircle, CheckCircle2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AddCategoryModalProps {
   onClose: () => void;
@@ -17,6 +18,7 @@ export default function AddCategoryModal({
   const [serverError, setServerError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +50,9 @@ export default function AddCategoryModal({
         setServerError(data.error || "Terjadi kesalahan.");
         return;
       }
+
+      // Invalidate React Query cache untuk kategori
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
 
       setSuccess(true);
 

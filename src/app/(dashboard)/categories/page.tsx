@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import {
   CategoryPageHeader,
   CategoryTable,
@@ -8,34 +8,14 @@ import {
   DeleteCategoryModal,
 } from "@/components/categories";
 import type { Category } from "@/components/categories";
+import { useCategories } from "@/hooks/useCategories";
 
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: categoriesData, isLoading } = useCategories();
+  const categories = categoriesData?.categories ?? [];
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
-
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-
-    try {
-      const res = await fetch("/api/categories");
-      const data = await res.json();
-
-      if (res.ok) {
-        setCategories(data.categories ?? []);
-      }
-    } catch (err) {
-      console.error("Gagal mengambil data kategori:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
   return (
     <>
@@ -52,7 +32,7 @@ export default function CategoriesPage() {
       {showAddModal && (
         <AddCategoryModal
           onClose={() => setShowAddModal(false)}
-          onSuccess={fetchData}
+          onSuccess={() => setShowAddModal(false)}
         />
       )}
 
@@ -60,7 +40,7 @@ export default function CategoriesPage() {
         <DeleteCategoryModal
           category={deleteTarget}
           onClose={() => setDeleteTarget(null)}
-          onSuccess={fetchData}
+          onSuccess={() => setDeleteTarget(null)}
         />
       )}
     </>

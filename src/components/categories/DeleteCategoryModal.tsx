@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Trash2, Loader2, AlertTriangle } from "lucide-react";
 import type { Category } from "./types";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface DeleteCategoryModalProps {
   category: Category;
@@ -17,6 +18,7 @@ export default function DeleteCategoryModal({
 }: DeleteCategoryModalProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState("");
+  const queryClient = useQueryClient();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -32,6 +34,9 @@ export default function DeleteCategoryModal({
         setError(data.error || "Gagal menghapus kategori.");
         return;
       }
+
+      // Invalidate React Query cache untuk kategori
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
 
       onSuccess();
       onClose();
