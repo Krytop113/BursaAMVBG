@@ -5,12 +5,26 @@ import { useQuery } from "@tanstack/react-query";
 export interface DashboardData {
   success: boolean;
   stats: {
-    totalRevenue: string;
-    totalTransactions: number;
-    totalProducts: number;
-    conversionRate: string;
+    totalIncome: number;
+    totalExpense: number;
+    netProfit: number;
+    maxSpentProduct: {
+      name: string;
+      value: number;
+    };
+    maxProfitProduct: {
+      name: string;
+      value: number;
+    };
   };
-  latestTransactions: Array<{
+  lowStockProducts: Array<{
+    id: string;
+    name: string;
+    stock: number;
+    price: number;
+    categoryName: string;
+  }>;
+  topMutations: Array<{
     id: string;
     productName: string;
     quantity: number;
