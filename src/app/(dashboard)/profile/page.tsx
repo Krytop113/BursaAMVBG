@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { User, Mail, Lock, ShieldAlert, CheckCircle, RefreshCw } from "lucide-react";
+import { User, Mail, Lock, ShieldAlert, CheckCircle } from "lucide-react";
+import { Button, inputCls } from "@/components/ui";
 
 export default function ProfilePage() {
   const { user, refetch } = useAuth();
@@ -100,7 +101,7 @@ export default function ProfilePage() {
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-slate-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
+              className={inputCls(false)}
               placeholder="Username baru"
             />
           </div>
@@ -115,7 +116,7 @@ export default function ProfilePage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-slate-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
+              className={inputCls(false)}
               placeholder="nama@email.com"
             />
           </div>
@@ -136,7 +137,7 @@ export default function ProfilePage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-slate-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
+              className={inputCls(false)}
               placeholder="Min. 6 karakter"
             />
           </div>
@@ -150,25 +151,20 @@ export default function ProfilePage() {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full bg-slate-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
+              className={inputCls(false)}
               placeholder="Ketik ulang kata sandi baru"
             />
           </div>
 
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
-            disabled={isSubmitting}
-            className="w-full sm:w-auto bg-teal-500 hover:bg-teal-600 disabled:bg-teal-700 text-white font-semibold text-sm rounded-lg px-6 py-2.5 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            isLoading={isSubmitting}
+            variant="primary"
+            className="w-full sm:w-auto font-semibold cursor-pointer"
           >
-            {isSubmitting ? (
-              <>
-                <RefreshCw className="w-4 h-4 animate-spin" /> Menyimpan...
-              </>
-            ) : (
-              "Simpan Perubahan"
-            )}
-          </button>
+            Simpan Perubahan
+          </Button>
         </form>
       </div>
     </div>
