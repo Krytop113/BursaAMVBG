@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Bell, Menu, User, ChevronDown, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import Link from 'next/link';
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -59,6 +60,14 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
             {/* Dropdown Menu */}
             {dropdownOpen && (
               <div className="absolute right-0 top-12 mt-2.5 w-48 rounded-lg border border-gray-800 bg-slate-900 p-1.5 shadow-xl">
+                <Link
+                  href="/profile"
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-gray-300 hover:bg-gray-800 transition-colors"
+                >
+                  <User className="w-4 h-4 text-teal-400" />
+                  Edit Profile
+                </Link>
+                <hr className="border-gray-800 my-1" />
                 <button
                   onClick={logout}
                   className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-400 hover:bg-red-950/20 hover:text-red-300 transition-colors"

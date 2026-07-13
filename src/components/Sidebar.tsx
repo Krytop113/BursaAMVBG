@@ -252,35 +252,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               )}
             </ul>
           </div>
-
-          {/* OTHERS GROUP */}
-          <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
-              PENGATURAN
-            </h3>
-
-            <ul className="mb-6 flex flex-col gap-1.5">
-              <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
-                >
-                  <Settings className="w-5 h-5 group-hover:text-teal-400" />
-                  Pengaturan Toko
-                </a>
-              </li>
-
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="w-full group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-red-400 duration-300 ease-in-out hover:bg-red-950/30 hover:text-red-300"
-                >
-                  <LogOut className="w-5 h-5" />
-                  Keluar
-                </button>
-              </li>
-            </ul>
-          </div>
         </nav>
       </div>
     </aside>
