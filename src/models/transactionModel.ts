@@ -11,6 +11,8 @@ export const transactionModel = {
                     select: {
                         name: true,
                         qrCode: true,
+                        price: true,
+                        buyPrice: true,
                     }
                 }
             },

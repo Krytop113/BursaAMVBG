@@ -3,6 +3,8 @@ export interface Transaction {
   productId: string;
   productName: string;
   productQrCode: string;
+  productPrice: number;
+  productBuyPrice: number;
   type: 'IN' | 'OUT';
   quantity: number;
   note: string;

@@ -15,6 +15,8 @@ export const transactionController = {
                     productId: m.productId,
                     productName: m.product.name,
                     productQrCode: m.product.qrCode,
+                    productPrice: Number(m.product.price),
+                    productBuyPrice: Number(m.product.buyPrice),
                     type: m.type,
                     quantity: m.quantity,
                     note: m.note,
