@@ -232,7 +232,8 @@ export default function ProductTable({
                 <th className="px-4 py-3.5">#</th>
                 <th className="px-4 py-3.5">Nama Produk</th>
                 <th className="px-4 py-3.5">Kategori</th>
-                <th className="px-4 py-3.5">Harga</th>
+                <th className="px-4 py-3.5">Harga Beli</th>
+                <th className="px-4 py-3.5">Harga Jual</th>
                 <th className="px-4 py-3.5">Stok / Status</th>
                 <th className="px-4 py-3.5 text-center">Aksi</th>
               </tr>
@@ -276,14 +277,15 @@ export default function ProductTable({
                 <th className="px-4 py-3.5">#</th>
                 <th className="px-4 py-3.5">Nama Produk</th>
                 <th className="px-4 py-3.5">Kategori</th>
-                <th className="px-4 py-3.5">Harga</th>
+                <th className="px-4 py-3.5">Harga Beli</th>
+                <th className="px-4 py-3.5">Harga Jual</th>
                 <th className="px-4 py-3.5">Stok / Status</th>
                 <th className="px-4 py-3.5 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800/50">
               {filteredProducts.map((product) => (
-                <tr className="text-gray-300 hover:bg-slate-800/30 transition-colors group">
+                <tr key={product.id} className="text-gray-300 hover:bg-slate-800/30 transition-colors group">
                   <td className="px-4 py-3.5 text-gray-600 text-xs">
                     {product.id}
                   </td>
@@ -319,7 +321,7 @@ export default function ProductTable({
                           {product.name}
                         </div>
                         <div className="text-xs text-gray-600 mt-0.5 line-clamp-1 max-w-xs">
-                          {product.description}
+                           {product.description}
                         </div>
                       </div>
                     </div>
@@ -329,6 +331,9 @@ export default function ProductTable({
                       <Tag className="w-3 h-3" />
                       {product.categoryName}
                     </span>
+                  </td>
+                  <td className="px-4 py-3.5 font-semibold text-gray-400">
+                    Rp {product.buyPrice ? product.buyPrice.toLocaleString("id-ID") : "0"}
                   </td>
                   <td className="px-4 py-3.5 font-semibold text-white">
                     Rp {product.price.toLocaleString("id-ID")}

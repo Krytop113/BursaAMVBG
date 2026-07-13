@@ -17,6 +17,7 @@ const INITIAL_FORM = {
   name: "",
   description: "",
   price: "",
+  buyPrice: "",
   stock: "",
   categoryId: "",
 };
@@ -91,6 +92,7 @@ export default function AddProductModal({
     formData.append("name", form.name);
     formData.append("description", form.description);
     formData.append("price", form.price);
+    formData.append("buyPrice", form.buyPrice);
     formData.append("stock", form.stock);
     formData.append("categoryId", form.categoryId);
     if (imageFile) {
@@ -147,9 +149,23 @@ export default function AddProductModal({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-300">Harga *</label>
+            <label className="text-sm font-medium text-gray-300">Harga Beli *</label>
+            <input
+              type="number"
+              name="buyPrice"
+              value={form.buyPrice}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="0"
+              className={inputCls(!!fieldErrors.buyPrice)}
+            />
+            <FieldError message={fieldErrors.buyPrice} />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-300">Harga Jual *</label>
             <input
               type="number"
               name="price"

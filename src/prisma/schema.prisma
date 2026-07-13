@@ -45,6 +45,7 @@ model Product {
   description   String
   stock         Int
   price         Decimal         @db.Decimal(15, 2)
+  buyPrice      Decimal         @db.Decimal(15, 2)
   image_url     String
   qrCode        String          @unique
   categoryId    Int

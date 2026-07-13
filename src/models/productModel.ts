@@ -27,24 +27,36 @@ export const productModel = {
         });
     },
 
-    async getNextProductId(): Promise<string> {
+    async getNextProductId(categoryId: number, price: number): Promise<string> {
+        const category = await prisma.category.findUnique({
+            where: { id: categoryId },
+            select: { name: true },
+        });
+        const categoryCode = category ? category.name.substring(0, 2).toUpperCase() : 'PR';
+
+        const priceStr = String(price).replace(/[^0-9]/g, '');
+        const priceCode = priceStr.substring(0, 2).padEnd(2, '0');
+
         const products = await prisma.product.findMany({
             select: { id: true },
         });
 
         let maxNum = 0;
         for (const p of products) {
-            const match = p.id.match(/^P(\d+)$/);
-            if (match) {
-                const num = parseInt(match[1], 10);
-                if (num > maxNum) {
+            const parts = p.id.split('-');
+            const lastPart = parts[parts.length - 1];
+            if (lastPart) {
+                const num = parseInt(lastPart, 10);
+                if (!isNaN(num) && num > maxNum) {
                     maxNum = num;
                 }
             }
         }
 
         const nextNum = maxNum + 1;
-        return `P${String(nextNum).padStart(3, '0')}`;
+        const seqCode = String(nextNum).padStart(3, '0');
+
+        return `${categoryCode}-${priceCode}-${seqCode}`;
     },
 
     async deleteImage(id: string): Promise<void> {
@@ -77,13 +89,13 @@ export const productModel = {
         }
     },
 
-    async insert(data: Omit<Product, 'createdAt' | 'updatedAt' | 'price'> & { price: any }): Promise<Product> {
+    async insert(data: Omit<Product, 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price: any; buyPrice: any }): Promise<Product> {
         return prisma.product.create({
             data,
         });
     },
 
-    async update(id: string, data: Omit<Partial<Product>, 'id' | 'createdAt' | 'updatedAt' | 'price'> & { price?: any }): Promise<Product> {
+    async update(id: string, data: Omit<Partial<Product>, 'id' | 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price?: any; buyPrice?: any }): Promise<Product> {
         return prisma.product.update({
             where: { id },
             data,

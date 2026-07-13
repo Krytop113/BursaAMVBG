@@ -10,6 +10,7 @@ export async function seedProduct(prisma: PrismaClient) {
             description: "Description for Product A",
             stock: 100,
             price: 2000.00,
+            buyPrice: 1000.00,
             image_url: "",
             qrCode: "QRA",
             categoryId: 1
@@ -25,6 +26,7 @@ export async function seedProduct(prisma: PrismaClient) {
             description: "Description for Product B",
             stock: 20,
             price: 12000.00,
+            buyPrice: 10000.00,
             image_url: "",
             qrCode: "QRB",
             categoryId: 2
@@ -40,6 +42,7 @@ export async function seedProduct(prisma: PrismaClient) {
             description: "Description for Product C",
             stock: 10,
             price: 15000.00,
+            buyPrice: 12000.00,
             image_url: "",
             qrCode: "QRC",
             categoryId: 3

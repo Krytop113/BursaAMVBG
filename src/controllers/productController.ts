@@ -15,6 +15,7 @@ export const productController = {
                     name: product.name,
                     description: product.description,
                     price: Number(product.price),
+                    buyPrice: Number(product.buyPrice),
                     stock: product.stock,
                     qrCode: product.qrCode,
                     categoryId: product.categoryId,
@@ -39,6 +40,7 @@ export const productController = {
             let name = '';
             let description = '';
             let price = 0;
+            let buyPrice = 0;
             let stock = 0;
             let categoryId = 0;
             let imageFile: File | null = null;
@@ -48,6 +50,7 @@ export const productController = {
                 name = (formData.get('name') as string) || '';
                 description = (formData.get('description') as string) || '';
                 price = Number(formData.get('price') || 0);
+                buyPrice = Number(formData.get('buyPrice') || 0);
                 stock = Number(formData.get('stock') || 0);
                 categoryId = Number(formData.get('categoryId') || 0);
                 imageFile = formData.get('image') as File | null;
@@ -56,6 +59,7 @@ export const productController = {
                 name = body.name || '';
                 description = body.description || '';
                 price = Number(body.price || 0);
+                buyPrice = Number(body.buyPrice || 0);
                 stock = Number(body.stock || 0);
                 categoryId = Number(body.categoryId || 0);
             }
@@ -89,6 +93,7 @@ export const productController = {
                 name,
                 description,
                 price,
+                buyPrice,
                 stock,
                 qrCode,
                 categoryId,
@@ -121,7 +126,7 @@ export const productController = {
                 imageUrl = `/uploads/${fileName}`;
             }
 
-            const productId = await productModel.getNextProductId();
+            const productId = await productModel.getNextProductId(categoryId, price);
 
             const product = await productModel.insert({
                 ...validation.data,

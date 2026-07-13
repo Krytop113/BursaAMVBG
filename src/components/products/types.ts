@@ -5,6 +5,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  buyPrice: number;
   stock: number;
   qrCode: string;
   categoryId: number;

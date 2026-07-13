@@ -16,6 +16,11 @@ export const createProductSchema = z.object({
         .positive('Harga harus lebih dari 0!')
         .max(999_999_999, 'Harga terlalu besar!'),
 
+    buyPrice: z
+        .number({ message: 'Harga beli harus berupa angka!' })
+        .positive('Harga beli harus lebih dari 0!')
+        .max(999_999_999, 'Harga beli terlalu besar!'),
+
     stock: z
         .number({ message: 'Stok harus berupa angka!' })
         .int('Stok harus bilangan bulat!')
@@ -63,6 +68,7 @@ export function validateProductForm(raw: {
     name: string;
     description: string;
     price: string;
+    buyPrice: string;
     stock: string;
     qrCode?: string;
     categoryId: string;
@@ -71,6 +77,7 @@ export function validateProductForm(raw: {
         name: raw.name,
         description: raw.description,
         price: raw.price === '' ? undefined : Number(raw.price),
+        buyPrice: raw.buyPrice === '' ? undefined : Number(raw.buyPrice),
         stock: raw.stock === '' ? undefined : Number(raw.stock),
         qrCode: raw.qrCode === '' ? undefined : raw.qrCode,
         categoryId: raw.categoryId === '' ? undefined : Number(raw.categoryId),
