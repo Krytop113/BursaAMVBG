@@ -188,16 +188,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                   href="#"
                   className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
                 >
-                  <QrCode className="w-5 h-5 group-hover:text-teal-400" />
-                  QR Scanner
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
-                >
                   <FileText className="w-5 h-5 group-hover:text-teal-400" />
                   Invoice
                 </a>

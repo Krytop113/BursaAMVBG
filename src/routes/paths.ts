@@ -6,6 +6,7 @@ export const ROUTES = {
   login: '/login',
   roles: '/roles',
   transactions: '/transactions',
+  qr: '/qr',
   api: {
     login: '/api/auth/login',
     logout: '/api/auth/logout'
