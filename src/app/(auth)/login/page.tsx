@@ -12,9 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  React.useEffect(() => {
-    document.cookie = "user_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-  }, []);
+  // Catatan: Tidak menghapus cookie di sini agar sesi yang aktif tetap terjaga
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +32,7 @@ export default function LoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // Pastikan cookie dari response disimpan oleh browser
         body: JSON.stringify({ email, password }),
       });
 
@@ -43,6 +42,9 @@ export default function LoginPage() {
         throw new Error(data.error || "Login gagal. Silakan coba lagi.");
       }
 
+      // Beri jeda singkat agar browser HP sempat menyimpan cookie
+      // dari response server sebelum navigasi dilakukan
+      await new Promise((resolve) => setTimeout(resolve, 300));
       window.location.href = ROUTES.dashboard;
     } catch (err: any) {
       setError(err.message || "Terjadi kesalahan jaringan.");

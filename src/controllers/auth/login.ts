@@ -42,10 +42,20 @@ export const loginController = {
                 user: { id: user.id, username: user.username, role: user.roleId },
             });
 
+            // Deteksi HTTPS via header X-Forwarded-Proto (dikirim oleh Ngrok/reverse proxy)
+            // Karena Ngrok meneruskan ke localhost via HTTP, request.url selalu http://
+            // Header inilah yang memberi tahu protokol asli yang dipakai browser
+            const forwardedProto = (request as any).headers?.get?.('x-forwarded-proto') ||
+                                   (request.headers as any)?.['x-forwarded-proto'] || '';
+            const isHttps = forwardedProto === 'https' || 
+                            request.url?.startsWith('https://');
+            const isProduction = process.env.NODE_ENV === 'production';
+            const useSecure = isHttps || isProduction;
+
             response.cookies.set(sessionService.COOKIE_NAME, jwt, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
+                secure: useSecure,
+                sameSite: useSecure ? 'none' : 'lax',
                 maxAge: 60 * 60 * 2,
                 path: '/'
             });
