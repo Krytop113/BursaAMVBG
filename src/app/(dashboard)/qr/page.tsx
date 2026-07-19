@@ -1,87 +1,56 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Html5Qrcode } from "html5-qrcode";
+import React, { useState } from "react";
 import { useProducts } from "@/hooks/useProducts";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { ScannerHeader } from "@/components/qr/ScannerHeader";
 import { ScannerArea } from "@/components/qr/ScannerArea";
-import { CartArea, CartItem } from "@/components/qr/CartArea";
+import { CartArea } from "@/components/qr/CartArea";
+import { ConfirmModal } from "@/components/qr/ConfirmModal";
+import { useQrScanner } from "@/hooks/useQrScanner";
+import { useQrCart } from "@/hooks/useQrCart";
+import type { Product } from "@/components/products/types";
 
 export default function QrScannerPage() {
   const { data: productsData, isLoading: isLoadingProducts } = useProducts();
   const products = productsData?.products ?? [];
 
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [scanning, setScanning] = useState(false);
-  const [scanError, setScanError] = useState<string | null>(null);
-  const [txSuccess, setTxSuccess] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scannedProduct, setScannedProduct] = useState<Product | null>(null);
+  const [confirmQuantity, setConfirmQuantity] = useState<number>(1);
 
-  const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
   const scannerId = "mobile-qr-reader";
 
-  useEffect(() => {
-    const isDesktop = window.innerWidth >= 768;
-    if (isDesktop) {
-      window.location.href = "/";
-      return;
-    }
+  const {
+    scanning,
+    scanError,
+    setScanError,
+    txSuccess,
+    setTxSuccess,
+    startScanner,
+    stopScanner,
+  } = useQrScanner({
+    scannerId,
+    products,
+    onScanSuccess: (decodedText) => handleScanSuccess(decodedText),
+  });
 
-    if (products.length > 0) {
-      startScanner();
-    }
-    return () => {
-      if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-        html5QrCodeRef.current.stop().catch(console.error);
-      }
-    };
-  }, [products]);
-
-  const startScanner = async () => {
-    setScanError(null);
-    setTxSuccess(null);
-    try {
-      if (!html5QrCodeRef.current) {
-        html5QrCodeRef.current = new Html5Qrcode(scannerId);
-      }
-
-      await html5QrCodeRef.current.start(
-        { facingMode: "environment" },
-        {
-          fps: 15,
-          qrbox: (width, height) => {
-            const boxWidth = Math.min(width * 0.85, 400);
-            const boxHeight = Math.min(height * 0.35, 200);
-            return { width: boxWidth, height: boxHeight };
-          }
-        },
-        (decodedText) => {
-          handleScanSuccess(decodedText);
-        },
-        (errorMessage) => {
-          console.warn("QR Scan Error:", errorMessage);
-        }
-      );
-      setScanning(true);
-    } catch (err: any) {
-      console.error("Gagal menyalakan kamera:", err);
-      setScanError("Akses kamera ditolak atau perangkat tidak memiliki kamera belakang.");
-    }
-  };
-
-  const stopScanner = async () => {
-    if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-      try {
-        await html5QrCodeRef.current.stop();
-        setScanning(false);
-      } catch (err) {
-        console.error("Gagal mematikan kamera:", err);
-      }
-    }
-  };
+  const {
+    cart,
+    setCart,
+    isSubmitting,
+    updateQty,
+    removeFromCart,
+    totalPrice,
+    handleCheckout,
+  } = useQrCart({
+    setScanError,
+    setTxSuccess,
+    stopScanner,
+  });
 
   const handleScanSuccess = (code: string) => {
+    if (scannedProduct) return;
+
     const product = products.find(
       (p) => p.qrCode.toLowerCase() === code.trim().toLowerCase()
     );
@@ -91,101 +60,62 @@ export default function QrScannerPage() {
       return;
     }
 
+    const existingCartItem = cart.find((item) => item.id === product.id);
+    const existingQty = existingCartItem ? existingCartItem.quantity : 0;
+    const maxAddable = product.stock - existingQty;
+
+    if (maxAddable <= 0) {
+      setScanError(`Stok tidak mencukupi atau sudah mencapai batas maksimum di keranjang untuk "${product.name}"`);
+      return;
+    }
+
+    setScanError(null);
+    setScannedProduct(product);
+    setConfirmQuantity(1);
+  };
+
+  const handleConfirmAdd = () => {
+    if (!scannedProduct) return;
+
+    const existingCartItem = cart.find((item) => item.id === scannedProduct.id);
+    const existingQty = existingCartItem ? existingCartItem.quantity : 0;
+    
+    if (existingQty + confirmQuantity > scannedProduct.stock) {
+      setScanError(`Stok tidak mencukupi untuk menambah "${scannedProduct.name}" sejumlah ${confirmQuantity}`);
+      setScannedProduct(null);
+      return;
+    }
+
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find((item) => item.id === scannedProduct.id);
       if (existing) {
-        if (existing.quantity >= product.stock) {
-          setScanError(`Stok tidak mencukupi untuk menambah "${product.name}"`);
-          return prev;
-        }
-        setScanError(null);
         return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+          item.id === scannedProduct.id
+            ? { ...item, quantity: item.quantity + confirmQuantity }
             : item
         );
       } else {
-        if (product.stock < 1) {
-          setScanError(`Stok "${product.name}" kosong!`);
-          return prev;
-        }
-        setScanError(null);
         return [
           ...prev,
           {
-            id: product.id,
-            name: product.name,
-            price: Number(product.price),
-            stock: product.stock,
-            qrCode: product.qrCode,
-            quantity: 1,
+            id: scannedProduct.id,
+            name: scannedProduct.name,
+            price: Number(scannedProduct.price),
+            stock: scannedProduct.stock,
+            qrCode: scannedProduct.qrCode,
+            quantity: confirmQuantity,
           },
         ];
       }
     });
+
+    setScannedProduct(null);
+    setConfirmQuantity(1);
   };
 
-  const updateQty = (id: string, delta: number) => {
-    setCart((prev) =>
-      prev
-        .map((item) => {
-          if (item.id === id) {
-            const nextQty = item.quantity + delta;
-            if (nextQty > item.stock) {
-              setScanError(`Stok maksimal untuk "${item.name}" adalah ${item.stock}`);
-              return item;
-            }
-            if (nextQty < 1) return null;
-            return { ...item, quantity: nextQty };
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
-    );
-  };
-
-  const removeFromCart = (id: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
-  const handleCheckout = async () => {
-    if (cart.length === 0) return;
-    setIsSubmitting(true);
-    setScanError(null);
-    setTxSuccess(null);
-
-    try {
-      for (const item of cart) {
-        const response = await fetch("/api/transactions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            productId: item.id,
-            type: "OUT",
-            quantity: item.quantity,
-            note: "Penjualan via QR Scanner HP",
-          }),
-        });
-
-        if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.error || `Gagal menyimpan transaksi untuk ${item.name}`);
-        }
-      }
-
-      setTxSuccess("Transaksi berhasil disimpan! Stok inventori telah dikurangi.");
-      setCart([]);
-      stopScanner();
-    } catch (err: any) {
-      setScanError(err.message || "Gagal memproses transaksi keluar.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const maxAddableQty = scannedProduct
+    ? scannedProduct.stock - (cart.find((item) => item.id === scannedProduct.id)?.quantity ?? 0)
+    : 1;
 
   return (
     <div className="flex-1 flex flex-col max-w-lg mx-auto w-full space-y-4">
@@ -231,6 +161,18 @@ export default function QrScannerPage() {
         handleCheckout={handleCheckout}
         isSubmitting={isSubmitting}
       />
+
+      {/* Modal Konfirmasi Barang */}
+      {scannedProduct && (
+        <ConfirmModal
+          product={scannedProduct}
+          quantity={confirmQuantity}
+          maxQty={maxAddableQty}
+          onClose={() => setScannedProduct(null)}
+          onConfirm={handleConfirmAdd}
+          onQuantityChange={setConfirmQuantity}
+        />
+      )}
     </div>
   );
 }
