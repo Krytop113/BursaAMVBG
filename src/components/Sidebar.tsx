@@ -184,13 +184,23 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.invoice}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.invoice)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <FileText className="w-5 h-5 group-hover:text-teal-400" />
+                  <FileText
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.invoice)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Invoice
-                </a>
+                </Link>
               </li>
 
               {isAdmin && (

@@ -32,6 +32,11 @@ export interface DashboardData {
     date: string;
     note: string;
   }>;
+  salesTrend: Array<{
+    label: string;
+    revenue: number;
+    profit: number;
+  }>;
 }
 
 export function useDashboard() {

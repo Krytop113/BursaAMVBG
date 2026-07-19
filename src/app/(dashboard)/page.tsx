@@ -7,7 +7,8 @@ import {
   DashboardOverview,
   DashboardHighlights,
   LowStockTable,
-  TopMutationsTable
+  TopMutationsTable,
+  SalesTrendChart
 } from "@/components/dashboard";
 
 export default function Dashboard() {
@@ -29,7 +30,7 @@ export default function Dashboard() {
     );
   }
 
-  const { stats, lowStockProducts, topMutations } = dashboardData;
+  const { stats, lowStockProducts, topMutations, salesTrend } = dashboardData;
 
   return (
     <div className="space-y-6">
@@ -49,6 +50,9 @@ export default function Dashboard() {
       {/* Highlights Produk Berkinerja Tinggi Component */}
       <DashboardHighlights stats={stats} />
 
+      {/* Grafik Tren Penjualan Harian */}
+      <SalesTrendChart trendData={salesTrend ?? []} />
+
       {/* Grid Utama (List Produk Minim Stok & Mutasi Teratas) Components */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <LowStockTable products={lowStockProducts} />
@@ -57,3 +61,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

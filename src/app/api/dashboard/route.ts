@@ -104,6 +104,40 @@ export async function GET() {
       });
     }
 
+    // 4. Hitung Penjualan 7 Hari Terakhir
+    const salesTrend = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const startOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
+      const endOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+
+      const dayMovements = allMovements.filter(m => {
+        const date = new Date(m.createdAt);
+        return date >= startOfDay && date <= endOfDay;
+      });
+
+      let dayIncome = 0;
+      let dayCost = 0;
+      for (const m of dayMovements) {
+        const qty = m.quantity;
+        const buyPrice = Number(m.product.buyPrice) || 0;
+        const price = Number(m.product.price) || 0;
+        if (m.type === "OUT") {
+          dayIncome += qty * price;
+          dayCost += qty * buyPrice;
+        }
+      }
+
+      const dayLabel = d.toLocaleDateString("id-ID", { weekday: "short", day: "numeric" });
+
+      salesTrend.push({
+        label: dayLabel,
+        revenue: dayIncome,
+        profit: dayIncome - dayCost
+      });
+    }
+
     return NextResponse.json({
       success: true,
       stats: {
@@ -133,7 +167,8 @@ export async function GET() {
         type: t.type,
         date: new Date(t.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }),
         note: t.note
-      }))
+      })),
+      salesTrend
     });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
