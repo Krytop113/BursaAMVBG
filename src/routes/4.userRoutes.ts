@@ -15,3 +15,7 @@ export async function createUserRouteHandler(request: Request): Promise<Response
 export async function deleteUserRouteHandler(id: number): Promise<Response> {
     return userController.deleteUser(id);
 }
+
+export async function updateUserRouteHandler(request: Request, id: number): Promise<Response> {
+    return userController.updateUser(request, id);
+}

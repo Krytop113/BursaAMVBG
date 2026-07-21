@@ -11,3 +11,7 @@ export async function createProductRouteHandler(request: Request): Promise<Respo
 export async function deleteProductRouteHandler(id: string): Promise<Response> {
     return productController.deleteProduct(id);
 }
+
+export async function updateProductRouteHandler(request: Request, id: string): Promise<Response> {
+    return productController.updateProduct(request, id);
+}

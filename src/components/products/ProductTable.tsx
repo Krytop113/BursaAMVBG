@@ -131,6 +131,7 @@ interface ProductTableProps {
   searchQuery: string;
   selectedCategory: string;
   onResetFilter: () => void;
+  onEditClick: (product: Product) => void;
   onDeleteClick: (product: Product) => void;
 }
 
@@ -165,10 +166,12 @@ function StatusBadge({ status, stock }: { status: string; stock: number }) {
 
 function ActionButtons({
   product,
+  onEditClick,
   onDeleteClick,
   onQRClick,
 }: {
   product: Product;
+  onEditClick: (p: Product) => void;
   onDeleteClick: (p: Product) => void;
   onQRClick: (p: Product) => void;
 }) {
@@ -183,6 +186,7 @@ function ActionButtons({
       </button>
       <button
         title="Edit Produk"
+        onClick={() => onEditClick(product)}
         className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-blue-400 transition-colors"
       >
         <Edit2 className="w-4 h-4" />
@@ -205,6 +209,7 @@ export default function ProductTable({
   searchQuery,
   selectedCategory,
   onResetFilter,
+  onEditClick,
   onDeleteClick,
 }: ProductTableProps) {
   const isEmpty = !isLoading && filteredProducts.length === 0;
@@ -347,6 +352,7 @@ export default function ProductTable({
                   <td className="px-4 py-3.5">
                     <ActionButtons
                       product={product}
+                      onEditClick={onEditClick}
                       onDeleteClick={onDeleteClick}
                       onQRClick={(p) => setQrProduct(p)}
                     />

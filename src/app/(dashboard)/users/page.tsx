@@ -6,6 +6,7 @@ import {
   UserFilters,
   UserTable,
   AddUserModal,
+  EditUserModal,
   DeleteUserModal,
 } from "@/components/users";
 import type { User, Role } from "@/components/users";
@@ -19,6 +20,7 @@ export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editTarget, setEditTarget] = useState<User | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
 
   const fetchData = useCallback(async () => {
@@ -92,6 +94,7 @@ export default function UsersPage() {
           searchQuery={searchQuery}
           selectedRole={selectedRole}
           onResetFilter={handleResetFilter}
+          onEditClick={setEditTarget}
           onDeleteClick={setDeleteTarget}
         />
       </div>
@@ -100,6 +103,15 @@ export default function UsersPage() {
         <AddUserModal
           roles={roles}
           onClose={() => setShowAddModal(false)}
+          onSuccess={fetchData}
+        />
+      )}
+
+      {editTarget && (
+        <EditUserModal
+          user={editTarget}
+          roles={roles}
+          onClose={() => setEditTarget(null)}
           onSuccess={fetchData}
         />
       )}
@@ -114,3 +126,4 @@ export default function UsersPage() {
     </>
   );
 }
+

@@ -11,6 +11,7 @@ interface UserTableProps {
   searchQuery: string;
   selectedRole: string;
   onResetFilter: () => void;
+  onEditClick: (user: User) => void;
   onDeleteClick: (user: User) => void;
 }
 
@@ -28,15 +29,18 @@ function SkeletonRow() {
 
 function ActionButtons({
   user,
+  onEditClick,
   onDeleteClick,
 }: {
   user: User;
+  onEditClick: (user: User) => void;
   onDeleteClick: (user: User) => void;
 }) {
   return (
     <div className="flex items-center justify-center gap-2">
       <button
-        title="Edit Produk"
+        title="Edit User"
+        onClick={() => onEditClick(user)}
         className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-teal-400 transition-colors"
       >
         <Edit2 className="w-4 h-4" />
@@ -60,6 +64,7 @@ export default function UserTable({
   searchQuery,
   selectedRole,
   onResetFilter,
+  onEditClick,
   onDeleteClick,
 }: UserTableProps) {
   const isEmpty = !isLoading && filteredUsers.length === 0;
@@ -150,7 +155,7 @@ export default function UserTable({
                   </td>
 
                   <td className="px-4 py-3.5">
-                    <ActionButtons user={user} onDeleteClick={onDeleteClick} />
+                    <ActionButtons user={user} onEditClick={onEditClick} onDeleteClick={onDeleteClick} />
                   </td>
                 </tr>
               ))}

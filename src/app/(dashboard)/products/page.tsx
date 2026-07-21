@@ -6,6 +6,7 @@ import {
   ProductFilters,
   ProductTable,
   AddProductModal,
+  EditProductModal,
   DeleteProductModal,
 } from "@/components/products";
 import type { Product } from "@/components/products";
@@ -22,6 +23,7 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editTarget, setEditTarget] = useState<Product | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
 
   const filteredProducts = products.filter((p) => {
@@ -60,6 +62,7 @@ export default function ProductsPage() {
           searchQuery={searchQuery}
           selectedCategory={selectedCategory}
           onResetFilter={handleResetFilter}
+          onEditClick={setEditTarget}
           onDeleteClick={setDeleteTarget}
         />
       </div>
@@ -68,6 +71,15 @@ export default function ProductsPage() {
         <AddProductModal
           categories={categories}
           onClose={() => setShowAddModal(false)}
+          onSuccess={() => refetchProducts()}
+        />
+      )}
+
+      {editTarget && (
+        <EditProductModal
+          product={editTarget}
+          categories={categories}
+          onClose={() => setEditTarget(null)}
           onSuccess={() => refetchProducts()}
         />
       )}
@@ -82,3 +94,4 @@ export default function ProductsPage() {
     </>
   );
 }
+
