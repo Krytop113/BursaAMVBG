@@ -43,25 +43,10 @@ export const createProductSchema = z.object({
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type ProductFieldErrors = Partial<Record<keyof CreateProductInput, string>>;
 
-export function validateCreateProduct(data: unknown):
-    | { success: true; error: null; fieldErrors: null; data: CreateProductInput }
-    | { success: false; error: string; fieldErrors: ProductFieldErrors; data: null } {
+import { parseZodErrors, parseZodResult } from '@/lib/parseZodErrors';
 
-    const result = createProductSchema.safeParse(data);
-
-    if (!result.success) {
-        const fieldErrors: ProductFieldErrors = {};
-        for (const issue of result.error.issues) {
-            const field = issue.path[0] as keyof CreateProductInput;
-            if (field && !fieldErrors[field]) {
-                fieldErrors[field] = issue.message;
-            }
-        }
-        const firstError = result.error.issues[0]?.message || 'Validasi gagal.';
-        return { success: false, error: firstError, fieldErrors, data: null };
-    }
-
-    return { success: true, error: null, fieldErrors: null, data: result.data };
+export function validateCreateProduct(data: unknown) {
+    return parseZodResult<CreateProductInput, typeof createProductSchema>(createProductSchema, data);
 }
 
 export function validateProductForm(raw: {
@@ -86,12 +71,6 @@ export function validateProductForm(raw: {
     const result = createProductSchema.safeParse(parsed);
     if (result.success) return {};
 
-    const fieldErrors: ProductFieldErrors = {};
-    for (const issue of result.error.issues) {
-        const field = issue.path[0] as keyof CreateProductInput;
-        if (field && !fieldErrors[field]) {
-            fieldErrors[field] = issue.message;
-        }
-    }
-    return fieldErrors;
+    return parseZodErrors<CreateProductInput>(result.error);
 }
+

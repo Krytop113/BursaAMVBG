@@ -10,25 +10,10 @@ export const createRoleSchema = z.object({
 export type CreateRoleInput = z.infer<typeof createRoleSchema>;
 export type RoleFieldErrors = Partial<Record<keyof CreateRoleInput, string>>;
 
-export function validateCreateRole(data: unknown):
-    | { success: true; error: null; fieldErrors: null; data: CreateRoleInput }
-    | { success: false; error: string; fieldErrors: RoleFieldErrors; data: null } {
+import { parseZodErrors, parseZodResult } from '@/lib/parseZodErrors';
 
-    const result = createRoleSchema.safeParse(data);
-
-    if (!result.success) {
-        const fieldErrors: RoleFieldErrors = {};
-        for (const issue of result.error.issues) {
-            const field = issue.path[0] as keyof CreateRoleInput;
-            if (field && !fieldErrors[field]) {
-                fieldErrors[field] = issue.message;
-            }
-        }
-        const firstError = result.error.issues[0]?.message || 'Validasi gagal.';
-        return { success: false, error: firstError, fieldErrors, data: null };
-    }
-
-    return { success: true, error: null, fieldErrors: null, data: result.data };
+export function validateCreateRole(data: unknown) {
+    return parseZodResult<CreateRoleInput, typeof createRoleSchema>(createRoleSchema, data);
 }
 
 export function validateRoleForm(raw: {
@@ -41,12 +26,5 @@ export function validateRoleForm(raw: {
     const result = createRoleSchema.safeParse(parsed);
     if (result.success) return {};
 
-    const fieldErrors: RoleFieldErrors = {};
-    for (const issue of result.error.issues) {
-        const field = issue.path[0] as keyof CreateRoleInput;
-        if (field && !fieldErrors[field]) {
-            fieldErrors[field] = issue.message;
-        }
-    }
-    return fieldErrors;
-}
+    return parseZodErrors<CreateRoleInput>(result.error);
+}

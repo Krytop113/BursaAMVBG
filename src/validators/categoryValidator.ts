@@ -10,25 +10,10 @@ export const createCategorySchema = z.object({
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
 export type CategoryFieldErrors = Partial<Record<keyof CreateCategoryInput, string>>;
 
-export function validateCreateCategory(data: unknown):
-    | { success: true; error: null; fieldErrors: null; data: CreateCategoryInput }
-    | { success: false; error: string; fieldErrors: CategoryFieldErrors; data: null } {
+import { parseZodErrors, parseZodResult } from '@/lib/parseZodErrors';
 
-    const result = createCategorySchema.safeParse(data);
-
-    if (!result.success) {
-        const fieldErrors: CategoryFieldErrors = {};
-        for (const issue of result.error.issues) {
-            const field = issue.path[0] as keyof CreateCategoryInput;
-            if (field && !fieldErrors[field]) {
-                fieldErrors[field] = issue.message;
-            }
-        }
-        const firstError = result.error.issues[0]?.message || 'Validasi gagal.';
-        return { success: false, error: firstError, fieldErrors, data: null };
-    }
-
-    return { success: true, error: null, fieldErrors: null, data: result.data };
+export function validateCreateCategory(data: unknown) {
+    return parseZodResult<CreateCategoryInput, typeof createCategorySchema>(createCategorySchema, data);
 }
 
 export function validateCategoryForm(raw: {
@@ -41,12 +26,5 @@ export function validateCategoryForm(raw: {
     const result = createCategorySchema.safeParse(parsed);
     if (result.success) return {};
 
-    const fieldErrors: CategoryFieldErrors = {};
-    for (const issue of result.error.issues) {
-        const field = issue.path[0] as keyof CreateCategoryInput;
-        if (field && !fieldErrors[field]) {
-            fieldErrors[field] = issue.message;
-        }
-    }
-    return fieldErrors;
-}
+    return parseZodErrors<CreateCategoryInput>(result.error);
+}

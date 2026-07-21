@@ -19,24 +19,10 @@ export const createUserSchema = z.object({
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 export type UserFieldErrors = Partial<Record<keyof CreateUserInput, string>>;
 
-export function validateCreateUser(data: unknown):
-    | { success: true; error: null; fieldErrors: null; data: CreateUserInput }
-    | { success: false; error: string; fieldErrors: UserFieldErrors; data: null } {
+import { parseZodErrors, parseZodResult } from '@/lib/parseZodErrors';
 
-    const result = createUserSchema.safeParse(data);
-
-    if (!result.success) {
-        const fieldErrors: UserFieldErrors = {};
-        for (const issue of result.error.issues) {
-            const field = issue.path[0] as keyof CreateUserInput;
-            if (field && !fieldErrors[field]) {
-                fieldErrors[field] = issue.message;
-            }
-        }
-        const firstError = result.error.issues[0]?.message || 'Validasi gagal.';
-        return { success: false, error: firstError, fieldErrors, data: null };
-    }
-    return { success: true, error: null, fieldErrors: null, data: result.data };
+export function validateCreateUser(data: unknown) {
+    return parseZodResult<CreateUserInput, typeof createUserSchema>(createUserSchema, data);
 }
 
 export function validateUserForm(raw: {
@@ -53,14 +39,7 @@ export function validateUserForm(raw: {
     };
 
     const result = createUserSchema.safeParse(parsed);
-    if (result.success) return {}
+    if (result.success) return {};
 
-    const fieldErrors: UserFieldErrors = {};
-    for (const issue of result.error.issues) {
-        const field = issue.path[0] as keyof CreateUserInput;
-        if (field && !fieldErrors[field]) {
-            fieldErrors[field] = issue.message;
-        }
-    }
-    return fieldErrors;
-}
+    return parseZodErrors<CreateUserInput>(result.error);
+}

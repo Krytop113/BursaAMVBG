@@ -19,25 +19,10 @@ export const createTransactionSchema = z.object({
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 export type TransactionFieldErrors = Partial<Record<keyof CreateTransactionInput, string>>;
 
-export function validateCreateTransaction(data: unknown):
-    | { success: true; error: null; fieldErrors: null; data: CreateTransactionInput }
-    | { success: false; error: string; fieldErrors: TransactionFieldErrors; data: null } {
+import { parseZodErrors, parseZodResult } from '@/lib/parseZodErrors';
 
-    const result = createTransactionSchema.safeParse(data);
-
-    if (!result.success) {
-        const fieldErrors: TransactionFieldErrors = {};
-        for (const issue of result.error.issues) {
-            const field = issue.path[0] as keyof CreateTransactionInput;
-            if (field && !fieldErrors[field]) {
-                fieldErrors[field] = issue.message;
-            }
-        }
-        const firstError = result.error.issues[0]?.message || 'Validasi gagal.';
-        return { success: false, error: firstError, fieldErrors, data: null };
-    }
-
-    return { success: true, error: null, fieldErrors: null, data: result.data };
+export function validateCreateTransaction(data: unknown) {
+    return parseZodResult<CreateTransactionInput, typeof createTransactionSchema>(createTransactionSchema, data);
 }
 
 export function validateTransactionForm(raw: {
@@ -49,12 +34,6 @@ export function validateTransactionForm(raw: {
     const result = createTransactionSchema.safeParse(raw);
     if (result.success) return {};
 
-    const fieldErrors: TransactionFieldErrors = {};
-    for (const issue of result.error.issues) {
-        const field = issue.path[0] as keyof CreateTransactionInput;
-        if (field && !fieldErrors[field]) {
-            fieldErrors[field] = issue.message;
-        }
-    }
-    return fieldErrors;
+    return parseZodErrors<CreateTransactionInput>(result.error);
 }
+

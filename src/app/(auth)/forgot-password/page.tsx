@@ -4,14 +4,13 @@ import React, { useState } from "react";
 import { KeyRound } from "lucide-react";
 import { ROUTES } from "@/routes/paths";
 
-// Import subcomponents
 import StepVerifyUser from "@/components/auth/StepVerifyUser";
 import StepVerifyPin from "@/components/auth/StepVerifyPin";
 import StepResetPassword from "@/components/auth/StepResetPassword";
 import StepSuccess from "@/components/auth/StepSuccess";
 
 export default function ForgotPasswordPage() {
-  const [step, setStep] = useState(1); // 1: Verify user, 2: Verify PIN, 3: Reset password, 4: Success
+  const [step, setStep] = useState(1); 
   const [identifier, setIdentifier] = useState("");
   const [pin, setPin] = useState("");
   const [password, setPassword] = useState("");
