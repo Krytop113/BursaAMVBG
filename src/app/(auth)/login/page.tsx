@@ -119,7 +119,7 @@ export default function LoginPage() {
                 >
                   Password
                 </label>
-                <a href="#" className="text-xs text-teal-400 hover:underline">
+                <a href={ROUTES.forgotPassword} className="text-xs text-teal-400 hover:underline">
                   Lupa password?
                 </a>
               </div>

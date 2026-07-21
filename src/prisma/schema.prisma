@@ -31,6 +31,7 @@ model User {
   email     String    @unique
   username  String
   password  String
+  pin       String    @default("123456")
   roleId    Int
   status    String    @default("active")
   role      Role      @relation(fields: [roleId], references: [id])
@@ -53,6 +54,8 @@ model Product {
   stockMovement StockMovement[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+
+  @@index([categoryId])
 }
 
 model Category {
@@ -69,6 +72,8 @@ model StockMovement {
   quantity  Int
   note      String
   createdAt DateTime     @default(now())
+
+  @@index([productId])
 }
 
 enum MovementType {
