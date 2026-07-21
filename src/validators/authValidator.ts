@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
 export const loginSchema = z.object({
-    email: z
-        .string({ message: 'Email wajib diisi!' })
-        .min(1, 'Email tidak boleh kosong!')
-        .email('Format email tidak valid!'),
+    identifier: z
+        .string({ message: 'Email atau Username wajib diisi!' })
+        .min(1, 'Email atau Username tidak boleh kosong!'),
     password: z
         .string({ message: 'Password wajib diisi!' })
         .min(1, 'Password tidak boleh kosong!'),

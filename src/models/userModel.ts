@@ -10,6 +10,12 @@ export const userModel = {
         });
     },
 
+    async findByUsername(username: string): Promise<User | null> {
+        return prisma.user.findFirst({
+            where: { username },
+        });
+    },
+
     async findById(id: number): Promise<User | null> {
         return prisma.user.findUnique({
             where: { id },

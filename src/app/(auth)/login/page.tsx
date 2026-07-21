@@ -1,24 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, KeyRound, ShieldAlert } from "lucide-react";
+import { User, Lock, Eye, EyeOff, Loader2, KeyRound, ShieldAlert } from "lucide-react";
 import { validateLogin } from "@/validators/authValidator";
 import { ROUTES } from "@/routes/paths";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Catatan: Tidak menghapus cookie di sini agar sesi yang aktif tetap terjaga
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const validation = validateLogin({ email, password });
+    const validation = validateLogin({ identifier, password });
     if (!validation.success) {
       setError(validation.error);
       return;
@@ -33,7 +31,7 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         credentials: "include", // Pastikan cookie dari response disimpan oleh browser
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ identifier, password }),
       });
 
       const data = await response.json();
@@ -42,8 +40,6 @@ export default function LoginPage() {
         throw new Error(data.error || "Login gagal. Silakan coba lagi.");
       }
 
-      // Beri jeda singkat agar browser HP sempat menyimpan cookie
-      // dari response server sebelum navigasi dilakukan
       await new Promise((resolve) => setTimeout(resolve, 300));
       window.location.href = ROUTES.dashboard;
     } catch (err: any) {
@@ -93,24 +89,24 @@ export default function LoginPage() {
 
             <div>
               <label
-                htmlFor="email"
+                htmlFor="identifier"
                 className="block text-xs font-semibold uppercase tracking-wider text-slate-400"
               >
-                Alamat Email
+                Email atau Username
               </label>
               <div className="relative mt-2">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <Mail className="h-5 w-5 text-slate-500" />
+                  <User className="h-5 w-5 text-slate-500" />
                 </div>
                 <input
-                  id="email"
-                  name="email"
+                  id="identifier"
+                  name="identifier"
                   type="text"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
                   className="block w-full rounded-xl border border-slate-800 bg-slate-950/60 py-3 pl-10 pr-4 text-sm text-white placeholder-slate-500 transition duration-200 outline-none focus:border-teal-500/50 focus:ring-1 focus:ring-teal-500/50"
-                  placeholder="name@example.com"
+                  placeholder="Username atau email"
                 />
               </div>
             </div>

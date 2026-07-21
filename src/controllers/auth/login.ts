@@ -17,12 +17,16 @@ export const loginController = {
                 );
             }
 
-            const { email, password } = validation.data;
+            const { identifier, password } = validation.data;
 
-            const user = await userModel.findByEmail(email);
+            let user = await userModel.findByEmail(identifier);
+            if (!user) {
+                user = await userModel.findByUsername(identifier);
+            }
+
             if (!user) {
                 return NextResponse.json(
-                    { error: 'Email atau password salah!' },
+                    { error: 'Email/Username atau password salah!' },
                     { status: 400 }
                 );
             }
@@ -30,7 +34,7 @@ export const loginController = {
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return NextResponse.json(
-                    { error: 'Email atau password salah!' },
+                    { error: 'Email/Username atau password salah!' },
                     { status: 400 }
                 );
             }
@@ -42,9 +46,6 @@ export const loginController = {
                 user: { id: user.id, username: user.username, role: user.roleId },
             });
 
-            // Deteksi HTTPS via header X-Forwarded-Proto (dikirim oleh Ngrok/reverse proxy)
-            // Karena Ngrok meneruskan ke localhost via HTTP, request.url selalu http://
-            // Header inilah yang memberi tahu protokol asli yang dipakai browser
             const forwardedProto = (request as any).headers?.get?.('x-forwarded-proto') ||
                                    (request.headers as any)?.['x-forwarded-proto'] || '';
             const isHttps = forwardedProto === 'https' || 
