@@ -1,5 +1,5 @@
-import { loginRouteHandler } from "@/routes/1.authRoutes";
+import { loginController } from "@/controllers/auth/login";
 
 export async function POST(request: Request) {
-    return loginRouteHandler(request);
+    return loginController.login(request);
 }

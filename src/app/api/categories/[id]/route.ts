@@ -1,9 +1,10 @@
-import { deleteCategoryRouteHandler } from "@/routes/2.categoryRoutes";
+import { categoryController } from "@/controllers/categoryController";
 
 export async function DELETE(
-    _request: Request,
+    request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
-    return deleteCategoryRouteHandler(Number(id));
+    const resolvedParams = await params;
+    const categoryId = parseInt(resolvedParams.id, 10);
+    return categoryController.deleteCategory(categoryId);
 }

@@ -144,7 +144,7 @@ export const productController = {
         });
 
         if (!validation.success) {
-            throw new ValidationError(validation.error, validation.fieldErrors as any);
+            throw new ValidationError(validation.error, validation.fieldErrors as Record<string, string>);
         }
 
         let imageUrl = existingProduct.image_url;

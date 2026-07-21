@@ -1,9 +1,9 @@
-import { getTransactionsRouteHandler, createTransactionRouteHandler } from "@/routes/6.transactionRoutes";
+import { transactionController } from "@/controllers/transactionController";
 
 export async function GET() {
-    return getTransactionsRouteHandler();
+    return transactionController.getAllTransactions();
 }
 
 export async function POST(request: Request) {
-    return createTransactionRouteHandler(request);
+    return transactionController.createTransaction(request);
 }

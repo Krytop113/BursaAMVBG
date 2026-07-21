@@ -1,15 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { createResourceHook } from "./useResource";
 import type { Product } from "@/components/products/types";
+import { ROUTES } from "@/lib/paths";
 
-export function useProducts() {
-  return useQuery<{ products: Product[] }>({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const res = await fetch("/api/products");
-      if (!res.ok) throw new Error("Gagal mengambil data produk");
-      return res.json();
-    },
-  });
-}
+export const useProducts = createResourceHook<{ products: Product[] }>(
+  "products",
+  ROUTES.api.products,
+  "Gagal mengambil data produk"
+);

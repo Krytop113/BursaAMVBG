@@ -1,9 +1,9 @@
-import { getCategoriesRouteHandler, createCategoryRouteHandler } from "@/routes/2.categoryRoutes";
+import { categoryController } from "@/controllers/categoryController";
 
 export async function GET() {
-    return getCategoriesRouteHandler();
+    return categoryController.getAllCategories();
 }
 
 export async function POST(request: Request) {
-    return createCategoryRouteHandler(request);
+    return categoryController.createCategory(request);
 }

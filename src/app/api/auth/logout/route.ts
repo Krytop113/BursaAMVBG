@@ -1,5 +1,5 @@
-import { logoutRouteHandler } from "@/routes/1.authRoutes";
+import { logoutController } from "@/controllers/auth/logout";
 
 export async function POST() {
-    return logoutRouteHandler();
+    return logoutController.logout();
 }

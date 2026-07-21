@@ -1,17 +1,17 @@
-import { deleteProductRouteHandler, updateProductRouteHandler } from "@/routes/3.productRoutes";
+import { productController } from "@/controllers/productController";
 
 export async function DELETE(
-    _request: Request,
+    request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
-    return deleteProductRouteHandler(id);
+    const resolvedParams = await params;
+    return productController.deleteProduct(resolvedParams.id);
 }
 
 export async function PUT(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
-    return updateProductRouteHandler(request, id);
+    const resolvedParams = await params;
+    return productController.updateProduct(request, resolvedParams.id);
 }

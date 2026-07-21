@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { User, Lock, Eye, EyeOff, Loader2, KeyRound, ShieldAlert } from "lucide-react";
 import { validateLogin } from "@/validators/authValidator";
-import { ROUTES } from "@/routes/paths";
+import { ROUTES } from "@/lib/paths";
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState("");

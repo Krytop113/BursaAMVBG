@@ -1,9 +1,9 @@
-import { getAllUsersRouteHandler, createUserRouteHandler } from "@/routes/4.userRoutes";
+import { userController } from "@/controllers/userController";
 
-export async function GET(){
-    return getAllUsersRouteHandler();
+export async function GET() {
+    return userController.getAllUsers();
 }
 
 export async function POST(request: Request) {
-    return createUserRouteHandler(request);
+    return userController.createUser(request);
 }

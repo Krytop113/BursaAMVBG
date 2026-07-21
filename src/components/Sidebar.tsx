@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ROUTES } from "@/routes/paths";
+import { ROUTES } from "@/lib/paths";
 import {
   LayoutDashboard,
   Users,

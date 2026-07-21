@@ -1,18 +1,19 @@
-import { deleteUserRouteHandler, updateUserRouteHandler } from "@/routes/4.userRoutes";
+import { userController } from "@/controllers/userController";
 
 export async function DELETE(
-    _request: Request,
+    request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
-    return deleteUserRouteHandler(Number(id));
+    const resolvedParams = await params;
+    const userId = parseInt(resolvedParams.id, 10);
+    return userController.deleteUser(userId);
 }
 
 export async function PUT(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
-    return updateUserRouteHandler(request, Number(id));
+    const resolvedParams = await params;
+    const userId = parseInt(resolvedParams.id, 10);
+    return userController.updateUser(request, userId);
 }
-

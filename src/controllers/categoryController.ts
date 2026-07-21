@@ -24,7 +24,7 @@ export const categoryController = {
         });
 
         if (!validation.success) {
-            throw new ValidationError(validation.error, validation.fieldErrors as any);
+            throw new ValidationError(validation.error, validation.fieldErrors as Record<string, string>);
         }
 
         const category = await categoryModel.insert(validation.data);

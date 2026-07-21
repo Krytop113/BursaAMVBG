@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { KeyRound } from "lucide-react";
-import { ROUTES } from "@/routes/paths";
+import { ROUTES } from "@/lib/paths";
 
 import StepVerifyUser from "@/components/auth/StepVerifyUser";
 import StepVerifyPin from "@/components/auth/StepVerifyPin";

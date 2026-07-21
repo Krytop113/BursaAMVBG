@@ -1,9 +1,9 @@
-import { deleteTransactionRouteHandler } from "@/routes/6.transactionRoutes";
+import { transactionController } from "@/controllers/transactionController";
 
 export async function DELETE(
-    _request: Request,
+    request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
-    return deleteTransactionRouteHandler(id);
+    const resolvedParams = await params;
+    return transactionController.deleteTransaction(resolvedParams.id);
 }

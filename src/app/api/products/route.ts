@@ -1,9 +1,9 @@
-import { getProductsRouteHandler, createProductRouteHandler } from "@/routes/3.productRoutes";
+import { productController } from "@/controllers/productController";
 
 export async function GET() {
-    return getProductsRouteHandler();
+    return productController.getAllProducts();
 }
 
 export async function POST(request: Request) {
-    return createProductRouteHandler(request);
+    return productController.createProduct(request);
 }

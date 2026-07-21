@@ -1,15 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { createResourceHook } from "./useResource";
 import type { Category } from "@/components/products/types";
+import { ROUTES } from "@/lib/paths";
 
-export function useCategories() {
-  return useQuery<{ categories: Category[] }>({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const res = await fetch("/api/categories");
-      if (!res.ok) throw new Error("Gagal mengambil data kategori");
-      return res.json();
-    },
-  });
-}
+export const useCategories = createResourceHook<{ categories: Category[] }>(
+  "categories",
+  ROUTES.api.categories,
+  "Gagal mengambil data kategori"
+);

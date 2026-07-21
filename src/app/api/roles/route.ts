@@ -1,9 +1,9 @@
-import { getAllRolesRouteHandler, createRoleRouteHandler } from "@/routes/5.roleRoutes";
+import { roleController } from "@/controllers/roleController";
 
-export async function GET(): Promise<Response> {
-    return getAllRolesRouteHandler();
+export async function GET() {
+    return roleController.getAllRoles();
 }
 
-export async function POST(request: Request): Promise<Response> {
-    return createRoleRouteHandler(request);
+export async function POST(request: Request) {
+    return roleController.createRole(request);
 }
