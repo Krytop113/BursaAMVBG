@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
-import { productModel } from "@/models/productModel";
-import { validateCreateProduct } from "@/validators/productValidator";
-import { saveUploadedImage } from '@/lib/uploadImage';
+import { productService } from '@/services/productService';
 import { withErrorHandler } from '@/lib/apiHandler';
-import { AppError, ConflictError, NotFoundError, ValidationError } from '@/lib/errors';
+import { toProductResponse } from '@/dto/productDto';
 
 interface ParsedProductInput {
     name: string;
@@ -45,132 +43,35 @@ async function parseProductRequest(request: Request, defaults: Partial<ParsedPro
 
 export const productController = {
     getAllProducts: withErrorHandler('productController.getAllProducts', async (): Promise<NextResponse> => {
-        const products = await productModel.getAllWithCategories();
+        const products = await productService.getAll();
         return NextResponse.json({
             message: 'Daftar produk berhasil diambil!',
-            products: products.map(product => ({
-                id: product.id,
-                name: product.name,
-                description: product.description,
-                price: Number(product.price),
-                buyPrice: Number(product.buyPrice),
-                stock: product.stock,
-                qrCode: product.qrCode,
-                categoryId: product.categoryId,
-                categoryName: product.category.name,
-                status: product.stock > 0 ? 'Aktif' : 'Habis',
-                imageUrl: product.image_url,
-                createdAt: product.createdAt,
-            })),
+            products: products.map(toProductResponse),
         });
     }),
 
     createProduct: withErrorHandler('productController.createProduct', async (request: Request): Promise<NextResponse> => {
-        const parsedInput = await parseProductRequest(request);
-
-        let qrCode = '';
-        let attempts = 0;
-        const sanitized = parsedInput.name
-            .replace(/[^A-Za-z0-9]/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-|-$/g, '');
-
-        while (attempts < 10) {
-            const randomNum = Math.floor(10000 + Math.random() * 90000);
-            const candidate = sanitized ? `${sanitized}_${randomNum}` : `PROD_${randomNum}`;
-            const existing = await productModel.findByQrCode(candidate);
-            if (!existing) {
-                qrCode = candidate;
-                break;
-            }
-            attempts++;
-        }
-
-        if (!qrCode) {
-            throw new AppError('Gagal membuat QR Code yang unik.', 500);
-        }
-
-        const validation = validateCreateProduct({
-            ...parsedInput,
-            qrCode,
-        });
-
-        if (!validation.success) {
-            throw new ValidationError(validation.error, validation.fieldErrors as any);
-        }
-
-        const imageUrl = await saveUploadedImage(parsedInput.imageFile);
-        const productId = await productModel.getNextProductId(parsedInput.categoryId, parsedInput.price);
-
-        const product = await productModel.insert({
-            ...validation.data,
-            id: productId,
-            qrCode,
-            image_url: imageUrl,
-        });
-
+        const input = await parseProductRequest(request);
+        const product = await productService.create(input);
         return NextResponse.json(
             { message: 'Produk berhasil ditambahkan!', product },
             { status: 201 }
         );
     }),
 
-    deleteProduct: withErrorHandler('productController.deleteProduct', async (id: string): Promise<NextResponse> => {
-        await productModel.delete(id);
+    updateProduct: withErrorHandler('productController.updateProduct', async (request: Request, id: string): Promise<NextResponse> => {
+        const input = await parseProductRequest(request);
+        const product = await productService.update(id, input);
         return NextResponse.json(
-            { message: 'Produk berhasil dihapus!' },
+            { message: 'Produk berhasil diperbarui!', product },
             { status: 200 }
         );
     }),
 
-    updateProduct: withErrorHandler('productController.updateProduct', async (request: Request, id: string): Promise<NextResponse> => {
-        const existingProduct = await productModel.findById(id);
-        if (!existingProduct) {
-            throw new NotFoundError('Produk tidak ditemukan!');
-        }
-
-        const parsedInput = await parseProductRequest(request, {
-            name: existingProduct.name,
-            description: existingProduct.description,
-            price: Number(existingProduct.price),
-            buyPrice: Number(existingProduct.buyPrice),
-            stock: existingProduct.stock,
-            categoryId: existingProduct.categoryId,
-        });
-
-        const validation = validateCreateProduct({
-            ...parsedInput,
-            qrCode: existingProduct.qrCode,
-        });
-
-        if (!validation.success) {
-            throw new ValidationError(validation.error, validation.fieldErrors as Record<string, string>);
-        }
-
-        let imageUrl = existingProduct.image_url;
-        if (parsedInput.imageFile && parsedInput.imageFile.size > 0) {
-            if (existingProduct.image_url) {
-                try {
-                    await productModel.deleteImage(id);
-                } catch (err) {
-                    console.error('Gagal menghapus gambar lama:', err);
-                }
-            }
-            imageUrl = await saveUploadedImage(parsedInput.imageFile);
-        }
-
-        const updatedProduct = await productModel.update(id, {
-            name: validation.data.name,
-            description: validation.data.description,
-            price: validation.data.price,
-            buyPrice: validation.data.buyPrice,
-            stock: validation.data.stock,
-            categoryId: validation.data.categoryId,
-            image_url: imageUrl,
-        });
-
+    deleteProduct: withErrorHandler('productController.deleteProduct', async (id: string): Promise<NextResponse> => {
+        await productService.delete(id);
         return NextResponse.json(
-            { message: 'Produk berhasil diperbarui!', product: updatedProduct },
+            { message: 'Produk berhasil dihapus!' },
             { status: 200 }
         );
     }),

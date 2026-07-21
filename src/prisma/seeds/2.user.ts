@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 
 export async function seedUsers(prisma: PrismaClient) {
     const pass = await bcrypt.hash("password123", 10);
+    const pin = await bcrypt.hash("123456", 6);
     await prisma.user.upsert({
         where: { email: "admin@bursa.com" },
         update: {},
@@ -10,6 +11,7 @@ export async function seedUsers(prisma: PrismaClient) {
             email: "admin@bursa.com",
             username: "admin",
             password: pass,
+            pin: pin,
             roleId: 1,
         },
     });
@@ -21,6 +23,7 @@ export async function seedUsers(prisma: PrismaClient) {
             email: "bursa@bursa.com",
             username: "bursa",
             password: pass,
+            pin: pin,
             roleId: 2,
         },
     });

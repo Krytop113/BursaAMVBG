@@ -28,7 +28,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `pin` VARCHAR(191) NOT NULL DEFAULT '123456',
+    `pin` VARCHAR(191) NOT NULL,
     `roleId` INTEGER NOT NULL,
     `status` VARCHAR(191) NOT NULL DEFAULT 'active',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

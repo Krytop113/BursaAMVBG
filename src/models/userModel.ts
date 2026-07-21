@@ -50,4 +50,17 @@ export const userModel = {
             where: { id },
         });
     },
+
+    async findByIdentifier(identifier: string): Promise<User | null> {
+        const byEmail = await prisma.user.findUnique({ where: { email: identifier } });
+        if (byEmail) return byEmail;
+        return prisma.user.findFirst({ where: { username: identifier } });
+    },
+
+    async updatePin(id: number, hashedPin: string): Promise<void> {
+        await prisma.user.update({
+            where: { id },
+            data: { pin: hashedPin },
+        });
+    },
 };
