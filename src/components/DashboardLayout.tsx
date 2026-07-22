@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import { useRouter, usePathname } from 'next/navigation';
 import { ROUTES } from '@/lib/paths';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -34,7 +35,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="min-h-screen bg-gray-950 text-white flex flex-col">
         {/* Mobile View - No Sidebar, No Header */}
         <main className="w-full flex-1 flex flex-col p-4 pb-20">
-          {children}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="w-full flex-1 flex flex-col"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     );
@@ -52,7 +64,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
         {/* Main Content */}
         <main className="w-full max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-          {children}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              className="w-full"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     </div>
