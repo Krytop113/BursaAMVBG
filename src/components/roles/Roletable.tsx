@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
 import type { Role } from "./types";
 
@@ -47,6 +47,19 @@ export default function RoleTable({
   isLoading,
   onDeleteClick,
 }: RoleTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [roles.length]);
+
+  const totalItems = roles.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const paginatedRoles = roles.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <div className="bg-slate-900 border border-gray-800 rounded-xl overflow-hidden">
       <div className="overflow-x-auto">
@@ -69,12 +82,12 @@ export default function RoleTable({
                 </td>
               </tr>
             ) : (
-              roles.map((role, index) => (
+              paginatedRoles.map((role, index) => (
                 <tr
                   key={role.id}
                   className="text-gray-300 hover:bg-slate-800/30 transition-colors"
                 >
-                  <td className="px-4 py-3.5">{index + 1}</td>
+                  <td className="px-4 py-3.5">{startIndex + index + 1}</td>
 
                   <td className="px-4 py-3.5">
                     <span className="font-medium text-white">{role.name}</span>
@@ -89,6 +102,39 @@ export default function RoleTable({
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Footer */}
+      {!isLoading && totalItems > 0 && (
+        <div className="px-4 py-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+          <span>
+            Menampilkan <span className="text-gray-300 font-medium">{totalItems > 0 ? startIndex + 1 : 0}</span>-
+            <span className="text-gray-300 font-medium">{endIndex}</span> dari{" "}
+            <span className="text-gray-300 font-medium">{totalItems}</span> role
+          </span>
+          
+          {totalPages > 1 && (
+            <div className="flex items-center gap-2">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+              >
+                Sebelumnya
+              </button>
+              <span className="text-gray-400">
+                Halaman {currentPage} dari {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+              >
+                Selanjutnya
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

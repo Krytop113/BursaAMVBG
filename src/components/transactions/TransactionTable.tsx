@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Trash2, AlertCircle, Calendar, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 import type { Transaction } from "./types";
 
@@ -52,6 +52,19 @@ export default function TransactionTable({
   onResetFilter,
   onDeleteClick,
 }: TransactionTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredTransactions.length]);
+
+  const totalItems = filteredTransactions.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const paginatedTransactions = filteredTransactions.slice(startIndex, startIndex + itemsPerPage);
+
   const isEmpty = !isLoading && filteredTransactions.length === 0;
   const hasActiveFilter = searchQuery.length > 0 || selectedType !== "Semua";
 
@@ -97,7 +110,7 @@ export default function TransactionTable({
                 </td>
               </tr>
             ) : (
-              filteredTransactions.map((transaction) => {
+              paginatedTransactions.map((transaction) => {
                 const formattedDate = new Date(transaction.createdAt).toLocaleString("id-ID", {
                   dateStyle: "medium",
                   timeStyle: "short",
@@ -149,13 +162,37 @@ export default function TransactionTable({
         </table>
       </div>
 
-      {/* Table footer */}
-      {!isLoading && filteredTransactions.length > 0 && (
-        <div className="px-4 py-3 border-t border-gray-800 flex items-center justify-between text-xs text-gray-500">
+      {/* Table footer with Pagination */}
+      {!isLoading && totalItems > 0 && (
+        <div className="px-4 py-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <span>
-            Menampilkan <span className="text-gray-300 font-medium">{filteredTransactions.length}</span> dari{" "}
-            <span className="text-gray-300 font-medium">{transactions.length}</span> transaksi
+            Menampilkan <span className="text-gray-300 font-medium">{totalItems > 0 ? startIndex + 1 : 0}</span>-
+            <span className="text-gray-300 font-medium">{endIndex}</span> dari{" "}
+            <span className="text-gray-300 font-medium">{totalItems}</span> transaksi
           </span>
+
+          {totalPages > 1 && (
+            <div className="flex items-center gap-2">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+              >
+                Sebelumnya
+              </button>
+              <span className="text-gray-400">
+                Halaman {currentPage} dari {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+              >
+                Selanjutnya
+              </button>
+            </div>
+          )}
+
           {selectedType !== "Semua" && (
             <button onClick={onResetFilter} className="text-teal-400 hover:underline">
               Reset filter

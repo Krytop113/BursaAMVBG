@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Trash2, AlertCircle, Edit2, Eye } from "lucide-react";
 import type { User } from "./types";
 
@@ -67,6 +67,19 @@ export default function UserTable({
   onEditClick,
   onDeleteClick,
 }: UserTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredUsers.length]);
+
+  const totalItems = filteredUsers.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+
   const isEmpty = !isLoading && filteredUsers.length === 0;
   const hasActiveFilter = searchQuery.length > 0 || selectedRole !== "Semua";
 
@@ -129,13 +142,13 @@ export default function UserTable({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800/50">
-              {filteredUsers.map((user, index) => (
+              {paginatedUsers.map((user, index) => (
                 <tr
                   key={user.id}
                   className="text-gray-300 hover:bg-slate-800/30 transition-colors group"
                 >
                   <td className="px-4 py-3.5 text-gray-600 text-xs">
-                    {index + 1}
+                    {startIndex + index + 1}
                   </td>
 
                   <td className="px-4 py-3.5">
@@ -164,18 +177,37 @@ export default function UserTable({
         </div>
       )}
 
-      {/* Table footer */}
-      {!isLoading && filteredUsers.length > 0 && (
-        <div className="px-4 py-3 border-t border-gray-800 flex items-center justify-between text-xs text-gray-500">
+      {/* Table footer with Pagination */}
+      {!isLoading && totalItems > 0 && (
+        <div className="px-4 py-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <span>
-            Menampilkan{" "}
-            <span className="text-gray-300 font-medium">
-              {filteredUsers.length}
-            </span>{" "}
-            dari{" "}
-            <span className="text-gray-300 font-medium">{users.length}</span>{" "}
-            user
+            Menampilkan <span className="text-gray-300 font-medium">{totalItems > 0 ? startIndex + 1 : 0}</span>-
+            <span className="text-gray-300 font-medium">{endIndex}</span> dari{" "}
+            <span className="text-gray-300 font-medium">{totalItems}</span> user
           </span>
+          
+          {totalPages > 1 && (
+            <div className="flex items-center gap-2">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+              >
+                Sebelumnya
+              </button>
+              <span className="text-gray-400">
+                Halaman {currentPage} dari {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+              >
+                Selanjutnya
+              </button>
+            </div>
+          )}
+
           {selectedRole !== "Semua" && (
             <button
               onClick={onResetFilter}
