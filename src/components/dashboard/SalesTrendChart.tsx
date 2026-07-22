@@ -14,7 +14,6 @@ interface SalesTrendChartProps {
 }
 
 export function SalesTrendChart({ trendData }: SalesTrendChartProps) {
-  // Find maximum value to scale the bars proportionally
   const maxVal = Math.max(...trendData.map((s) => Math.max(s.revenue, s.profit)), 1000);
 
   return (
@@ -51,7 +50,7 @@ export function SalesTrendChart({ trendData }: SalesTrendChartProps) {
           return (
             <div key={idx} className="flex-1 flex flex-col items-center group relative h-full justify-end">
               {/* Tooltip on Hover */}
-              <div className="absolute bottom-full mb-2 bg-slate-950 border border-slate-800 p-3 rounded-xl shadow-2xl text-[10px] space-y-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20 min-w-[120px] text-center">
+              <div className="absolute bottom-full mb-2 bg-slate-950 border border-slate-800 p-3 rounded-xl shadow-2xl text-[10px] space-y-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20 min-w-120px text-center">
                 <p className="font-bold text-slate-200 border-b border-slate-800 pb-1">{day.label}</p>
                 <div className="flex justify-between gap-4">
                   <span className="text-slate-400">Omset:</span>
@@ -68,13 +67,13 @@ export function SalesTrendChart({ trendData }: SalesTrendChartProps) {
                 {/* Revenue Pillar (Teal) */}
                 <div
                   style={{ height: `${Math.max(revenueHeight, 3)}%` }}
-                  className="w-3 sm:w-4 bg-gradient-to-t from-teal-600 to-teal-400 rounded-t-lg transition-all duration-500 group-hover:brightness-110 shadow-lg shadow-teal-500/10"
+                  className="w-3 sm:w-4 bg-linear-to-t from-teal-600 to-teal-400 rounded-t-lg transition-all duration-500 group-hover:brightness-110 shadow-lg shadow-teal-500/10"
                 />
 
                 {/* Profit Pillar (Emerald) */}
                 <div
                   style={{ height: `${Math.max(profitHeight, 3)}%` }}
-                  className="w-3 sm:w-4 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-lg transition-all duration-500 group-hover:brightness-110 shadow-lg shadow-emerald-500/10"
+                  className="w-3 sm:w-4 bg-linear-to-t from-emerald-600 to-emerald-400 rounded-t-lg transition-all duration-500 group-hover:brightness-110 shadow-lg shadow-emerald-500/10"
                 />
               </div>
 

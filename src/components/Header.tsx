@@ -16,7 +16,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-999 flex w-full bg-slate-900 border-b border-gray-800 drop-shadow-1">
-      <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
+      <div className="flex grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         
         {/* Toggle Button for Mobile */}
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">

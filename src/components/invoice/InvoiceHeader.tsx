@@ -6,13 +6,11 @@ import { FileText, Download, FileSpreadsheet } from "lucide-react";
 interface InvoiceHeaderProps {
   hasData: boolean;
   onDownloadPdf: () => void;
-  onDownloadCsv: () => void;
 }
 
 export function InvoiceHeader({
   hasData,
   onDownloadPdf,
-  onDownloadCsv,
 }: InvoiceHeaderProps) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -27,21 +25,11 @@ export function InvoiceHeader({
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Download CSV Button */}
-        <button
-          onClick={onDownloadCsv}
-          disabled={!hasData}
-          className="flex items-center justify-center gap-2 px-3.5 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold rounded-xl border border-gray-700 transition active:scale-95 disabled:opacity-40 text-sm"
-        >
-          <FileSpreadsheet className="w-4 h-4 text-teal-400" />
-          <span>CSV</span>
-        </button>
-
         {/* Download PDF Button */}
         <button
           onClick={onDownloadPdf}
           disabled={!hasData}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-semibold rounded-xl shadow-lg transition active:scale-95 disabled:opacity-50 text-sm"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-linear-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-semibold rounded-xl shadow-lg transition active:scale-95 disabled:opacity-50 text-sm"
         >
           <Download className="w-4 h-4" />
           <span>Cetak PDF Laporan</span>

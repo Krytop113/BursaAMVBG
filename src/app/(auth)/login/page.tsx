@@ -77,7 +77,7 @@ export default function LoginPage() {
             {error && (
               <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400">
                 <div className="flex">
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <span className="font-bold">⚠️</span>
                   </div>
                   <div className="ml-3 flex-1 md:flex md:justify-between">
@@ -154,7 +154,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="relative flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-teal-500 to-indigo-600 py-3.5 px-4 text-sm font-semibold text-white transition duration-300 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50 shadow-lg shadow-teal-500/20"
+              className="relative flex w-full items-center justify-center rounded-xl bg-linear-to-r from-teal-500 to-indigo-600 py-3.5 px-4 text-sm font-semibold text-white transition duration-300 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50 shadow-lg shadow-teal-500/20"
             >
               {isLoading ? (
                 <>

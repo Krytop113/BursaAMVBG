@@ -7,14 +7,11 @@ import { ROUTES } from "@/lib/paths";
 import {
   LayoutDashboard,
   Users,
-  Settings,
   ShoppingBag,
-  LogOut,
   FileText,
   CreditCard,
   Tags,
   BadgeCheck,
-  QrCode,
 } from "lucide-react";
 
 interface SidebarProps {

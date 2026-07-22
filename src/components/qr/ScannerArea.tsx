@@ -31,7 +31,7 @@ export function ScannerArea({
             <QrCode className="w-16 h-16 text-teal-500 animate-pulse" />
             <div>
               <p className="font-semibold text-white">Menginisialisasi Kamera...</p>
-              <p className="text-xs text-gray-400 mt-1 max-w-[240px]">
+              <p className="text-xs text-gray-400 mt-1 max-w-240px">
                 Kamera belakang akan menyala otomatis untuk memindai barang.
               </p>
             </div>
@@ -45,7 +45,7 @@ export function ScannerArea({
           <button
             onClick={startScanner}
             disabled={isLoadingProducts}
-            className="w-full py-3.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-semibold rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center space-x-2 disabled:opacity-50"
+            className="w-full py-3.5 bg-linear-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-semibold rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center space-x-2 disabled:opacity-50"
           >
             {isLoadingProducts ? (
               <>

@@ -30,7 +30,7 @@ export function CartArea({
   isSubmitting
 }: CartAreaProps) {
   return (
-    <div className="bg-gray-900/40 border border-gray-800/80 rounded-3xl p-4 flex-1 flex flex-col min-h-[220px]">
+    <div className="bg-gray-900/40 border border-gray-800/80 rounded-3xl p-4 flex-1 flex flex-col min-h-220px">
       <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3 px-1">
         Daftar Belanja ({cart.length})
       </h2>
@@ -42,7 +42,7 @@ export function CartArea({
           <p className="text-xs text-gray-600 mt-0.5">Pindai barcode untuk menambahkan barang</p>
         </div>
       ) : (
-        <div className="flex-1 space-y-3 overflow-y-auto max-h-[240px] pr-1">
+        <div className="flex-1 space-y-3 overflow-y-auto max-h-240px pr-1">
           {cart.map((item) => (
             <div
               key={item.id}
@@ -64,7 +64,7 @@ export function CartArea({
                   >
                     <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="px-2 text-sm font-semibold min-w-[20px] text-center">
+                  <span className="px-2 text-sm font-semibold min-w-20px text-center">
                     {item.quantity}
                   </span>
                   <button
@@ -98,7 +98,7 @@ export function CartArea({
           <button
             onClick={handleCheckout}
             disabled={isSubmitting}
-            className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center space-x-2"
+            className="w-full py-3.5 bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center space-x-2"
           >
             {isSubmitting ? (
               <>

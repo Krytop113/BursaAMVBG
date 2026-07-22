@@ -77,7 +77,7 @@ export function QRModal({ product, onClose }: QRModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      className="fixed inset-0 z-9999 flex items-center justify-center p-4"
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -123,14 +123,14 @@ export function QRModal({ product, onClose }: QRModalProps) {
               }`}
             />
             {!ready && (
-              <div className="w-[280px] h-[280px] flex items-center justify-center">
+              <div className="w-280px h-280px flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-teal-500/40 border-t-teal-500 rounded-full animate-spin" />
               </div>
             )}
           </div>
 
           {/* Nama produk */}
-          <p className="text-sm font-medium text-gray-300 text-center leading-snug max-w-[240px]">
+          <p className="text-sm font-medium text-gray-300 text-center leading-snug max-w-240px">
             {product.name}
           </p>
 

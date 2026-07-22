@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useDashboard } from "@/hooks/useDashboard";
 import { SkeletonStatCard } from "@/components/ui";
 import {

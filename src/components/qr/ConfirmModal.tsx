@@ -130,7 +130,7 @@ export function ConfirmModal({
           <button
             type="button"
             onClick={onConfirm}
-            className="flex-1 py-3 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 active:scale-[0.98] transition font-semibold rounded-2xl shadow-lg shadow-teal-500/20"
+            className="flex-1 py-3 bg-linear-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 active:scale-[0.98] transition font-semibold rounded-2xl shadow-lg shadow-teal-500/20"
           >
             Tambah
           </button>

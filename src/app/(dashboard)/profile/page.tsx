@@ -16,7 +16,6 @@ export default function ProfilePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  // Set default values when user is loaded
   useEffect(() => {
     if (user) {
       setUsername(user.username || "");
@@ -55,7 +54,7 @@ export default function ProfilePage() {
       setMessage({ type: "success", text: "Profil Anda berhasil diperbarui!" });
       setPassword("");
       setConfirmPassword("");
-      refetch(); // Segarkan data auth global
+      refetch();
     } catch (err: any) {
       setMessage({ type: "error", text: err.message });
     } finally {

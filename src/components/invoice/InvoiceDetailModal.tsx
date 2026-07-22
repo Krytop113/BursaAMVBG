@@ -128,7 +128,7 @@ export function InvoiceDetailModal({ item, onClose }: InvoiceDetailModalProps) {
           <button
             type="button"
             onClick={handlePrint}
-            className="flex-1 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 active:scale-[0.98] transition font-semibold rounded-xl text-sm flex items-center justify-center gap-1.5"
+            className="flex-1 py-2.5 bg-linear-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 active:scale-[0.98] transition font-semibold rounded-xl text-sm flex items-center justify-center gap-1.5"
           >
             <Printer className="w-4 h-4" />
             Cetak Invoice

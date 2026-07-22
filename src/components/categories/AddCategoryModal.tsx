@@ -51,7 +51,6 @@ export default function AddCategoryModal({
         return;
       }
 
-      // Invalidate React Query cache untuk kategori
       queryClient.invalidateQueries({ queryKey: ["categories"] });
 
       setSuccess(true);

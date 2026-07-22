@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useInvoiceReport } from "@/hooks/useInvoiceReport";
 import {
   InvoiceHeader,
@@ -37,7 +36,6 @@ export default function InvoicePage() {
       <InvoiceHeader
         hasData={items.length > 0}
         onDownloadPdf={handleDownloadPdf}
-        onDownloadCsv={handleDownloadCsv}
       />
 
       {/* Panel Filter Tanggal, Kategori, Produk */}
