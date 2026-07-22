@@ -34,11 +34,6 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
 
         {/* Header Actions */}
         <div className="flex items-center gap-3 2x1:gap-7 ml-auto relative">
-          {/* Notifications */}
-          <button className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border border-gray-800 bg-gray-800/50 hover:bg-gray-800 text-gray-300 hover:text-white">
-            <span className="absolute -top-0.5 -right-0.5 z-1 h-2 w-2 rounded-full bg-red-500"></span>
-            <Bell className="w-4 h-4" />
-          </button>
 
           {/* User Profile */}
           <div className="relative flex items-center gap-3 cursor-pointer" onClick={() => setDropdownOpen(!dropdownOpen)}>
