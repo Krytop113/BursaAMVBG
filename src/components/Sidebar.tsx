@@ -1,16 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Settings, 
-  ShoppingBag, 
-  BarChart3, 
-  LogOut, 
-  FileText, 
-  CreditCard 
-} from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ROUTES } from "@/lib/paths";
+import {
+  LayoutDashboard,
+  Users,
+  ShoppingBag,
+  FileText,
+  CreditCard,
+  Tags,
+  BadgeCheck,
+} from "lucide-react";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -18,20 +20,54 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
+  const pathname = usePathname();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.role === 1) {
+            setIsAdmin(true);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal memeriksa role:", err);
+      }
+    };
+    checkRole();
+  }, []);
+
+  const handleLogout = async () => {
+    const res = await fetch(ROUTES.api.logout, {
+      method: "POST",
+    });
+
+    if (res.ok) {
+      window.location.href = ROUTES.login;
+    }
+  };
+
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
+
   return (
     <aside
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72 flex-col overflow-y-hidden bg-gray-900 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* SIDEBAR HEADER */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <a href="/" className="flex items-center gap-2">
+        <Link href={ROUTES.dashboard} className="flex items-center gap-2">
           <span className="text-2xl font-bold text-white tracking-wider flex items-center gap-2">
             <ShoppingBag className="text-teal-400 w-8 h-8" />
             BursaAMVBG
           </span>
-        </a>
+        </Link>
 
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -65,93 +101,152 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.dashboard}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.dashboard)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <LayoutDashboard className="w-5 h-5 group-hover:text-teal-400" />
+                  <LayoutDashboard
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.dashboard)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Dashboard
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.products}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.products)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <ShoppingBag className="w-5 h-5 group-hover:text-teal-400" />
+                  <ShoppingBag
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.products)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Produk
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.categories}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.categories)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <Users className="w-5 h-5 group-hover:text-teal-400" />
-                  Pelanggan
-                </a>
+                  <Tags
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.categories)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
+                  Kategori
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.transactions}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.transactions)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <CreditCard className="w-5 h-5 group-hover:text-teal-400" />
+                  <CreditCard
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.transactions)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Transaksi
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+                <Link
+                  href={ROUTES.invoice}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                    isActive(ROUTES.invoice)
+                      ? "bg-gray-800 text-teal-400"
+                      : "text-gray-300"
+                  }`}
                 >
-                  <BarChart3 className="w-5 h-5 group-hover:text-teal-400" />
-                  Laporan
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
-                >
-                  <FileText className="w-5 h-5 group-hover:text-teal-400" />
+                  <FileText
+                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                      isActive(ROUTES.invoice)
+                        ? "text-teal-400"
+                        : "text-gray-400"
+                    }`}
+                  />
                   Invoice
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* OTHERS GROUP */}
-          <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
-              PENGATURAN
-            </h3>
-
-            <ul className="mb-6 flex flex-col gap-1.5">
-              <li>
-                <a
-                  href="#"
-                  className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-gray-300 duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
-                >
-                  <Settings className="w-5 h-5 group-hover:text-teal-400" />
-                  Pengaturan Toko
-                </a>
+                </Link>
               </li>
 
-              <li>
-                <button
-                  onClick={() => alert('Log out clicked!')}
-                  className="w-full group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium text-red-400 duration-300 ease-in-out hover:bg-red-950/30 hover:text-red-300"
-                >
-                  <LogOut className="w-5 h-5" />
-                  Keluar
-                </button>
-              </li>
+              {isAdmin && (
+                <>
+                  <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    ADMIN
+                  </h3>
+
+                  <li className="flex flex-col gap-1.5">
+                    <Link
+                      href={ROUTES.users}
+                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                        isActive(ROUTES.users)
+                          ? "bg-gray-800 text-teal-400"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      <Users
+                        className={`w-5 h-5 group-hover:text-teal-400 ${
+                          isActive(ROUTES.users)
+                            ? "text-teal-400"
+                            : "text-gray-400"
+                        }`}
+                      />
+                      Kelola Pengguna
+                    </Link>
+                  </li>
+
+                  <li className="flex flex-col gap-1.5">
+                    <Link
+                      href={ROUTES.roles}
+                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                        isActive(ROUTES.roles)
+                          ? "bg-gray-800 text-teal-400"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      <BadgeCheck
+                        className={`w-5 h-5 group-hover:text-teal-400 ${
+                          isActive(ROUTES.roles)
+                            ? "text-teal-400"
+                            : "text-gray-400"
+                        }`}
+                      />
+                      Kelola Role
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </nav>

@@ -4,32 +4,30 @@ import { Product } from '@prisma/client';
 export type { Product };
 
 export const productModel = {
-    async findById(id: number): Promise<Product | null> {
-        return prisma.product.findUnique({
-            where: { id },
+    async findById(id: string): Promise<Product | null> {
+        return prisma.product.findUnique({ where: { id } });
+    },
+
+    async findByQrCode(qrCode: string): Promise<Product | null> {
+        return prisma.product.findUnique({ where: { qrCode } });
+    },
+
+    async getAllWithCategories() {
+        return prisma.product.findMany({
+            include: { category: true },
+            orderBy: { createdAt: 'asc' },
         });
     },
 
-    async getAll(): Promise<Product[]> {
-        return prisma.product.findMany();
+    async insert(data: Omit<Product, 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price: any; buyPrice: any }): Promise<Product> {
+        return prisma.product.create({ data });
     },
 
-    async insert(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
-        return prisma.product.create({
-            data,
-        });
+    async update(id: string, data: Omit<Partial<Product>, 'id' | 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price?: any; buyPrice?: any }): Promise<Product> {
+        return prisma.product.update({ where: { id }, data });
     },
 
-    async update(id: number, data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Product> {
-        return prisma.product.update({
-            where: { id },
-            data,
-        });
-    },
-
-    async delete(id: number): Promise<Product> {
-        return prisma.product.delete({
-            where: { id },
-        });
+    async delete(id: string): Promise<Product> {
+        return prisma.product.delete({ where: { id } });
     },
 };

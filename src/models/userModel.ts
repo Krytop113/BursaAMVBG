@@ -4,19 +4,37 @@ import { User } from '@prisma/client';
 export type { User };
 
 export const userModel = {
+    async findByEmail(email: string): Promise<User | null> {
+        return prisma.user.findUnique({
+            where: { email },
+        });
+    },
+
+    async findByUsername(username: string): Promise<User | null> {
+        return prisma.user.findFirst({
+            where: { username },
+        });
+    },
+
     async findById(id: number): Promise<User | null> {
         return prisma.user.findUnique({
             where: { id },
         });
     },
 
-    async getAll(): Promise<User[]> {
-        return prisma.user.findMany();
+    async getAllWithRole() {
+        return prisma.user.findMany({
+            include: { role: true },
+            orderBy: { createdAt: 'asc' },
+        });
     },
 
-    async insert(data: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
+    async insert(data: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'pin'> & { status?: string; pin?: string }): Promise<User> {
         return prisma.user.create({
-            data,
+            data: {
+                ...data,
+                pin: data.pin || '',
+            },
         });
     },
 
@@ -30,6 +48,19 @@ export const userModel = {
     async delete(id: number): Promise<User> {
         return prisma.user.delete({
             where: { id },
+        });
+    },
+
+    async findByIdentifier(identifier: string): Promise<User | null> {
+        const byEmail = await prisma.user.findUnique({ where: { email: identifier } });
+        if (byEmail) return byEmail;
+        return prisma.user.findFirst({ where: { username: identifier } });
+    },
+
+    async updatePin(id: number, hashedPin: string): Promise<void> {
+        await prisma.user.update({
+            where: { id },
+            data: { pin: hashedPin },
         });
     },
 };

@@ -1,0 +1,169 @@
+"use client";
+
+import React, { useState } from "react";
+import { X, Plus, Loader2, Tag, AlertCircle, CheckCircle2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+
+interface AddCategoryModalProps {
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export default function AddCategoryModal({
+  onClose,
+  onSuccess,
+}: AddCategoryModalProps) {
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const queryClient = useQueryClient();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setError("");
+    setServerError("");
+
+    if (!name.trim()) {
+      setError("Nama kategori wajib diisi.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setServerError(data.error || "Terjadi kesalahan.");
+        return;
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+
+      setSuccess(true);
+
+      setTimeout(() => {
+        onSuccess();
+        onClose();
+      }, 1200);
+    } catch {
+      setServerError("Gagal terhubung ke server.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      <div className="relative w-full max-w-md bg-slate-900 border border-gray-800 rounded-2xl overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-gray-800">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-teal-500/10 rounded-lg">
+              <Tag className="w-5 h-5 text-teal-400" />
+            </div>
+
+            <div>
+              <h2 className="text-lg font-bold text-white">Tambah Kategori</h2>
+
+              <p className="text-xs text-gray-500">Tambahkan kategori baru</p>
+            </div>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-gray-800"
+          >
+            <X className="w-5 h-5 text-gray-400" />
+          </button>
+        </div>
+
+        {success ? (
+          <div className="p-12 flex flex-col items-center gap-4">
+            <CheckCircle2 className="w-12 h-12 text-teal-400" />
+            <p className="text-white font-semibold">
+              Kategori berhasil ditambahkan
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="p-6 space-y-5">
+            {serverError && (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {serverError}
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm text-gray-300 mb-2">
+                Nama Kategori
+              </label>
+
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setError("");
+                }}
+                placeholder="Contoh: Minuman"
+                className={`w-full px-4 py-2.5 bg-slate-950 rounded-lg border text-white ${
+                  error
+                    ? "border-red-500"
+                    : "border-gray-700 focus:border-teal-500"
+                } focus:outline-none`}
+              />
+
+              {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 py-2.5 rounded-lg bg-gray-800 text-gray-300"
+              >
+                Batal
+              </button>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-teal-500 text-slate-950 font-semibold"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Menyimpan...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4" />
+                    Simpan
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
