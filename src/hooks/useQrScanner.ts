@@ -62,7 +62,7 @@ export function useQrScanner({
         }
       );
       setScanning(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Gagal menyalakan kamera:", err);
       setScanError("Akses kamera ditolak atau perangkat tidak memiliki kamera belakang.");
     }

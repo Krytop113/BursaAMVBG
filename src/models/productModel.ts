@@ -1,7 +1,9 @@
 import prisma from '@/lib/db';
-import { Product } from '@prisma/client';
+import { Product, Prisma } from '@prisma/client';
 
 export type { Product };
+
+type DecimalLike = Prisma.Decimal | number | string;
 
 export const productModel = {
     async findById(id: string): Promise<Product | null> {
@@ -19,11 +21,11 @@ export const productModel = {
         });
     },
 
-    async insert(data: Omit<Product, 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price: any; buyPrice: any }): Promise<Product> {
+    async insert(data: Omit<Product, 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price: DecimalLike; buyPrice: DecimalLike }): Promise<Product> {
         return prisma.product.create({ data });
     },
 
-    async update(id: string, data: Omit<Partial<Product>, 'id' | 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price?: any; buyPrice?: any }): Promise<Product> {
+    async update(id: string, data: Omit<Partial<Product>, 'id' | 'createdAt' | 'updatedAt' | 'price' | 'buyPrice'> & { price?: DecimalLike; buyPrice?: DecimalLike }): Promise<Product> {
         return prisma.product.update({ where: { id }, data });
     },
 

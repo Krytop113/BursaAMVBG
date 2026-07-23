@@ -170,7 +170,8 @@ export async function GET() {
       })),
       salesTrend
     });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Terjadi kesalahan internal server.";
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }

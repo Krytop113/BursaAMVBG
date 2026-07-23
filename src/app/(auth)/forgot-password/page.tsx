@@ -49,8 +49,9 @@ export default function ForgotPasswordPage() {
 
       setVerifiedUser(data.user);
       setStep(2);
-    } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan jaringan.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Terjadi kesalahan jaringan.";
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -83,8 +84,9 @@ export default function ForgotPasswordPage() {
       }
 
       setStep(3);
-    } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan jaringan.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Terjadi kesalahan jaringan.";
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -122,8 +124,9 @@ export default function ForgotPasswordPage() {
       }
 
       setStep(4);
-    } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan jaringan.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Terjadi kesalahan jaringan.";
+      setError(message);
     } finally {
       setIsLoading(false);
     }

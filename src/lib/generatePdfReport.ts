@@ -141,7 +141,7 @@ export function generatePdfReport({
       margin: { left: 14, right: 14 },
     });
 
-    currentY = (doc as any).lastAutoTable.finalY + 4;
+    currentY = (doc as jsPDF & { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 4;
 
     doc.setFontSize(8.5);
     doc.setFont("helvetica", "bold");

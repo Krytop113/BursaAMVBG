@@ -36,7 +36,7 @@ export default function DeleteProductModal({
       onSuccess();
       onClose();
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setError(err.message);
     },
   });

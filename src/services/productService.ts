@@ -68,8 +68,8 @@ async function deleteProductImage(imageUrl: string): Promise<void> {
     try {
         await fs.access(absolutePath);
         await fs.unlink(absolutePath);
-    } catch (fsError: any) {
-        if (fsError.code !== 'ENOENT') throw fsError;
+    } catch (fsError: unknown) {
+        if ((fsError as { code?: string }).code !== 'ENOENT') throw fsError;
         console.warn(`File gambar tidak ditemukan di sistem: ${absolutePath}`);
     }
 }
@@ -84,7 +84,7 @@ export const productService = {
 
         const validation = validateCreateProduct({ ...input, qrCode });
         if (!validation.success) {
-            throw new ValidationError(validation.error, validation.fieldErrors as any);
+            throw new ValidationError(validation.error, validation.fieldErrors as Record<string, string>);
         }
 
         const imageUrl = await saveUploadedImage(input.imageFile);

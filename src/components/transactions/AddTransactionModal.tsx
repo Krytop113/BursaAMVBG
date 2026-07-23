@@ -56,7 +56,7 @@ export default function AddTransactionModal({
   };
 
   const addTransactionMutation = useMutation({
-    mutationFn: async (payload: any) => {
+    mutationFn: async (payload: { productId: string; type: "IN" | "OUT"; quantity: number; note?: string }) => {
       const res = await fetch("/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,7 +76,7 @@ export default function AddTransactionModal({
       onSuccess();
       onClose();
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setServerError(err.message);
     },
   });

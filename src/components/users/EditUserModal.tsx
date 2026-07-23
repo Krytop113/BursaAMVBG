@@ -64,7 +64,7 @@ export default function EditUserModal({
     setIsSubmitting(true);
 
     try {
-      const body: Record<string, any> = {
+      const body: { username: string; email: string; roleId: number; password?: string } = {
         username,
         email,
         roleId: Number(roleId),

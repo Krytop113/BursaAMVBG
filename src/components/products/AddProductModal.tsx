@@ -73,7 +73,7 @@ export default function AddProductModal({
       onSuccess();
       onClose();
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setServerError(err.message);
     },
   });
