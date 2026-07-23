@@ -28,6 +28,7 @@ export default function QrScannerPage() {
     setTxSuccess,
     startScanner,
     stopScanner,
+    scanFile,
   } = useQrScanner({
     scannerId,
     products,
@@ -129,6 +130,7 @@ export default function QrScannerPage() {
         isLoadingProducts={isLoadingProducts}
         startScanner={startScanner}
         stopScanner={stopScanner}
+        onFileUpload={scanFile}
       />
 
       {/* Notifikasi/Umpan Balik */}

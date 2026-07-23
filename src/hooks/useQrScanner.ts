@@ -79,6 +79,29 @@ export function useQrScanner({
     }
   };
 
+  const scanFile = async (file: File) => {
+    setScanError(null);
+    setTxSuccess(null);
+    try {
+      if (!html5QrCodeRef.current) {
+        html5QrCodeRef.current = new Html5Qrcode(scannerId);
+      }
+
+      if (html5QrCodeRef.current.isScanning) {
+        await html5QrCodeRef.current.stop();
+        setScanning(false);
+      }
+
+      const decodedText = await html5QrCodeRef.current.scanFile(file, true);
+      if (decodedText) {
+        onScanSuccess(decodedText);
+      }
+    } catch (err: unknown) {
+      console.error("Gagal membaca QR dari file:", err);
+      setScanError("QR Code tidak ditemukan atau tidak dapat dibaca dari gambar yang diunggah.");
+    }
+  };
+
   return {
     scanning,
     scanError,
@@ -87,5 +110,6 @@ export function useQrScanner({
     setTxSuccess,
     startScanner,
     stopScanner,
+    scanFile,
   };
 }
