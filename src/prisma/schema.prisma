@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Role {
@@ -45,8 +46,8 @@ model Product {
   name          String
   description   String
   stock         Int
-  price         Decimal         @db.Decimal(15, 2)
-  buyPrice      Decimal         @db.Decimal(15, 2)
+  price         Float           @db.DoublePrecision
+  buyPrice      Float           @db.DoublePrecision
   image_url     String
   qrCode        String          @unique
   categoryId    Int
