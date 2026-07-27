@@ -13,29 +13,29 @@ interface LowStockProductsProps {
 
 export default function LowStockTable({ products }: LowStockProductsProps) {
   return (
-    <div className="bg-slate-900 border border-gray-800 rounded-xl p-6">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-xl p-6">
       <div className="flex items-center gap-2 mb-4">
         <AlertTriangle className="w-5 h-5 text-orange-500" />
-        <h2 className="text-lg font-bold text-white">Stok Produk Terendah</h2>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white">Stok Produk Terendah</h2>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-gray-800 text-gray-400 font-medium">
+            <tr className="border-b border-slate-200 dark:border-gray-800 text-gray-500 dark:text-gray-400 font-medium">
               <th className="pb-3">Nama Produk</th>
               <th className="pb-3">Kategori</th>
               <th className="pb-3 text-center">Jumlah Stok</th>
               <th className="pb-3 text-right">Harga Jual</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-800/50">
+          <tbody className="divide-y divide-slate-100 dark:divide-gray-800/50">
             {products.map((p, idx) => (
-              <tr key={idx} className="text-gray-300 hover:bg-slate-850/40">
-                <td className="py-3 font-semibold text-white">
+              <tr key={idx} className="text-gray-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-850/40">
+                <td className="py-3 font-semibold text-gray-900 dark:text-white">
                   {p.name}
                 </td>
-                <td className="py-3 text-gray-400">
+                <td className="py-3 text-gray-500 dark:text-gray-400">
                   {p.categoryName}
                 </td>
                 <td className="py-3 text-center">
@@ -51,7 +51,7 @@ export default function LowStockTable({ products }: LowStockProductsProps) {
                     {p.stock} unit
                   </span>
                 </td>
-                <td className="py-3 text-right font-mono text-gray-400">
+                <td className="py-3 text-right font-mono text-gray-500 dark:text-gray-400">
                   Rp {p.price.toLocaleString("id-ID")}
                 </td>
               </tr>

@@ -16,10 +16,10 @@ interface TransactionTableProps {
 
 function SkeletonRow() {
   return (
-    <tr className="border-b border-gray-800/50">
+    <tr className="border-b border-slate-200 dark:border-gray-800/50">
       {[...Array(6)].map((_, i) => (
         <td key={i} className="px-4 py-4">
-          <div className="h-4 bg-gray-800/70 rounded animate-pulse" />
+          <div className="h-4 bg-slate-200 dark:bg-gray-800/70 rounded animate-pulse" />
         </td>
       ))}
     </tr>
@@ -69,11 +69,11 @@ export default function TransactionTable({
   const hasActiveFilter = searchQuery.length > 0 || selectedType !== "Semua";
 
   return (
-    <div className="bg-slate-900 border border-gray-800 rounded-xl overflow-hidden">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse text-sm">
           <thead>
-            <tr className="border-b border-gray-800 bg-slate-950/40 text-gray-400 font-medium text-xs uppercase tracking-wider">
+            <tr className="border-b border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-slate-950/40 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wider">
               <th className="px-4 py-3.5">Tanggal</th>
               <th className="px-4 py-3.5">Nama Produk</th>
               <th className="px-4 py-3.5">Tipe</th>
@@ -82,17 +82,17 @@ export default function TransactionTable({
               <th className="px-4 py-3.5 text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-800/50">
+          <tbody className="divide-y divide-slate-100 dark:divide-gray-800/50">
             {isLoading ? (
               [...Array(4)].map((_, i) => <SkeletonRow key={i} />)
             ) : isEmpty ? (
               <tr>
                 <td colSpan={6} className="p-16 text-center">
                   <div className="flex flex-col items-center justify-center gap-3">
-                    <div className="p-4 bg-gray-800/40 rounded-full">
-                      <AlertCircle className="w-10 h-10 text-gray-600" />
+                    <div className="p-4 bg-slate-100 dark:bg-gray-800/40 rounded-full">
+                      <AlertCircle className="w-10 h-10 text-gray-400 dark:text-gray-600" />
                     </div>
-                    <h3 className="text-base font-semibold text-white">Transaksi Tidak Ditemukan</h3>
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white">Transaksi Tidak Ditemukan</h3>
                     <p className="text-gray-500 text-sm max-w-sm">
                       {hasActiveFilter
                         ? "Coba gunakan kata kunci pencarian lain atau pilih tipe berbeda."
@@ -118,20 +118,20 @@ export default function TransactionTable({
                 return (
                   <tr
                     key={transaction.id}
-                    className="text-gray-300 hover:bg-slate-800/30 transition-colors group"
+                    className="text-gray-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group"
                   >
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <div className="flex items-center gap-2 text-gray-400 text-xs">
+                      <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs">
                         <Calendar className="w-3.5 h-3.5 text-gray-600" />
                         {formattedDate}
                       </div>
                     </td>
                     <td className="px-4 py-3.5">
                       <div>
-                        <div className="font-semibold text-white group-hover:text-teal-400 transition-colors">
+                        <div className="font-semibold text-gray-900 dark:text-white group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
                           {transaction.productName}
                         </div>
-                        <div className="text-[11px] text-gray-600 font-mono mt-0.5">
+                        <div className="text-[11px] text-gray-400 dark:text-gray-600 font-mono mt-0.5">
                           {transaction.productQrCode}
                         </div>
                       </div>
@@ -139,10 +139,10 @@ export default function TransactionTable({
                     <td className="px-4 py-3.5">
                       <TypeBadge type={transaction.type} />
                     </td>
-                    <td className="px-4 py-3.5 text-right font-semibold text-white">
+                    <td className="px-4 py-3.5 text-right font-semibold text-gray-900 dark:text-white">
                       {transaction.quantity.toLocaleString("id-ID")}
                     </td>
-                    <td className="px-4 py-3.5 max-w-xs truncate text-gray-400">
+                    <td className="px-4 py-3.5 max-w-xs truncate text-gray-500 dark:text-gray-400">
                       {transaction.note || <span className="text-gray-600 italic">-</span>}
                     </td>
                     <td className="px-4 py-3.5 text-center">
@@ -164,7 +164,7 @@ export default function TransactionTable({
 
       {/* Table footer with Pagination */}
       {!isLoading && totalItems > 0 && (
-        <div className="px-4 py-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+        <div className="px-4 py-3 border-t border-slate-200 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <span>
             Menampilkan <span className="text-gray-300 font-medium">{totalItems > 0 ? startIndex + 1 : 0}</span>-
             <span className="text-gray-300 font-medium">{endIndex}</span> dari{" "}
@@ -176,7 +176,7 @@ export default function TransactionTable({
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+                className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-slate-950 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-900 disabled:opacity-50 transition-colors"
               >
                 Sebelumnya
               </button>
@@ -186,7 +186,7 @@ export default function TransactionTable({
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+                className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-slate-950 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-900 disabled:opacity-50 transition-colors"
               >
                 Selanjutnya
               </button>

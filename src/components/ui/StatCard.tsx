@@ -33,18 +33,18 @@ export function StatCard({ title, value, icon, description, variant = "gray" }: 
       bgBorder: "bg-blue-500/10 border-blue-500/20 text-blue-400",
     },
     gray: {
-      text: "text-white",
-      bgBorder: "bg-gray-800/40 border-gray-800 text-gray-300",
+      text: "text-gray-800 dark:text-white",
+      bgBorder: "bg-gray-100 dark:bg-gray-800/40 border-gray-200 dark:border-gray-800 text-gray-500 dark:text-gray-300",
     },
   };
 
   const currentVariant = variantClasses[variant];
 
   return (
-    <div className="bg-slate-900 border border-gray-800 rounded-xl p-5 flex flex-col justify-between">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-xl p-5 flex flex-col justify-between">
       <div className="flex justify-between items-start">
         <div>
-          <span className="text-gray-400 text-xs font-medium">{title}</span>
+          <span className="text-gray-500 dark:text-gray-400 text-xs font-medium">{title}</span>
           <h3 className={`text-xl font-bold mt-1 font-mono ${currentVariant.text}`}>
             {value}
           </h3>
@@ -54,7 +54,7 @@ export function StatCard({ title, value, icon, description, variant = "gray" }: 
         </div>
       </div>
       {description && (
-        <p className="text-[11px] text-gray-500 mt-2">{description}</p>
+        <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">{description}</p>
       )}
     </div>
   );

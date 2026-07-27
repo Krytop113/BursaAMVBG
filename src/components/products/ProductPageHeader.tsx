@@ -11,7 +11,7 @@ export default function ProductPageHeader({ onAddClick }: ProductPageHeaderProps
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 className="text-2xl font-bold text-white md:text-3xl">Kelola Produk</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">Kelola Produk</h1>
         <p className="text-gray-400 text-sm mt-1">
           Tambah, edit, dan kelola aset.
         </p>

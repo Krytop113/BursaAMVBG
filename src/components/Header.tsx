@@ -5,6 +5,8 @@ import { Bell, Menu, User, ChevronDown, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 
+import { ThemeToggle } from '@/components/ThemeToggle';
+
 interface HeaderProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
@@ -15,7 +17,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-999 flex w-full bg-slate-900 border-b border-gray-800 drop-shadow-1">
+    <header className="sticky top-0 z-999 flex w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-gray-800 drop-shadow-1">
       <div className="flex grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         
         {/* Toggle Button for Mobile */}
@@ -34,14 +36,16 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
 
         {/* Header Actions */}
         <div className="flex items-center gap-3 2x1:gap-7 ml-auto relative">
+          {/* Theme Switcher */}
+          <ThemeToggle />
 
           {/* User Profile */}
           <div className="relative flex items-center gap-3 cursor-pointer" onClick={() => setDropdownOpen(!dropdownOpen)}>
             <span className="hidden text-right lg:block">
-              <span className="block text-sm font-semibold text-white">
+              <span className="block text-sm font-semibold text-gray-900 dark:text-white">
                 {user?.username || "Administrator"}
               </span>
-              <span className="block text-xs text-gray-400">
+              <span className="block text-xs text-gray-500 dark:text-gray-400">
                 {user?.role === 1 ? "Super Admin" : "User"}
               </span>
             </span>
@@ -50,19 +54,19 @@ export default function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
               <User className="w-5 h-5" />
             </span>
 
-            <ChevronDown className="hidden sm:block text-gray-400 w-4 h-4" />
+            <ChevronDown className="hidden sm:block text-gray-500 dark:text-gray-400 w-4 h-4" />
 
             {/* Dropdown Menu */}
             {dropdownOpen && (
-              <div className="absolute right-0 top-12 mt-2.5 w-48 rounded-lg border border-gray-800 bg-slate-900 p-1.5 shadow-xl">
+              <div className="absolute right-0 top-12 mt-2.5 w-48 rounded-lg border border-slate-200 dark:border-gray-800 bg-white dark:bg-slate-900 p-1.5 shadow-xl">
                 <Link
                   href="/profile"
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-gray-300 hover:bg-gray-800 transition-colors"
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-gray-600 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors"
                 >
                   <User className="w-4 h-4 text-teal-400" />
                   Edit Profile
                 </Link>
-                <hr className="border-gray-800 my-1" />
+                <hr className="border-slate-200 dark:border-gray-800 my-1" />
                 <button
                   onClick={logout}
                   className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-400 hover:bg-red-950/20 hover:text-red-300 transition-colors"

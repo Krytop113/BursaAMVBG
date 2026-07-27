@@ -56,14 +56,14 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
   return (
     <aside
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72 flex-col overflow-y-hidden bg-gray-900 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72 flex-col overflow-y-hidden bg-white dark:bg-gray-900 border-r border-slate-200 dark:border-gray-800 duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* SIDEBAR HEADER */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <Link href={ROUTES.dashboard} className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-white tracking-wider flex items-center gap-2">
+          <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-wider flex items-center gap-2">
             <ShoppingBag className="text-teal-400 w-8 h-8" />
             BursaAMVBG
           </span>
@@ -72,7 +72,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-controls="sidebar"
-          className="block lg:hidden text-gray-400 hover:text-white"
+          className="block lg:hidden text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <svg
             className="fill-current"
@@ -95,7 +95,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
         {/* Navigation Group */}
         <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
               MENU
             </h3>
 
@@ -103,17 +103,17 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <li>
                 <Link
                   href={ROUTES.dashboard}
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
                     isActive(ROUTES.dashboard)
-                      ? "bg-gray-800 text-teal-400"
-                      : "text-gray-300"
+                      ? "bg-slate-100 dark:bg-gray-800 text-teal-500 dark:text-teal-400"
+                      : "text-gray-600 dark:text-gray-300"
                   }`}
                 >
                   <LayoutDashboard
-                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                    className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
                       isActive(ROUTES.dashboard)
-                        ? "text-teal-400"
-                        : "text-gray-400"
+                        ? "text-teal-500 dark:text-teal-400"
+                        : "text-gray-400 dark:text-gray-400"
                     }`}
                   />
                   Dashboard
@@ -123,17 +123,17 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <li>
                 <Link
                   href={ROUTES.products}
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
                     isActive(ROUTES.products)
-                      ? "bg-gray-800 text-teal-400"
-                      : "text-gray-300"
+                      ? "bg-slate-100 dark:bg-gray-800 text-teal-500 dark:text-teal-400"
+                      : "text-gray-600 dark:text-gray-300"
                   }`}
                 >
                   <ShoppingBag
-                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                    className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
                       isActive(ROUTES.products)
-                        ? "text-teal-400"
-                        : "text-gray-400"
+                        ? "text-teal-500 dark:text-teal-400"
+                        : "text-gray-400 dark:text-gray-400"
                     }`}
                   />
                   Produk
@@ -143,17 +143,17 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <li>
                 <Link
                   href={ROUTES.categories}
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
                     isActive(ROUTES.categories)
-                      ? "bg-gray-800 text-teal-400"
-                      : "text-gray-300"
+                      ? "bg-slate-100 dark:bg-gray-800 text-teal-500 dark:text-teal-400"
+                      : "text-gray-600 dark:text-gray-300"
                   }`}
                 >
                   <Tags
-                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                    className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
                       isActive(ROUTES.categories)
-                        ? "text-teal-400"
-                        : "text-gray-400"
+                        ? "text-teal-500 dark:text-teal-400"
+                        : "text-gray-400 dark:text-gray-400"
                     }`}
                   />
                   Kategori
@@ -163,17 +163,17 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <li>
                 <Link
                   href={ROUTES.transactions}
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
                     isActive(ROUTES.transactions)
-                      ? "bg-gray-800 text-teal-400"
-                      : "text-gray-300"
+                      ? "bg-slate-100 dark:bg-gray-800 text-teal-500 dark:text-teal-400"
+                      : "text-gray-600 dark:text-gray-300"
                   }`}
                 >
                   <CreditCard
-                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                    className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
                       isActive(ROUTES.transactions)
-                        ? "text-teal-400"
-                        : "text-gray-400"
+                        ? "text-teal-500 dark:text-teal-400"
+                        : "text-gray-400 dark:text-gray-400"
                     }`}
                   />
                   Transaksi
@@ -183,17 +183,17 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <li>
                 <Link
                   href={ROUTES.invoice}
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
                     isActive(ROUTES.invoice)
-                      ? "bg-gray-800 text-teal-400"
-                      : "text-gray-300"
+                      ? "bg-slate-100 dark:bg-gray-800 text-teal-500 dark:text-teal-400"
+                      : "text-gray-600 dark:text-gray-300"
                   }`}
                 >
                   <FileText
-                    className={`w-5 h-5 group-hover:text-teal-400 ${
+                    className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
                       isActive(ROUTES.invoice)
-                        ? "text-teal-400"
-                        : "text-gray-400"
+                        ? "text-teal-500 dark:text-teal-400"
+                        : "text-gray-400 dark:text-gray-400"
                     }`}
                   />
                   Invoice
@@ -202,21 +202,21 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
 
               {isAdmin && (
                 <>
-                  <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                  <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                     ADMIN
                   </h3>
 
                   <li className="flex flex-col gap-1.5">
                     <Link
                       href={ROUTES.users}
-                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
                         isActive(ROUTES.users)
                           ? "bg-gray-800 text-teal-400"
                           : "text-gray-300"
                       }`}
                     >
                       <Users
-                        className={`w-5 h-5 group-hover:text-teal-400 ${
+                        className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
                           isActive(ROUTES.users)
                             ? "text-teal-400"
                             : "text-gray-400"
@@ -229,14 +229,14 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                   <li className="flex flex-col gap-1.5">
                     <Link
                       href={ROUTES.roles}
-                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-gray-800 hover:text-white ${
+                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
                         isActive(ROUTES.roles)
                           ? "bg-gray-800 text-teal-400"
                           : "text-gray-300"
                       }`}
                     >
                       <BadgeCheck
-                        className={`w-5 h-5 group-hover:text-teal-400 ${
+                        className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
                           isActive(ROUTES.roles)
                             ? "text-teal-400"
                             : "text-gray-400"

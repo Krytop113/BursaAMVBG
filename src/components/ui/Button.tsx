@@ -19,9 +19,9 @@ const variantCls: Record<ButtonVariant, string> = {
   danger:
     "bg-red-500 text-white font-semibold hover:bg-red-400 disabled:opacity-60",
   secondary:
-    "bg-gray-800 text-gray-300 font-medium hover:bg-gray-700 disabled:opacity-50",
+    "bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium hover:bg-slate-200 dark:hover:bg-gray-700 disabled:opacity-50",
   ghost:
-    "text-gray-400 hover:text-white bg-transparent hover:bg-gray-800 border border-transparent hover:border-gray-700 disabled:opacity-50",
+    "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white bg-transparent hover:bg-slate-100 dark:hover:bg-gray-800 border border-transparent hover:border-slate-200 dark:hover:border-gray-700 disabled:opacity-50",
 };
 
 export function Button({

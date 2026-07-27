@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+      <div className="min-h-screen bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-white flex flex-col">
         {/* Mobile View - No Sidebar, No Header */}
         <main className="w-full flex-1 flex flex-col p-4 pb-20">
           <AnimatePresence mode="wait">
@@ -53,7 +53,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-950 text-white">
+    <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-white">
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 

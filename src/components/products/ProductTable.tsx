@@ -137,10 +137,10 @@ interface ProductTableProps {
 
 function SkeletonRow() {
   return (
-    <tr className="border-b border-gray-800/50">
+    <tr className="border-b border-slate-200 dark:border-gray-800/50">
       {[...Array(7)].map((_, i) => (
         <td key={i} className="px-4 py-4">
-          <div className="h-4 bg-gray-800/70 rounded animate-pulse" />
+          <div className="h-4 bg-slate-200 dark:bg-gray-800/70 rounded animate-pulse" />
         </td>
       ))}
     </tr>
@@ -240,13 +240,13 @@ export default function ProductTable({
   const [qrProduct, setQrProduct] = useState<Product | null>(null);
 
   return (
-    <div className="bg-slate-900 border border-gray-800 rounded-xl overflow-hidden">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-xl overflow-hidden">
       {/* Loading state */}
       {isLoading ? (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="border-b border-gray-800 bg-slate-950/40 text-gray-400 font-medium text-xs uppercase tracking-wider">
+              <tr className="border-b border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-slate-950/40 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wider">
                 <th className="px-4 py-3.5">#</th>
                 <th className="px-4 py-3.5">Nama Produk</th>
                 <th className="px-4 py-3.5">Kategori</th>
@@ -265,14 +265,14 @@ export default function ProductTable({
         </div>
       ) : isEmpty ? (
         /* Empty state */
-        <div className="p-16 text-center flex flex-col items-center justify-center gap-3">
-          <div className="p-4 bg-gray-800/40 rounded-full">
-            <AlertCircle className="w-10 h-10 text-gray-600" />
-          </div>
-          <h3 className="text-base font-semibold text-white">
+          <div className="p-16 text-center flex flex-col items-center justify-center gap-3">
+            <div className="p-4 bg-slate-100 dark:bg-gray-800/40 rounded-full">
+              <AlertCircle className="w-10 h-10 text-gray-400 dark:text-gray-600" />
+            </div>
+            <h3 className="text-base font-semibold text-gray-900 dark:text-white">
             Produk Tidak Ditemukan
           </h3>
-          <p className="text-gray-500 text-sm max-w-sm">
+            <p className="text-gray-500 dark:text-gray-500 text-sm max-w-sm">
             {hasActiveFilter
               ? "Coba gunakan kata kunci lain atau pilih kategori berbeda."
               : 'Belum ada produk. Klik tombol "Tambah Produk Baru" untuk memulai.'}
@@ -291,7 +291,7 @@ export default function ProductTable({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="border-b border-gray-800 bg-slate-950/40 text-gray-400 font-medium text-xs uppercase tracking-wider">
+              <tr className="border-b border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-slate-950/40 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wider">
                 <th className="px-4 py-3.5">#</th>
                 <th className="px-4 py-3.5">Nama Produk</th>
                 <th className="px-4 py-3.5">Kategori</th>
@@ -301,10 +301,10 @@ export default function ProductTable({
                 <th className="px-4 py-3.5 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800/50">
+            <tbody className="divide-y divide-slate-100 dark:divide-gray-800/50">
               {paginatedProducts.map((product) => (
-                <tr key={product.id} className="text-gray-300 hover:bg-slate-800/30 transition-colors group">
-                  <td className="px-4 py-3.5 text-gray-600 text-xs">
+                <tr key={product.id} className="text-gray-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+                  <td className="px-4 py-3.5 text-gray-400 dark:text-gray-600 text-xs">
                     {product.id}
                   </td>
                   <td className="px-4 py-3.5">
@@ -322,7 +322,7 @@ export default function ProductTable({
                           <img
                             src={product.imageUrl}
                             alt={product.name}
-                            className="w-10 h-10 object-cover rounded-lg border border-gray-800 transition-all duration-200 group-hover/img:brightness-75 group-hover/img:scale-105"
+                            className="w-10 h-10 object-cover rounded-lg border border-slate-200 dark:border-gray-800 transition-all duration-200 group-hover/img:brightness-75 group-hover/img:scale-105"
                           />
                           {/* Overlay magnifier icon */}
                           <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
@@ -330,30 +330,30 @@ export default function ProductTable({
                           </span>
                         </button>
                       ) : (
-                        <div className="w-10 h-10 bg-slate-950 border border-gray-800 rounded-lg flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-gray-800 rounded-lg flex items-center justify-center shrink-0">
                           <Package className="w-5 h-5 text-gray-600" />
                         </div>
                       )}
                       <div>
-                        <div className="font-semibold text-white group-hover:text-teal-400 transition-colors">
+                        <div className="font-semibold text-gray-900 dark:text-white group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
                           {product.name}
                         </div>
-                        <div className="text-xs text-gray-600 mt-0.5 line-clamp-1 max-w-xs">
+                        <div className="text-xs text-gray-400 dark:text-gray-600 mt-0.5 line-clamp-1 max-w-xs">
                            {product.description}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3.5">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-800 text-gray-300 rounded-md text-xs font-medium">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-md text-xs font-medium">
                        <Tag className="w-3 h-3" />
                       {product.categoryName}
                     </span>
                   </td>
-                  <td className="px-4 py-3.5 font-semibold text-gray-400">
+                  <td className="px-4 py-3.5 font-semibold text-gray-500 dark:text-gray-400">
                     Rp {product.buyPrice ? product.buyPrice.toLocaleString("id-ID") : "0"}
                   </td>
-                  <td className="px-4 py-3.5 font-semibold text-white">
+                  <td className="px-4 py-3.5 font-semibold text-gray-900 dark:text-white">
                     Rp {product.price.toLocaleString("id-ID")}
                   </td>
                   <td className="px-4 py-3.5">
@@ -379,7 +379,7 @@ export default function ProductTable({
 
       {/* Table footer with Pagination */}
       {!isLoading && totalItems > 0 && (
-        <div className="px-4 py-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+        <div className="px-4 py-3 border-t border-slate-200 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <span>
             Menampilkan <span className="text-gray-300 font-medium">{totalItems > 0 ? startIndex + 1 : 0}</span>-
             <span className="text-gray-300 font-medium">{endIndex}</span> dari{" "}
@@ -391,7 +391,7 @@ export default function ProductTable({
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+                className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-slate-950 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-500 disabled:hover:bg-slate-50 transition-colors"
               >
                 Sebelumnya
               </button>
@@ -401,7 +401,7 @@ export default function ProductTable({
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                className="px-3 py-1.5 rounded-lg border border-gray-800 bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-400 disabled:hover:bg-slate-950 transition-colors"
+                className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-slate-950 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-900 disabled:opacity-50 disabled:hover:text-gray-500 disabled:hover:bg-slate-50 transition-colors"
               >
                 Selanjutnya
               </button>
