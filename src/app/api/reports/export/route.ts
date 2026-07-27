@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 export async function GET(request: Request) {
   try {
@@ -9,23 +10,22 @@ export async function GET(request: Request) {
     const categoryId = searchParams.get("categoryId");
     const productId = searchParams.get("productId");
 
-    const where: any = {
+    const where: Prisma.StockMovementWhereInput = {
       type: "OUT",
     };
 
     if (startDate || endDate) {
-      where.createdAt = {};
-      if (startDate) {
-        where.createdAt.gte = new Date(`${startDate}T00:00:00.000Z`);
-      }
-      if (endDate) {
-        where.createdAt.lte = new Date(`${endDate}T23:59:59.999Z`);
-      }
+      where.createdAt = {
+        ...(startDate ? { gte: new Date(`${startDate}T00:00:00.000Z`) } : {}),
+        ...(endDate ? { lte: new Date(`${endDate}T23:59:59.999Z`) } : {}),
+      };
     }
 
     if (categoryId) {
-      where.product = where.product || {};
-      where.product.categoryId = parseInt(categoryId, 10);
+      where.product = {
+        ...(typeof where.product === "object" && where.product !== null ? where.product : {}),
+        categoryId: parseInt(categoryId, 10),
+      };
     }
 
     if (productId) {
@@ -46,8 +46,7 @@ export async function GET(request: Request) {
       },
     });
 
-    // Generate CSV Content
-    let csvContent = "\uFEFF"; // UTF-8 BOM for Excel to display characters correctly
+    let csvContent = "\uFEFF";
     csvContent += "ID Transaksi,Tanggal,Nama Produk,Barcode/QR,Kategori,Harga Beli (Modal),Harga Jual,Kuantitas Terjual,Total Jual (Omset),Keuntungan\n";
 
     let totalRevenue = 0;
@@ -74,14 +73,12 @@ export async function GET(request: Request) {
         day: "2-digit",
       });
 
-      // Escape quotes and commas in product and category names
       const escapedProdName = `"${m.product.name.replace(/"/g, '""')}"`;
       const escapedCatName = `"${m.product.category.name.replace(/"/g, '""')}"`;
 
       csvContent += `${m.id},${dateStr},${escapedProdName},${m.product.qrCode},${escapedCatName},${buyPrice},${price},${qty},${revenue},${profit}\n`;
     });
 
-    // Summary footer row
     csvContent += `\nTOTAL,,,,-,${totalCost},-,${totalItems},${totalRevenue},${totalProfit}\n`;
 
     return new Response(csvContent, {

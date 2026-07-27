@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 export async function GET(request: Request) {
   try {
@@ -9,23 +10,22 @@ export async function GET(request: Request) {
     const categoryId = searchParams.get("categoryId");
     const productId = searchParams.get("productId");
 
-    const where: any = {
-      type: "OUT", // Rekapitulasi penjualan
+    const where: Prisma.StockMovementWhereInput = {
+      type: "OUT",
     };
 
     if (startDate || endDate) {
-      where.createdAt = {};
-      if (startDate) {
-        where.createdAt.gte = new Date(`${startDate}T00:00:00.000Z`);
-      }
-      if (endDate) {
-        where.createdAt.lte = new Date(`${endDate}T23:59:59.999Z`);
-      }
+      where.createdAt = {
+        ...(startDate ? { gte: new Date(`${startDate}T00:00:00.000Z`) } : {}),
+        ...(endDate ? { lte: new Date(`${endDate}T23:59:59.999Z`) } : {}),
+      };
     }
 
     if (categoryId) {
-      where.product = where.product || {};
-      where.product.categoryId = parseInt(categoryId, 10);
+      where.product = {
+        ...(typeof where.product === "object" && where.product !== null ? where.product : {}),
+        categoryId: parseInt(categoryId, 10),
+      };
     }
 
     if (productId) {
@@ -70,7 +70,6 @@ export async function GET(request: Request) {
       };
     });
 
-    // Ringkasan Statistik
     const summary = items.reduce(
       (acc, curr) => {
         acc.totalRevenue += curr.revenue;

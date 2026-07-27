@@ -37,7 +37,7 @@ export default function DeleteTransactionModal({
       onSuccess();
       onClose();
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setError(err.message);
     },
   });

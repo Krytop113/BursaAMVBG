@@ -72,8 +72,9 @@ export function useQrCart({
       setTxSuccess("Transaksi berhasil disimpan! Stok inventori telah dikurangi.");
       setCart([]);
       stopScanner();
-    } catch (err: any) {
-      setScanError(err.message || "Gagal memproses transaksi keluar.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Gagal memproses transaksi keluar.";
+      setScanError(message);
     } finally {
       setIsSubmitting(false);
     }

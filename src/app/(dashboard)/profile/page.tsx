@@ -55,8 +55,9 @@ export default function ProfilePage() {
       setPassword("");
       setConfirmPassword("");
       refetch();
-    } catch (err: any) {
-      setMessage({ type: "error", text: err.message });
+    } catch (err: unknown) {
+      const text = err instanceof Error ? err.message : "Gagal memperbarui profil.";
+      setMessage({ type: "error", text });
     } finally {
       setIsSubmitting(false);
     }

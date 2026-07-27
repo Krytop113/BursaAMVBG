@@ -42,8 +42,9 @@ export default function LoginPage() {
 
       await new Promise((resolve) => setTimeout(resolve, 300));
       window.location.href = ROUTES.dashboard;
-    } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan jaringan.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Terjadi kesalahan jaringan.";
+      setError(message);
     } finally {
       setIsLoading(false);
     }

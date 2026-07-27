@@ -1,10 +1,8 @@
 import { productModel } from '@/models/productModel';
-import { saveUploadedImage } from '@/lib/uploadImage';
+import { saveUploadedImage, deleteUploadedImage } from '@/lib/uploadImage';
 import { validateCreateProduct } from '@/validators/productValidator';
 import { AppError, NotFoundError, ValidationError } from '@/lib/errors';
 import { ProductWithCategory } from '@/dto/productDto';
-import path from 'path';
-import { promises as fs } from 'fs';
 import prisma from '@/lib/db';
 
 export interface ProductRequestInput {
@@ -59,21 +57,6 @@ async function generateProductId(categoryId: number, price: number): Promise<str
     return `${categoryCode}-${priceCode}-${seqCode}`;
 }
 
-/**
- * Deletes the physical image file associated with a product from the filesystem.
- */
-async function deleteProductImage(imageUrl: string): Promise<void> {
-    const fileName = path.basename(imageUrl);
-    const absolutePath = path.resolve(process.cwd(), 'public', 'uploads', fileName);
-    try {
-        await fs.access(absolutePath);
-        await fs.unlink(absolutePath);
-    } catch (fsError: any) {
-        if (fsError.code !== 'ENOENT') throw fsError;
-        console.warn(`File gambar tidak ditemukan di sistem: ${absolutePath}`);
-    }
-}
-
 export const productService = {
     async getAll(): Promise<ProductWithCategory[]> {
         return productModel.getAllWithCategories();
@@ -84,7 +67,7 @@ export const productService = {
 
         const validation = validateCreateProduct({ ...input, qrCode });
         if (!validation.success) {
-            throw new ValidationError(validation.error, validation.fieldErrors as any);
+            throw new ValidationError(validation.error, validation.fieldErrors as Record<string, string>);
         }
 
         const imageUrl = await saveUploadedImage(input.imageFile);
@@ -111,9 +94,9 @@ export const productService = {
         if (input.imageFile && input.imageFile.size > 0) {
             if (existingProduct.image_url) {
                 try {
-                    await deleteProductImage(existingProduct.image_url);
+                    await deleteUploadedImage(existingProduct.image_url);
                 } catch (err) {
-                    console.error('Gagal menghapus gambar lama:', err);
+                    console.error('Gagal menghapus gambar lama dari Supabase Storage:', err);
                 }
             }
             imageUrl = await saveUploadedImage(input.imageFile);
@@ -136,9 +119,9 @@ export const productService = {
 
         if (existing.image_url) {
             try {
-                await deleteProductImage(existing.image_url);
+                await deleteUploadedImage(existing.image_url);
             } catch (err) {
-                console.error('Gagal menghapus file gambar saat menghapus produk:', err);
+                console.error('Gagal menghapus file gambar dari Supabase Storage saat menghapus produk:', err);
             }
         }
 

@@ -1,10 +1,10 @@
-import { StockMovement } from '@prisma/client';
+import { StockMovement, Prisma } from '@prisma/client';
 
 type ProductSnapshot = {
     name: string;
     qrCode: string;
-    price: any;
-    buyPrice: any;
+    price: Prisma.Decimal | number | string;
+    buyPrice: Prisma.Decimal | number | string;
 };
 
 export type StockMovementWithProduct = StockMovement & { product: ProductSnapshot };

@@ -1,5 +1,5 @@
 import prisma from '@/lib/db';
-import { StockMovement, Prisma } from '@prisma/client';
+import { StockMovement, MovementType, Prisma } from '@prisma/client';
 
 export type { StockMovement };
 
@@ -28,7 +28,7 @@ export const transactionModel = {
     },
 
     async insert(
-        data: { productId: string; type: any; quantity: number; note?: string },
+        data: { productId: string; type: MovementType; quantity: number; note?: string },
         tx?: TransactionClient
     ): Promise<StockMovement> {
         const client = tx || prisma;
