@@ -30,46 +30,46 @@ export function CartArea({
   isSubmitting
 }: CartAreaProps) {
   return (
-    <div className="bg-gray-900/40 border border-gray-800/80 rounded-3xl p-4 flex-1 flex flex-col min-h-220px">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3 px-1">
+    <div className="bg-white/60 dark:bg-gray-900/40 border border-slate-200 dark:border-gray-800/80 rounded-3xl p-4 flex-1 flex flex-col min-h-220px shadow-lg">
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3 px-1">
         Daftar Belanja ({cart.length})
       </h2>
 
       {cart.length === 0 ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-gray-500">
+        <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-gray-400 dark:text-gray-500">
           <ShoppingBag className="w-10 h-10 mb-2 stroke-1" />
-          <p className="text-sm font-medium">Keranjang masih kosong</p>
-          <p className="text-xs text-gray-600 mt-0.5">Pindai barcode untuk menambahkan barang</p>
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Keranjang masih kosong</p>
+          <p className="text-xs text-gray-400 dark:text-gray-600 mt-0.5">Pindai barcode untuk menambahkan barang</p>
         </div>
       ) : (
         <div className="flex-1 space-y-3 overflow-y-auto max-h-240px pr-1">
           {cart.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between bg-gray-950/60 border border-gray-800 p-3 rounded-2xl shadow-inner transition hover:border-gray-700"
+              className="flex items-center justify-between bg-slate-50 dark:bg-gray-950/60 border border-slate-200 dark:border-gray-800 p-3 rounded-2xl shadow-inner transition hover:border-teal-500/30"
             >
               <div className="flex-1 min-w-0 pr-3">
-                <p className="font-medium text-white text-sm truncate">{item.name}</p>
-                <p className="text-xs text-teal-400">
+                <p className="font-medium text-gray-900 dark:text-white text-sm truncate">{item.name}</p>
+                <p className="text-xs text-teal-600 dark:text-teal-400 font-semibold">
                   Rp {item.price.toLocaleString("id-ID")}
                 </p>
-                <p className="text-[10px] text-gray-500">Stok sisa: {item.stock}</p>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500">Stok sisa: {item.stock}</p>
               </div>
 
               <div className="flex items-center space-x-3">
-                <div className="flex items-center bg-gray-900 border border-gray-850 rounded-xl">
+                <div className="flex items-center bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-850 rounded-xl">
                   <button
                     onClick={() => updateQty(item.id, -1)}
-                    className="p-2 text-gray-400 hover:text-white"
+                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                   >
                     <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="px-2 text-sm font-semibold min-w-20px text-center">
+                  <span className="px-2 text-sm font-semibold min-w-20px text-center text-gray-900 dark:text-white">
                     {item.quantity}
                   </span>
                   <button
                     onClick={() => updateQty(item.id, 1)}
-                    className="p-2 text-gray-400 hover:text-white"
+                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
@@ -88,10 +88,10 @@ export function CartArea({
 
       {/* Total & Checkout Button */}
       {cart.length > 0 && (
-        <div className="border-t border-gray-800 mt-4 pt-4 space-y-3">
+        <div className="border-t border-slate-200 dark:border-gray-800 mt-4 pt-4 space-y-3">
           <div className="flex justify-between items-center px-1">
-            <span className="text-sm text-gray-400">Total Harga:</span>
-            <span className="text-lg font-bold text-teal-400">
+            <span className="text-sm text-gray-500 dark:text-gray-400">Total Harga:</span>
+            <span className="text-lg font-bold text-teal-600 dark:text-teal-400">
               Rp {totalPrice.toLocaleString("id-ID")}
             </span>
           </div>

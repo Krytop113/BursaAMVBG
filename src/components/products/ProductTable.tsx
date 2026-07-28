@@ -339,6 +339,15 @@ export default function ProductTable({
                         <div className="text-xs text-gray-400 dark:text-gray-600 mt-0.5 line-clamp-1 max-w-xs">
                           {product.description}
                         </div>
+                        <button
+                          type="button"
+                          onClick={() => setQrProduct(product)}
+                          className="inline-flex items-center gap-1 mt-1.5 text-[11px] font-mono px-2 py-0.5 rounded-md bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 hover:bg-teal-500/20 active:scale-95 transition-all"
+                          title="Lihat / Unduh QR Code"
+                        >
+                          <QrCode className="w-3 h-3" />
+                          <span>{product.qrCode}</span>
+                        </button>
                       </div>
                     </div>
                   </td>
