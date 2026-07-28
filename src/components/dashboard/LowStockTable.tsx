@@ -31,7 +31,7 @@ export default function LowStockTable({ products }: LowStockProductsProps) {
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-gray-800/50">
             {products.map((p, idx) => (
-              <tr key={idx} className="text-gray-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-850/40">
+              <tr key={idx} className="text-gray-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                 <td className="py-3 font-semibold text-gray-900 dark:text-white">
                   {p.name}
                 </td>

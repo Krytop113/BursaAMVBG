@@ -42,7 +42,7 @@ export function SalesTrendChart({ trendData }: SalesTrendChartProps) {
       </div>
 
       {/* Visual Chart Container */}
-      <div className="h-64 flex items-end justify-between gap-2 pt-6 border-b border-slate-200 dark:border-gray-850 px-2">
+      <div className="h-64 flex items-end justify-between gap-2 pt-6 border-b border-slate-200 dark:border-gray-800 px-2">
         {trendData.map((day, idx) => {
           const revenueHeight = (day.revenue / maxVal) * 100;
           const profitHeight = (day.profit / maxVal) * 100;

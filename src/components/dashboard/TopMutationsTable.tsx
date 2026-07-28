@@ -32,7 +32,7 @@ export default function TopMutationsTable({ mutations }: TopMutationsProps) {
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-gray-800/50">
             {mutations.map((trx, idx) => (
-              <tr key={idx} className="text-gray-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-850/40">
+              <tr key={idx} className="text-gray-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                 <td className="py-3">
                   <div className="font-semibold text-gray-900 dark:text-white">
                     {trx.productName}
