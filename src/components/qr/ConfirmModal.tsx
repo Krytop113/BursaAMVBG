@@ -22,7 +22,7 @@ export function ConfirmModal({
   onQuantityChange,
 }: ConfirmModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+    <div className="fixed inset-0 z-[99999] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
       <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-t-3xl sm:rounded-3xl shadow-2xl p-6 space-y-6 text-gray-900 dark:text-white transform transition-all duration-300 animate-in slide-in-from-bottom">
         {/* Header Modal */}
         <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
