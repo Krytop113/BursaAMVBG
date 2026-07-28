@@ -52,10 +52,10 @@ export default function DeleteTransactionModal({
       onClose={onClose}
     >
       <div className="p-6 space-y-5">
-        <div className="p-3.5 bg-red-500/5 border border-red-500/15 rounded-xl text-sm text-gray-300">
+        <div className="p-3.5 bg-red-500/5 border border-red-500/15 rounded-xl text-sm text-gray-700 dark:text-gray-300">
           Apakah Anda yakin ingin menghapus transaksi produk{" "}
-          <span className="font-semibold text-white">&quot;{transaction.productName}&quot;</span>{" "}
-          sebanyak <span className="font-semibold text-white">{transaction.quantity} unit</span>?
+          <span className="font-semibold text-gray-900 dark:text-white">&quot;{transaction.productName}&quot;</span>{" "}
+          sebanyak <span className="font-semibold text-gray-900 dark:text-white">{transaction.quantity} unit</span>?
         </div>
 
         {error && (

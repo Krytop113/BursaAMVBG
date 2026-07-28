@@ -96,6 +96,13 @@ export default function AddUserModal({
     }
   };
 
+  const getInputClass = (hasError: boolean) =>
+    `w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 rounded-lg border text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm ${
+      hasError
+        ? "border-red-500 focus:border-red-500"
+        : "border-slate-300 dark:border-gray-800 focus:border-teal-500"
+    } focus:outline-none transition-colors`;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
@@ -103,31 +110,31 @@ export default function AddUserModal({
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-md bg-slate-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-gray-800">
+      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-gray-800">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-teal-500/10 rounded-lg">
               <UserPlus className="w-5 h-5 text-teal-400" />
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-white">Tambah User</h2>
-              <p className="text-xs text-gray-500">Tambahkan user baru ke sistem</p>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Tambah User</h2>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Tambahkan user baru ke sistem</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-800 transition-colors"
+            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors"
           >
-            <X className="w-5 h-5 text-gray-400" />
+            <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
           </button>
         </div>
 
         {success ? (
           <div className="p-12 flex flex-col items-center gap-4">
             <CheckCircle2 className="w-12 h-12 text-teal-400 animate-bounce" />
-            <p className="text-white font-semibold text-center">
+            <p className="text-gray-900 dark:text-white font-semibold text-center">
               User baru berhasil ditambahkan!
             </p>
           </div>
@@ -141,7 +148,7 @@ export default function AddUserModal({
             )}
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1.5 font-medium">
+              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1.5 font-medium">
                 Username
               </label>
               <input
@@ -152,11 +159,7 @@ export default function AddUserModal({
                   setErrors((prev) => ({ ...prev, username: "" }));
                 }}
                 placeholder="Contoh: joni_amv"
-                className={`w-full px-4 py-2 bg-slate-950 rounded-lg border text-white text-sm ${
-                  errors.username
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-800 focus:border-teal-500"
-                } focus:outline-none transition-colors`}
+                className={getInputClass(!!errors.username)}
               />
               {errors.username && (
                 <p className="text-red-400 text-xs mt-1.5">{errors.username}</p>
@@ -164,7 +167,7 @@ export default function AddUserModal({
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1.5 font-medium">
+              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1.5 font-medium">
                 Email
               </label>
               <input
@@ -175,11 +178,7 @@ export default function AddUserModal({
                   setErrors((prev) => ({ ...prev, email: "" }));
                 }}
                 placeholder="Contoh: user@example.com"
-                className={`w-full px-4 py-2 bg-slate-950 rounded-lg border text-white text-sm ${
-                  errors.email
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-800 focus:border-teal-500"
-                } focus:outline-none transition-colors`}
+                className={getInputClass(!!errors.email)}
               />
               {errors.email && (
                 <p className="text-red-400 text-xs mt-1.5">{errors.email}</p>
@@ -187,7 +186,7 @@ export default function AddUserModal({
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1.5 font-medium">
+              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1.5 font-medium">
                 Password
               </label>
               <input
@@ -198,11 +197,7 @@ export default function AddUserModal({
                   setErrors((prev) => ({ ...prev, password: "" }));
                 }}
                 placeholder="Minimal 6 karakter"
-                className={`w-full px-4 py-2 bg-slate-950 rounded-lg border text-white text-sm ${
-                  errors.password
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-800 focus:border-teal-500"
-                } focus:outline-none transition-colors`}
+                className={getInputClass(!!errors.password)}
               />
               {errors.password && (
                 <p className="text-red-400 text-xs mt-1.5">{errors.password}</p>
@@ -210,7 +205,7 @@ export default function AddUserModal({
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1.5 font-medium">
+              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1.5 font-medium">
                 Role
               </label>
               <select
@@ -219,15 +214,11 @@ export default function AddUserModal({
                   setRoleId(e.target.value);
                   setErrors((prev) => ({ ...prev, roleId: "" }));
                 }}
-                className={`w-full px-4 py-2 bg-slate-950 rounded-lg border text-white text-sm appearance-none ${
-                  errors.roleId
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-800 focus:border-teal-500"
-                } focus:outline-none transition-colors`}
+                className={getInputClass(!!errors.roleId)}
               >
-                <option value="">Pilih Role</option>
+                <option value="" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">Pilih Role</option>
                 {roles.map((role) => (
-                  <option key={role.id} value={role.id}>
+                  <option key={role.id} value={role.id} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">
                     {role.name}
                   </option>
                 ))}
@@ -241,7 +232,7 @@ export default function AddUserModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 py-2.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-semibold transition-colors"
+                className="flex-1 py-2.5 rounded-lg bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-semibold transition-colors"
               >
                 Batal
               </button>

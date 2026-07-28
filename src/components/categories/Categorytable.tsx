@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Edit2, Trash2, Eye } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import type { Category } from "./types";
 
 interface CategoryTableProps {
@@ -34,7 +34,7 @@ function ActionButtons({
       <button
         title="Hapus Kategori"
         onClick={() => onDeleteClick(category)}
-        className="p-1.5 hover:bg-gray-800 rounded-md text-gray-400 dark:text-gray-500 hover:text-red-400 transition-colors"
+        className="p-1.5 hover:bg-gray-800/10 rounded-md text-gray-400 dark:text-gray-500 hover:text-red-400 transition-colors"
       >
         <Trash2 className="w-4 h-4" />
       </button>
@@ -52,7 +52,7 @@ export default function CategoryTable({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [categories.length]);
+  }, [categories]);
 
   const totalItems = categories.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);

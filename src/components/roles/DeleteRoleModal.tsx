@@ -52,7 +52,7 @@ export default function DeleteRoleModal({
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-sm rounded-2xl border border-gray-800 bg-slate-900 p-6 shadow-2xl space-y-5">
+      <div className="relative w-full max-w-sm rounded-2xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-slate-900 p-6 shadow-2xl space-y-5">
         {/* Header */}
         <div className="flex items-center gap-3">
           <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-2.5">
@@ -60,8 +60,8 @@ export default function DeleteRoleModal({
           </div>
 
           <div>
-            <h3 className="font-bold text-white">Hapus Role</h3>
-            <p className="text-xs text-gray-500">
+            <h3 className="font-bold text-gray-900 dark:text-white">Hapus Role</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Tindakan ini tidak dapat dibatalkan.
             </p>
           </div>
@@ -69,9 +69,9 @@ export default function DeleteRoleModal({
 
         {/* Warning */}
         <div className="rounded-xl border border-red-500/15 bg-red-500/5 p-3.5">
-          <p className="text-sm leading-relaxed text-gray-300">
+          <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
             Apakah Anda yakin ingin menghapus role{" "}
-            <span className="font-semibold text-white">"{role.name}"</span>?
+            <span className="font-semibold text-gray-900 dark:text-white">"{role.name}"</span>?
           </p>
 
           <div className="mt-2 flex items-center gap-1.5 text-xs text-red-400/80">
@@ -94,7 +94,7 @@ export default function DeleteRoleModal({
           <button
             onClick={onClose}
             disabled={isDeleting}
-            className="flex-1 rounded-lg bg-gray-800 px-4 py-2.5 text-sm font-medium text-gray-300 hover:bg-gray-700 disabled:opacity-50"
+            className="flex-1 rounded-lg bg-slate-100 dark:bg-gray-800 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-700 disabled:opacity-50"
           >
             Batal
           </button>

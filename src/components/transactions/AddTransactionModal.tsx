@@ -122,7 +122,7 @@ export default function AddTransactionModal({
         )}
 
         <div className="space-y-1">
-          <label htmlFor="productId" className="text-xs font-semibold text-gray-400">
+          <label htmlFor={form.productId ? "productId" : "type"} className="text-xs font-semibold text-gray-500 dark:text-gray-400">
             Pilih Produk *
           </label>
           <select
@@ -135,7 +135,7 @@ export default function AddTransactionModal({
           >
             <option value="" disabled>-- Pilih Produk --</option>
             {products.map((p) => (
-              <option key={p.id} value={p.id} className="bg-slate-900 text-white">
+              <option key={p.id} value={p.id} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">
                 {p.name} ({p.qrCode}) - Stok: {p.stock}
               </option>
             ))}
@@ -160,8 +160,8 @@ export default function AddTransactionModal({
             onBlur={handleBlur}
             className={inputCls(!!fieldErrors.type)}
           >
-            <option value="IN" className="bg-slate-900 text-white">Masuk (IN) - Menambah Stok</option>
-            <option value="OUT" className="bg-slate-900 text-white">Keluar (OUT) - Mengurangi Stok</option>
+            <option value="IN" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">Masuk (IN) - Menambah Stok</option>
+            <option value="OUT" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">Keluar (OUT) - Mengurangi Stok</option>
           </select>
           <FieldError message={fieldErrors.type} />
         </div>

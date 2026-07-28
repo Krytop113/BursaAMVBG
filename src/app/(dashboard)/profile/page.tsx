@@ -66,13 +66,13 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-white md:text-3xl">Pengaturan Profil</h1>
-        <p className="text-gray-400 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">Pengaturan Profil</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
           Perbarui informasi pribadi dan keamanan kata sandi Anda.
         </p>
       </div>
 
-      <div className="bg-slate-900 border border-gray-800 rounded-xl p-6 shadow-lg">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-xl p-6 shadow-lg">
         {message && (
           <div
             className={`p-4 mb-6 rounded-lg flex items-start gap-3 border ${
@@ -93,7 +93,7 @@ export default function ProfilePage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Username Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <User className="w-4 h-4 text-gray-500" /> Username
             </label>
             <input
@@ -108,7 +108,7 @@ export default function ProfilePage() {
 
           {/* Email Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <Mail className="w-4 h-4 text-gray-500" /> Email Address
             </label>
             <input
@@ -121,16 +121,16 @@ export default function ProfilePage() {
             />
           </div>
 
-          <hr className="border-gray-800 my-6" />
+          <hr className="border-slate-200 dark:border-gray-800 my-6" />
 
           <div className="space-y-1">
-            <h3 className="text-md font-semibold text-white">Ganti Kata Sandi</h3>
+            <h3 className="text-md font-semibold text-gray-900 dark:text-white">Ganti Kata Sandi</h3>
             <p className="text-xs text-gray-500">Biarkan kosong jika tidak ingin mengubah kata sandi.</p>
           </div>
 
           {/* New Password Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <Lock className="w-4 h-4 text-gray-500" /> Kata Sandi Baru
             </label>
             <input
@@ -144,7 +144,7 @@ export default function ProfilePage() {
 
           {/* Confirm New Password Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
               <Lock className="w-4 h-4 text-gray-500" /> Konfirmasi Kata Sandi Baru
             </label>
             <input

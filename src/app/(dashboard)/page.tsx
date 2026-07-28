@@ -17,7 +17,7 @@ export default function Dashboard() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-white md:text-3xl">Dashboard Analytics</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">Dashboard Analytics</h1>
           <p className="text-gray-400 text-sm mt-1">Memuat statistik realtime...</p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -35,7 +35,7 @@ export default function Dashboard() {
     <div className="space-y-6">
       {/* Title */}
       <div>
-        <h1 className="text-2xl font-bold text-white md:text-3xl">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">
           Dashboard Analytics
         </h1>
         <p className="text-gray-400 text-sm mt-1">

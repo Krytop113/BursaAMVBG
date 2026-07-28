@@ -51,7 +51,7 @@ export default function DeleteUserModal({
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-sm bg-slate-900 border border-gray-800 rounded-2xl shadow-2xl p-6 space-y-5">
+      <div className="relative w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-2xl shadow-2xl p-6 space-y-5">
         {/* Header */}
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-red-500/10 rounded-xl border border-red-500/20">
@@ -59,16 +59,16 @@ export default function DeleteUserModal({
           </div>
 
           <div>
-            <h3 className="font-bold text-white">Hapus User</h3>
-            <p className="text-xs text-gray-500">Tindakan ini tidak dapat dibatalkan</p>
+            <h3 className="font-bold text-gray-900 dark:text-white">Hapus User</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Tindakan ini tidak dapat dibatalkan</p>
           </div>
         </div>
 
         {/* Warning */}
         <div className="p-3.5 bg-red-500/5 border border-red-500/15 rounded-xl">
-          <p className="text-sm text-gray-300 leading-relaxed">
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
             Apakah Anda yakin ingin menghapus user{" "}
-            <span className="font-semibold text-white">"{user.username}"</span>?
+            <span className="font-semibold text-gray-900 dark:text-white">"{user.username}"</span>?
           </p>
 
           <div className="flex items-center gap-1.5 mt-2 text-xs text-red-400/80">
@@ -89,7 +89,7 @@ export default function DeleteUserModal({
           <button
             onClick={onClose}
             disabled={isDeleting}
-            className="flex-1 px-4 py-2.5 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-700 disabled:opacity-50"
+            className="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-slate-200 dark:hover:bg-gray-700 disabled:opacity-50"
           >
             Batal
           </button>

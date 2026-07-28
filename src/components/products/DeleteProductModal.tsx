@@ -51,9 +51,9 @@ export default function DeleteProductModal({
       onClose={onClose}
     >
       <div className="p-6 space-y-5">
-        <div className="p-3.5 bg-red-500/5 border border-red-500/15 rounded-xl text-sm text-gray-300">
+        <div className="p-3.5 bg-red-500/5 border border-red-500/15 rounded-xl text-sm text-gray-700 dark:text-gray-300">
           Apakah Anda yakin ingin menghapus produk{" "}
-          <span className="font-semibold text-white">&quot;{product.name}&quot;</span>?
+          <span className="font-semibold text-gray-900 dark:text-white">&quot;{product.name}&quot;</span>?
         </div>
 
         {error && (

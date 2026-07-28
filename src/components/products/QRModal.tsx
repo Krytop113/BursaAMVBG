@@ -85,27 +85,27 @@ export function QRModal({ product, onClose }: QRModalProps) {
 
       {/* Panel */}
       <div
-        className="relative bg-slate-900 border border-gray-800 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden w-full max-w-sm"
+        className="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-2xl shadow-2xl shadow-black/60 overflow-hidden w-full max-w-sm"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-800">
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-200 dark:border-gray-800">
           <div className="flex items-center gap-2.5">
             <div className="p-2 bg-teal-500/10 border border-teal-500/20 rounded-lg">
               <QrCode className="w-4 h-4 text-teal-400" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white leading-tight">
+              <p className="text-sm font-semibold text-gray-900 dark:text-white leading-tight">
                 QR Code Produk
               </p>
-              <p className="text-xs text-gray-500 mt-0.5 font-mono">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-mono">
                 {product.qrCode}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-gray-800 transition-colors"
+            className="p-1.5 rounded-lg text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors"
             title="Tutup (Esc)"
           >
             <X className="w-4 h-4" />
@@ -130,7 +130,7 @@ export function QRModal({ product, onClose }: QRModalProps) {
           </div>
 
           {/* Nama produk */}
-          <p className="text-sm font-medium text-gray-300 text-center leading-snug max-w-240px">
+          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 text-center leading-snug max-w-240px">
             {product.name}
           </p>
 

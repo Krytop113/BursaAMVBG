@@ -69,32 +69,32 @@ export default function AddRoleModal({
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-md bg-slate-900 border border-gray-800 rounded-2xl overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-800">
+      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-gray-800">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-teal-500/10 rounded-lg">
               <Tag className="w-5 h-5 text-teal-400" />
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-white">Tambah Role</h2>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Tambah Role</h2>
 
-              <p className="text-xs text-gray-500">Tambahkan role baru</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Tambahkan role baru</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-800"
+            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800"
           >
-            <X className="w-5 h-5 text-gray-400" />
+            <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
           </button>
         </div>
 
         {success ? (
           <div className="p-12 flex flex-col items-center gap-4">
             <CheckCircle2 className="w-12 h-12 text-teal-400" />
-            <p className="text-white font-semibold">
+            <p className="text-gray-900 dark:text-white font-semibold">
               Role berhasil ditambahkan
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function AddRoleModal({
             )}
 
             <div>
-              <label className="block text-sm text-gray-300 mb-2">
+              <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
                 Nama Role
               </label>
 
@@ -119,10 +119,10 @@ export default function AddRoleModal({
                   setName(e.target.value);
                   setError("");
                 }}
-                className={`w-full px-4 py-2.5 bg-slate-950 rounded-lg border text-white ${
+                className={`w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 rounded-lg border text-gray-900 dark:text-white ${
                   error
                     ? "border-red-500"
-                    : "border-gray-700 focus:border-teal-500"
+                    : "border-slate-300 dark:border-gray-700 focus:border-teal-500"
                 } focus:outline-none`}
               />
 
@@ -133,7 +133,7 @@ export default function AddRoleModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 py-2.5 rounded-lg bg-gray-800 text-gray-300"
+                className="flex-1 py-2.5 rounded-lg bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-semibold transition-colors"
               >
                 Batal
               </button>

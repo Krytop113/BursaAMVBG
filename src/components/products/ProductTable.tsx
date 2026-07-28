@@ -151,11 +151,10 @@ function StatusBadge({ status, stock }: { status: string; stock: number }) {
   return (
     <div className="flex flex-col gap-1">
       <span
-        className={`inline-flex items-center w-fit px-2 py-0.5 rounded-full text-xs font-semibold border ${
-          status === "Aktif"
-            ? "bg-teal-500/10 text-teal-400 border-teal-500/20"
-            : "bg-red-500/10 text-red-400 border-red-500/20"
-        }`}
+        className={`inline-flex items-center w-fit px-2 py-0.5 rounded-full text-xs font-semibold border ${status === "Aktif"
+          ? "bg-teal-500/10 text-teal-400 border-teal-500/20"
+          : "bg-red-500/10 text-red-400 border-red-500/20"
+          }`}
       >
         {status}
       </span>
@@ -187,7 +186,7 @@ function ActionButtons({
       <button
         title="Edit Produk"
         onClick={() => onEditClick(product)}
-        className="p-1.5 hover:bg-gray-800 rounded-md text-gray-500 hover:text-blue-400 transition-colors"
+        className="p-1.5 hover:bg-gray-800/10 rounded-md text-gray-500 hover:text-blue-400 transition-colors"
       >
         <Edit2 className="w-4 h-4" />
       </button>
@@ -203,7 +202,6 @@ function ActionButtons({
 }
 
 export default function ProductTable({
-  products,
   filteredProducts,
   isLoading,
   searchQuery,
@@ -265,14 +263,14 @@ export default function ProductTable({
         </div>
       ) : isEmpty ? (
         /* Empty state */
-          <div className="p-16 text-center flex flex-col items-center justify-center gap-3">
-            <div className="p-4 bg-slate-100 dark:bg-gray-800/40 rounded-full">
-              <AlertCircle className="w-10 h-10 text-gray-400 dark:text-gray-600" />
-            </div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+        <div className="p-16 text-center flex flex-col items-center justify-center gap-3">
+          <div className="p-4 bg-slate-100 dark:bg-gray-800/40 rounded-full">
+            <AlertCircle className="w-10 h-10 text-gray-400 dark:text-gray-600" />
+          </div>
+          <h3 className="text-base font-semibold text-gray-900 dark:text-white">
             Produk Tidak Ditemukan
           </h3>
-            <p className="text-gray-500 dark:text-gray-500 text-sm max-w-sm">
+          <p className="text-gray-500 dark:text-gray-500 text-sm max-w-sm">
             {hasActiveFilter
               ? "Coba gunakan kata kunci lain atau pilih kategori berbeda."
               : 'Belum ada produk. Klik tombol "Tambah Produk Baru" untuk memulai.'}
@@ -339,14 +337,14 @@ export default function ProductTable({
                           {product.name}
                         </div>
                         <div className="text-xs text-gray-400 dark:text-gray-600 mt-0.5 line-clamp-1 max-w-xs">
-                           {product.description}
+                          {product.description}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3.5">
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-md text-xs font-medium">
-                       <Tag className="w-3 h-3" />
+                      <Tag className="w-3 h-3" />
                       {product.categoryName}
                     </span>
                   </td>
@@ -385,7 +383,7 @@ export default function ProductTable({
             <span className="text-gray-300 font-medium">{endIndex}</span> dari{" "}
             <span className="text-gray-300 font-medium">{totalItems}</span> produk
           </span>
-          
+
           {totalPages > 1 && (
             <div className="flex items-center gap-2">
               <button

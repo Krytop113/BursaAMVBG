@@ -119,7 +119,7 @@ export default function AddProductModal({
         )}
 
         <div className="space-y-1">
-          <label className="text-sm font-medium text-gray-300">Nama Produk *</label>
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Nama Produk *</label>
           <input
             type="text"
             name="name"
@@ -133,7 +133,7 @@ export default function AddProductModal({
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium text-gray-300">Deskripsi *</label>
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Deskripsi *</label>
           <textarea
             name="description"
             value={form.description}
@@ -151,7 +151,7 @@ export default function AddProductModal({
 
         <div className="grid grid-cols-3 gap-3">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-300">Harga Beli *</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Harga Beli *</label>
             <input
               type="number"
               name="buyPrice"
@@ -165,7 +165,7 @@ export default function AddProductModal({
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-300">Harga Jual *</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Harga Jual *</label>
             <input
               type="number"
               name="price"
@@ -179,7 +179,7 @@ export default function AddProductModal({
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-300">Stok *</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Stok *</label>
             <input
               type="number"
               name="stock"
@@ -246,7 +246,7 @@ export default function AddProductModal({
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium text-gray-300">Kategori *</label>
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Kategori *</label>
           <select
             name="categoryId"
             value={form.categoryId}
@@ -256,7 +256,7 @@ export default function AddProductModal({
           >
             <option value="" disabled>-- Pilih Kategori --</option>
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id} className="bg-slate-900">
+              <option key={cat.id} value={cat.id} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">
                 {cat.name}
               </option>
             ))}

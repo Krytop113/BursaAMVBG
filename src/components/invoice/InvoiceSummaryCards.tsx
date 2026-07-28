@@ -16,10 +16,10 @@ interface InvoiceSummaryCardsProps {
 export function InvoiceSummaryCards({ summary }: InvoiceSummaryCardsProps) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="bg-gray-900 border border-gray-800 p-5 rounded-2xl flex items-center justify-between">
+      <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 p-5 rounded-2xl flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-xs text-gray-400 font-medium">Total Omset</p>
-          <p className="text-lg sm:text-2xl font-bold text-white">
+          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Total Omset</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
             Rp {summary.totalRevenue.toLocaleString("id-ID")}
           </p>
         </div>
@@ -28,10 +28,10 @@ export function InvoiceSummaryCards({ summary }: InvoiceSummaryCardsProps) {
         </div>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 p-5 rounded-2xl flex items-center justify-between">
+      <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 p-5 rounded-2xl flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-xs text-gray-400 font-medium">Total Modal</p>
-          <p className="text-lg sm:text-2xl font-bold text-white">
+          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Total Modal</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
             Rp {summary.totalCost.toLocaleString("id-ID")}
           </p>
         </div>
@@ -40,9 +40,9 @@ export function InvoiceSummaryCards({ summary }: InvoiceSummaryCardsProps) {
         </div>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 p-5 rounded-2xl flex items-center justify-between">
+      <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 p-5 rounded-2xl flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-xs text-gray-400 font-medium">Total Untung</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Total Untung</p>
           <p className="text-lg sm:text-2xl font-bold text-emerald-400">
             Rp {summary.totalProfit.toLocaleString("id-ID")}
           </p>
@@ -52,10 +52,10 @@ export function InvoiceSummaryCards({ summary }: InvoiceSummaryCardsProps) {
         </div>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 p-5 rounded-2xl flex items-center justify-between">
+      <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 p-5 rounded-2xl flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-xs text-gray-400 font-medium">Terjual</p>
-          <p className="text-lg sm:text-2xl font-bold text-white">
+          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Terjual</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
             {summary.totalItemsSold} pcs
           </p>
         </div>
