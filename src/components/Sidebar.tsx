@@ -12,6 +12,7 @@ import {
   CreditCard,
   Tags,
   BadgeCheck,
+  BookOpen,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -177,6 +178,26 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
                     }`}
                   />
                   Transaksi
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href={ROUTES.qrCatalog}
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2.5 font-medium duration-300 ease-in-out hover:bg-slate-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white ${
+                    isActive(ROUTES.qrCatalog)
+                      ? "bg-slate-100 dark:bg-gray-800 text-teal-500 dark:text-teal-400"
+                      : "text-gray-600 dark:text-gray-300"
+                  }`}
+                >
+                  <BookOpen
+                    className={`w-5 h-5 group-hover:text-teal-500 dark:group-hover:text-teal-400 ${
+                      isActive(ROUTES.qrCatalog)
+                        ? "text-teal-500 dark:text-teal-400"
+                        : "text-gray-400 dark:text-gray-400"
+                    }`}
+                  />
+                  Kamus QR Produk
                 </Link>
               </li>
 

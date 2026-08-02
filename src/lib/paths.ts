@@ -8,6 +8,7 @@ export const ROUTES = {
   roles: '/roles',
   transactions: '/transactions',
   qr: '/qr',
+  qrCatalog: '/qr/catalog',
   invoice: '/invoice',
   api: {
     login: '/api/auth/login',

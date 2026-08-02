@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { QrCode, Loader2, Upload } from "lucide-react";
+import { QrCode, Loader2, Upload, BookOpen } from "lucide-react";
 
 interface ScannerAreaProps {
   scannerId: string;
@@ -10,6 +10,7 @@ interface ScannerAreaProps {
   startScanner: () => void;
   stopScanner: () => void;
   onFileUpload: (file: File) => void;
+  onOpenCatalog: () => void;
 }
 
 export function ScannerArea({
@@ -19,6 +20,7 @@ export function ScannerArea({
   startScanner,
   stopScanner,
   onFileUpload,
+  onOpenCatalog,
 }: ScannerAreaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -95,6 +97,16 @@ export function ScannerArea({
           <span>Upload Gambar QR</span>
         </button>
       </div>
+
+      {/* Tombol Bukti/Kamus Katalog Produk */}
+      <button
+        onClick={onOpenCatalog}
+        disabled={isLoadingProducts}
+        className="mt-2 w-full py-3 bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 border border-teal-500/30 font-semibold rounded-2xl transition active:scale-95 flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer"
+      >
+        <BookOpen className="w-5 h-5 text-teal-500 dark:text-teal-400" />
+        <span>📋 Pilih dari Kamus Katalog Produk</span>
+      </button>
     </div>
   );
 }

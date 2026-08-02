@@ -2,21 +2,26 @@
 
 import React, { useState } from "react";
 import { useProducts } from "@/hooks/useProducts";
+import { useCategories } from "@/hooks/useCategories";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { ScannerHeader } from "@/components/qr/ScannerHeader";
 import { ScannerArea } from "@/components/qr/ScannerArea";
 import { CartArea } from "@/components/qr/CartArea";
 import { ConfirmModal } from "@/components/qr/ConfirmModal";
+import { CatalogModal } from "@/components/qr/CatalogModal";
 import { useQrScanner } from "@/hooks/useQrScanner";
 import { useQrCart } from "@/hooks/useQrCart";
 import type { Product } from "@/components/products/types";
 
 export default function QrScannerPage() {
   const { data: productsData, isLoading: isLoadingProducts } = useProducts();
+  const { data: categoriesData } = useCategories();
+  const categories = categoriesData?.categories ?? [];
   const products = productsData?.products ?? [];
 
   const [scannedProduct, setScannedProduct] = useState<Product | null>(null);
   const [confirmQuantity, setConfirmQuantity] = useState<number>(1);
+  const [showCatalogModal, setShowCatalogModal] = useState<boolean>(false);
 
   const scannerId = "mobile-qr-reader";
 
@@ -131,6 +136,7 @@ export default function QrScannerPage() {
         startScanner={startScanner}
         stopScanner={stopScanner}
         onFileUpload={scanFile}
+        onOpenCatalog={() => setShowCatalogModal(true)}
       />
 
       {/* Notifikasi/Umpan Balik */}
@@ -173,6 +179,16 @@ export default function QrScannerPage() {
           onClose={() => setScannedProduct(null)}
           onConfirm={handleConfirmAdd}
           onQuantityChange={setConfirmQuantity}
+        />
+      )}
+
+      {/* Modal Kamus / Katalog Produk */}
+      {showCatalogModal && (
+        <CatalogModal
+          products={products}
+          categories={categories}
+          onSelectProduct={(code) => handleScanSuccess(code)}
+          onClose={() => setShowCatalogModal(false)}
         />
       )}
     </div>
