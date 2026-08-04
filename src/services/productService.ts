@@ -1,9 +1,9 @@
-import { productModel } from '@/models/productModel';
 import { saveUploadedImage, deleteUploadedImage } from '@/lib/uploadImage';
 import { validateCreateProduct } from '@/validators/productValidator';
 import { AppError, NotFoundError, ValidationError } from '@/lib/errors';
 import { ProductWithCategory } from '@/dto/productDto';
 import prisma from '@/lib/db';
+import { Product } from '@prisma/client';
 
 export interface ProductRequestInput {
     name: string;
@@ -24,7 +24,7 @@ async function generateUniqueQrCode(name: string): Promise<string> {
     for (let attempts = 0; attempts < 10; attempts++) {
         const randomNum = Math.floor(10000 + Math.random() * 90000);
         const candidate = sanitized ? `${sanitized}_${randomNum}` : `PROD_${randomNum}`;
-        const existing = await productModel.findByQrCode(candidate);
+        const existing = await prisma.product.findUnique({ where: { qrCode: candidate } });
         if (!existing) return candidate;
     }
 
@@ -59,10 +59,13 @@ async function generateProductId(categoryId: number, price: number): Promise<str
 
 export const productService = {
     async getAll(): Promise<ProductWithCategory[]> {
-        return productModel.getAllWithCategories();
+        return prisma.product.findMany({
+            include: { category: true },
+            orderBy: { createdAt: 'asc' },
+        });
     },
 
-    async create(input: ProductRequestInput): Promise<ReturnType<typeof productModel.insert>> {
+    async create(input: ProductRequestInput): Promise<Product> {
         const qrCode = await generateUniqueQrCode(input.name);
 
         const validation = validateCreateProduct({ ...input, qrCode });
@@ -73,16 +76,18 @@ export const productService = {
         const imageUrl = await saveUploadedImage(input.imageFile);
         const productId = await generateProductId(input.categoryId, input.price);
 
-        return productModel.insert({
-            ...validation.data,
-            id: productId,
-            qrCode,
-            image_url: imageUrl,
+        return prisma.product.create({
+            data: {
+                ...validation.data,
+                id: productId,
+                qrCode,
+                image_url: imageUrl,
+            },
         });
     },
 
-    async update(id: string, input: ProductRequestInput): Promise<ReturnType<typeof productModel.update>> {
-        const existingProduct = await productModel.findById(id);
+    async update(id: string, input: ProductRequestInput): Promise<Product> {
+        const existingProduct = await prisma.product.findUnique({ where: { id } });
         if (!existingProduct) throw new NotFoundError('Produk tidak ditemukan!');
 
         const validation = validateCreateProduct({ ...input, qrCode: existingProduct.qrCode });
@@ -102,19 +107,22 @@ export const productService = {
             imageUrl = await saveUploadedImage(input.imageFile);
         }
 
-        return productModel.update(id, {
-            name: validation.data.name,
-            description: validation.data.description,
-            price: validation.data.price,
-            buyPrice: validation.data.buyPrice,
-            stock: validation.data.stock,
-            categoryId: validation.data.categoryId,
-            image_url: imageUrl,
+        return prisma.product.update({
+            where: { id },
+            data: {
+                name: validation.data.name,
+                description: validation.data.description,
+                price: validation.data.price,
+                buyPrice: validation.data.buyPrice,
+                stock: validation.data.stock,
+                categoryId: validation.data.categoryId,
+                image_url: imageUrl,
+            },
         });
     },
 
     async delete(id: string): Promise<void> {
-        const existing = await productModel.findById(id);
+        const existing = await prisma.product.findUnique({ where: { id } });
         if (!existing) throw new NotFoundError('Produk tidak ditemukan!');
 
         if (existing.image_url) {
@@ -125,6 +133,7 @@ export const productService = {
             }
         }
 
-        await productModel.delete(id);
+        await prisma.product.delete({ where: { id } });
     },
 };
+

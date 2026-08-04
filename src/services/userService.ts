@@ -1,4 +1,5 @@
-import { userModel, User } from '@/models/userModel';
+import prisma from '@/lib/db';
+import { User } from '@prisma/client';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
 import bcrypt from 'bcryptjs';
 
@@ -20,7 +21,7 @@ type UpdateUserInput = Partial<{
 }>;
 
 async function requireUser(userId: number): Promise<User> {
-    const user = await userModel.findById(userId);
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new NotFoundError('User tidak ditemukan!');
     return user;
 }
@@ -31,7 +32,10 @@ export const userService = {
     },
 
     async getAll(): Promise<UserWithRole[]> {
-        return userModel.getAllWithRole() as Promise<UserWithRole[]>;
+        return prisma.user.findMany({
+            include: { role: true },
+            orderBy: { createdAt: 'asc' },
+        }) as Promise<UserWithRole[]>;
     },
 
     async create(input: CreateUserInput & { pin?: string }): Promise<User> {
@@ -41,19 +45,21 @@ export const userService = {
         const rawPin = input.pin || '123456';
         const hashedPin = await bcrypt.hash(rawPin, 10);
 
-        return userModel.insert({
-            username: input.username,
-            email: input.email,
-            password: hashedPassword,
-            roleId: input.roleId,
-            status: input.status || 'active',
-            pin: hashedPin,
+        return prisma.user.create({
+            data: {
+                username: input.username,
+                email: input.email,
+                password: hashedPassword,
+                roleId: input.roleId,
+                status: input.status || 'active',
+                pin: hashedPin,
+            },
         });
     },
 
     async delete(userId: number): Promise<void> {
         await requireUser(userId);
-        await userModel.delete(userId);
+        await prisma.user.delete({ where: { id: userId } });
     },
 
     async updateProfile(userId: number, input: UpdateUserInput): Promise<{ updated: User; changed: boolean }> {
@@ -63,7 +69,7 @@ export const userService = {
         if (input.username) updateData.username = input.username;
 
         if (input.email && input.email !== existingUser.email) {
-            const emailInUse = await userModel.findByEmail(input.email);
+            const emailInUse = await prisma.user.findUnique({ where: { email: input.email } });
             if (emailInUse) throw new BadRequestError('Email sudah digunakan oleh pengguna lain!');
             updateData.email = input.email;
         }
@@ -76,7 +82,10 @@ export const userService = {
             return { updated: existingUser, changed: false };
         }
 
-        const updated = await userModel.update(userId, updateData);
+        const updated = await prisma.user.update({
+            where: { id: userId },
+            data: updateData,
+        });
         return { updated, changed: true };
     },
 
@@ -88,7 +97,7 @@ export const userService = {
         if (input.roleId) updateData.roleId = input.roleId;
 
         if (input.email && input.email !== existingUser.email) {
-            const emailInUse = await userModel.findByEmail(input.email);
+            const emailInUse = await prisma.user.findUnique({ where: { email: input.email } });
             if (emailInUse) throw new BadRequestError('Email sudah digunakan oleh pengguna lain!');
             updateData.email = input.email;
         }
@@ -101,7 +110,11 @@ export const userService = {
             return { updated: existingUser, changed: false };
         }
 
-        const updated = await userModel.update(userId, updateData);
+        const updated = await prisma.user.update({
+            where: { id: userId },
+            data: updateData,
+        });
         return { updated, changed: true };
     },
 };
+

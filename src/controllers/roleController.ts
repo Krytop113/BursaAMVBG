@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
-import { roleModel } from '@/models/roleModel';
+import prisma from '@/lib/db';
 import { validateCreateRole } from '@/validators/roleValidator';
 import { withErrorHandler } from '@/lib/apiHandler';
 import { ValidationError } from '@/lib/errors';
 
 export const roleController = {
     getAllRoles: withErrorHandler('roleController.getAllRoles', async (): Promise<NextResponse> => {
-        const roles = await roleModel.getAll();
+        const roles = await prisma.role.findMany({
+            orderBy: { name: 'asc' },
+        });
         return NextResponse.json({
             message: 'Daftar role berhasil diambil!',
             roles: roles.map(role => ({ id: role.id, name: role.name })),
@@ -21,7 +23,9 @@ export const roleController = {
             throw new ValidationError(validation.error, validation.fieldErrors as Record<string, string>);
         }
 
-        const role = await roleModel.insert(validation.data);
+        const role = await prisma.role.create({
+            data: validation.data,
+        });
         return NextResponse.json(
             { message: 'Role berhasil dibuat!', role },
             { status: 201 }
@@ -29,10 +33,12 @@ export const roleController = {
     }),
 
     deleteRole: withErrorHandler('roleController.deleteRole', async (id: number): Promise<NextResponse> => {
-        await roleModel.delete(id);
+        await prisma.role.delete({
+            where: { id },
+        });
         return NextResponse.json(
             { message: 'Role berhasil dihapus!' },
             { status: 200 }
         );
     }),
-};
+};

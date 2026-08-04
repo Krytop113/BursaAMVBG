@@ -1,5 +1,4 @@
 import prisma from '@/lib/db';
-import { transactionModel } from '@/models/transactionModel';
 import { StockMovement, MovementType } from '@prisma/client';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
 import { StockMovementWithProduct } from '@/dto/transactionDto';
@@ -13,7 +12,19 @@ export type CreateTransactionInput = {
 
 export const transactionService = {
     async getAll(): Promise<StockMovementWithProduct[]> {
-        return transactionModel.getAllWithProducts() as Promise<StockMovementWithProduct[]>;
+        return prisma.stockMovement.findMany({
+            include: {
+                product: {
+                    select: {
+                        name: true,
+                        qrCode: true,
+                        price: true,
+                        buyPrice: true,
+                    },
+                },
+            },
+            orderBy: { createdAt: 'desc' },
+        }) as Promise<StockMovementWithProduct[]>;
     },
 
     async create(input: CreateTransactionInput): Promise<StockMovement> {
@@ -32,13 +43,20 @@ export const transactionService = {
             }
 
             await tx.product.update({ where: { id: input.productId }, data: { stock: newStock } });
-            return transactionModel.insert(input, tx);
+            return tx.stockMovement.create({
+                data: {
+                    productId: input.productId,
+                    type: input.type,
+                    quantity: input.quantity,
+                    note: input.note || '',
+                },
+            });
         });
     },
 
     async delete(id: string): Promise<void> {
         await prisma.$transaction(async (tx) => {
-            const movement = await transactionModel.findById(id, tx);
+            const movement = await tx.stockMovement.findUnique({ where: { id } });
             if (!movement) throw new NotFoundError('Transaksi tidak ditemukan.');
 
             const product = await tx.product.findUnique({ where: { id: movement.productId } });
@@ -57,7 +75,8 @@ export const transactionService = {
             }
 
             await tx.product.update({ where: { id: movement.productId }, data: { stock: newStock } });
-            await transactionModel.delete(id, tx);
+            await tx.stockMovement.delete({ where: { id } });
         });
     },
 };
+

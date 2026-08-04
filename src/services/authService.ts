@@ -1,4 +1,4 @@
-import { userModel } from '@/models/userModel';
+import prisma from '@/lib/db';
 import { sessionService } from '@/lib/session';
 import { validateLogin } from '@/validators/authValidator';
 import { BadRequestError, ValidationError, NotFoundError } from '@/lib/errors';
@@ -26,6 +26,12 @@ function resolveCookieOptions(requestUrl: string, requestHeaders: Headers): Logi
     };
 }
 
+async function findUserByIdentifier(identifier: string) {
+    const byEmail = await prisma.user.findUnique({ where: { email: identifier } });
+    if (byEmail) return byEmail;
+    return prisma.user.findFirst({ where: { username: identifier } });
+}
+
 export const authService = {
     async login(body: unknown, requestUrl: string, requestHeaders: Headers): Promise<LoginResult> {
         const validation = validateLogin(body);
@@ -35,8 +41,7 @@ export const authService = {
 
         const { identifier, password } = validation.data;
 
-        let user = await userModel.findByEmail(identifier);
-        if (!user) user = await userModel.findByUsername(identifier);
+        const user = await findUserByIdentifier(identifier);
 
         if (!user) {
             throw new BadRequestError('Email/Username atau password salah!');
@@ -63,7 +68,7 @@ export const authService = {
 
     async verifyUser(identifier: string) {
         if (!identifier) throw new BadRequestError('Email atau Username wajib diisi!');
-        const user = await userModel.findByIdentifier(identifier);
+        const user = await findUserByIdentifier(identifier);
         if (!user) throw new NotFoundError('User tidak ditemukan!');
         return {
             username: user.username,
@@ -75,7 +80,7 @@ export const authService = {
         if (!identifier) throw new BadRequestError('Email atau Username wajib diisi!');
         if (!pin) throw new BadRequestError('PIN keamanan wajib diisi!');
 
-        const user = await userModel.findByIdentifier(identifier);
+        const user = await findUserByIdentifier(identifier);
         if (!user) throw new NotFoundError('User tidak ditemukan!');
 
         const isHashed = user.pin.startsWith('$2a$') || user.pin.startsWith('$2y$') || user.pin.startsWith('$2b$');
@@ -87,7 +92,10 @@ export const authService = {
             isMatch = user.pin === pin;
             if (isMatch) {
                 const hashed = await bcrypt.hash(pin, 10);
-                await userModel.updatePin(user.id, hashed);
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: { pin: hashed },
+                });
             }
         }
 
@@ -105,7 +113,7 @@ export const authService = {
             throw new BadRequestError('Password minimal harus 6 karakter!');
         }
 
-        const user = await userModel.findByIdentifier(identifier);
+        const user = await findUserByIdentifier(identifier);
         if (!user) throw new NotFoundError('User tidak ditemukan!');
 
         const isHashed = user.pin.startsWith('$2a$') || user.pin.startsWith('$2y$') || user.pin.startsWith('$2b$');
@@ -122,14 +130,19 @@ export const authService = {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        await userModel.update(user.id, { password: hashedPassword });
-        
+        const updateData: { password: string; pin?: string } = { password: hashedPassword };
+
         if (!isHashed) {
-            const hashedPin = await bcrypt.hash(pin, 10);
-            await userModel.updatePin(user.id, hashedPin);
+            updateData.pin = await bcrypt.hash(pin, 10);
         }
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: updateData,
+        });
 
         return true;
     }
 };
+
 

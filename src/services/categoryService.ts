@@ -1,10 +1,13 @@
-import { categoryModel, Category } from '@/models/categoryModel';
+import prisma from '@/lib/db';
+import { Category } from '@prisma/client';
 import { validateCreateCategory } from '@/validators/categoryValidator';
 import { ValidationError } from '@/lib/errors';
 
 export const categoryService = {
     async getAll(): Promise<Category[]> {
-        return categoryModel.getAll();
+        return prisma.category.findMany({
+            orderBy: { name: 'asc' },
+        });
     },
 
     async create(name: string): Promise<Category> {
@@ -12,10 +15,15 @@ export const categoryService = {
         if (!validation.success) {
             throw new ValidationError(validation.error, validation.fieldErrors as Record<string, string>);
         }
-        return categoryModel.insert(validation.data);
+        return prisma.category.create({
+            data: validation.data,
+        });
     },
 
     async delete(id: number): Promise<void> {
-        await categoryModel.delete(id);
+        await prisma.category.delete({
+            where: { id },
+        });
     },
 };
+
