@@ -7,9 +7,8 @@ export async function GET() {
       include: { product: true }
     });
 
-    // 1. Hitung Keuangan dan Statistik Produk
-    let totalIncome = 0; // Uang Masuk (OUT * price)
-    let totalExpense = 0; // Uang Keluar (IN * buyPrice)
+    let totalIncome = 0;
+    let totalExpense = 0;
 
     const productStats: Record<string, { name: string; totalSpent: number; totalEarned: number; profit: number }> = {};
 
@@ -38,14 +37,12 @@ export async function GET() {
       }
     }
 
-    // Hitung profit bersih per produk
     for (const id in productStats) {
       productStats[id].profit = productStats[id].totalEarned - productStats[id].totalSpent;
     }
 
     const netProfit = totalIncome - totalExpense;
 
-    // Cari produk pengeluaran terbesar & profit terbesar
     let maxSpentProductId = "";
     let maxSpentValue = 0;
     let maxSpentProductName = "-";
@@ -68,19 +65,16 @@ export async function GET() {
       }
     }
 
-    // Jika tidak ada data transaksi yang profitnya terhitung
     if (maxProfitValue === -Infinity) {
       maxProfitValue = 0;
     }
 
-    // 2. Ambil list produk dengan stok terkecil ke terbesar
     const lowStockProducts = await prisma.product.findMany({
       orderBy: { stock: "asc" },
       take: 5,
       include: { category: true }
     });
 
-    // 3. Mutasi 5 teratas dari produk dengan pengeluaran terbesar dan profit terbesar
     const filterProductIds = Array.from(
       new Set([maxSpentProductId, maxProfitProductId].filter(Boolean))
     );
@@ -96,7 +90,6 @@ export async function GET() {
         include: { product: true }
       });
     } else {
-      // Fallback ke 5 mutasi terbaru jika belum ada penjualan/pembelian spesifik
       topMutations = await prisma.stockMovement.findMany({
         orderBy: { createdAt: "desc" },
         take: 5,
@@ -104,7 +97,6 @@ export async function GET() {
       });
     }
 
-    // 4. Hitung Penjualan 7 Hari Terakhir
     const salesTrend = [];
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
