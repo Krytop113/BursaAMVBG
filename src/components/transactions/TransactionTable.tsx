@@ -43,7 +43,7 @@ function TypeBadge({ type }: { type: 'IN' | 'OUT' }) {
   );
 }
 
-export default function TransactionTable({
+export function TransactionTable({
   transactions,
   filteredTransactions,
   isLoading,

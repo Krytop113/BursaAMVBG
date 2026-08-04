@@ -10,7 +10,7 @@ interface AddUserModalProps {
   onSuccess: () => void;
 }
 
-export default function AddUserModal({
+export function AddUserModal({
   roles,
   onClose,
   onSuccess,

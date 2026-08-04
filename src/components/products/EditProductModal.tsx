@@ -14,7 +14,7 @@ interface EditProductModalProps {
   onSuccess: () => void;
 }
 
-export default function EditProductModal({
+export function EditProductModal({
   product,
   categories,
   onClose,

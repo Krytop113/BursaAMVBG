@@ -7,7 +7,7 @@ interface RolePageHeaderProps {
   onAddClick: () => void;
 }
 
-export default function RolePageHeader({
+export function RolePageHeader({
   onAddClick,
 }: RolePageHeaderProps) {
   return (

@@ -7,7 +7,7 @@ interface TransactionOverviewProps {
   transactions: Transaction[];
 }
 
-export default function TransactionOverview({ transactions }: TransactionOverviewProps) {
+export function TransactionOverview({ transactions }: TransactionOverviewProps) {
   const totalPembelian = transactions
     .filter((t) => t.type === "IN")
     .reduce((sum, t) => sum + t.quantity * (t.productBuyPrice || 0), 0);

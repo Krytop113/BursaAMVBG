@@ -12,7 +12,7 @@ interface DeleteProductModalProps {
   onSuccess: () => void;
 }
 
-export default function DeleteProductModal({
+export function DeleteProductModal({
   product,
   onClose,
   onSuccess,

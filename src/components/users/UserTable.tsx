@@ -57,7 +57,7 @@ function ActionButtons({
   );
 }
 
-export default function UserTable({
+export function UserTable({
   users,
   filteredUsers,
   isLoading,

@@ -11,7 +11,7 @@ interface DeleteCategoryModalProps {
   onSuccess: () => void;
 }
 
-export default function DeleteCategoryModal({
+export function DeleteCategoryModal({
   category,
   onClose,
   onSuccess,

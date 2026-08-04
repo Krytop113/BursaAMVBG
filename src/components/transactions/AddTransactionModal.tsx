@@ -20,7 +20,7 @@ const INITIAL_FORM = {
   note: "",
 };
 
-export default function AddTransactionModal({
+export function AddTransactionModal({
   products,
   onClose,
   onSuccess,

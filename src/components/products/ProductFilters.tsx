@@ -12,7 +12,7 @@ interface ProductFiltersProps {
   onCategoryChange: (value: string) => void;
 }
 
-export default function ProductFilters({
+export function ProductFilters({
   categories,
   searchQuery,
   selectedCategory,

@@ -11,7 +11,7 @@ interface LowStockProductsProps {
   }>;
 }
 
-export default function LowStockTable({ products }: LowStockProductsProps) {
+export function LowStockTable({ products }: LowStockProductsProps) {
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-xl p-6">
       <div className="flex items-center gap-2 mb-4">

@@ -11,7 +11,7 @@ interface EditUserModalProps {
   onSuccess: () => void;
 }
 
-export default function EditUserModal({
+export function EditUserModal({
   user,
   roles,
   onClose,

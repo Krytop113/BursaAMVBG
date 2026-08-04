@@ -10,7 +10,7 @@ interface TransactionFiltersProps {
   onTypeChange: (value: string) => void;
 }
 
-export default function TransactionFilters({
+export function TransactionFilters({
   searchQuery,
   selectedType,
   onSearchChange,

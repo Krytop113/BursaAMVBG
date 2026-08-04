@@ -11,7 +11,7 @@ interface UserFiltersProps {
   onRoleChange: (value: string) => void;
 }
 
-export default function UserFilters({
+export function UserFilters({
   roles,
   searchQuery,
   selectedRole,

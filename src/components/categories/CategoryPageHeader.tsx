@@ -7,7 +7,7 @@ interface CategoryPageHeaderProps {
   onAddClick: () => void;
 }
 
-export default function CategoryPageHeader({
+export function CategoryPageHeader({
   onAddClick,
 }: CategoryPageHeaderProps) {
   return (

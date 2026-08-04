@@ -7,7 +7,7 @@ interface ProductPageHeaderProps {
   onAddClick: () => void;
 }
 
-export default function ProductPageHeader({ onAddClick }: ProductPageHeaderProps) {
+export function ProductPageHeader({ onAddClick }: ProductPageHeaderProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>

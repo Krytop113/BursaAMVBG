@@ -12,7 +12,7 @@ interface TopMutationsProps {
   }>;
 }
 
-export default function TopMutationsTable({ mutations }: TopMutationsProps) {
+export function TopMutationsTable({ mutations }: TopMutationsProps) {
   return (
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-gray-800 rounded-xl p-6">
       <div className="flex items-center gap-2 mb-4">

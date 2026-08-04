@@ -42,7 +42,7 @@ function ActionButtons({
   );
 }
 
-export default function RoleTable({
+export function RoleTable({
   roles,
   isLoading,
   onDeleteClick,

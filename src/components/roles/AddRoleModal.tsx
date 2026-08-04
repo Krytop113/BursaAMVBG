@@ -8,7 +8,7 @@ interface AddRoleModalProps {
   onSuccess: () => void;
 }
 
-export default function AddRoleModal({
+export function AddRoleModal({
   onClose,
   onSuccess,
 }: AddRoleModalProps) {

@@ -15,7 +15,7 @@ interface DashboardHighlightsProps {
   };
 }
 
-export default function DashboardHighlights({ stats }: DashboardHighlightsProps) {
+export function DashboardHighlights({ stats }: DashboardHighlightsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <StatCard

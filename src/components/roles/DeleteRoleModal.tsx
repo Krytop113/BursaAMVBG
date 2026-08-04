@@ -10,7 +10,7 @@ interface DeleteRoleModalProps {
   onSuccess: () => void | Promise<void>;
 }
 
-export default function DeleteRoleModal({
+export function DeleteRoleModal({
   role,
   onClose,
   onSuccess,

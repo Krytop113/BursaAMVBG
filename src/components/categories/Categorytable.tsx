@@ -42,7 +42,7 @@ function ActionButtons({
   );
 }
 
-export default function CategoryTable({
+export function CategoryTable({
   categories,
   isLoading,
   onDeleteClick,

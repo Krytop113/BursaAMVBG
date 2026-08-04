@@ -22,7 +22,7 @@ const INITIAL_FORM = {
   categoryId: "",
 };
 
-export default function AddProductModal({
+export function AddProductModal({
   categories,
   onClose,
   onSuccess,

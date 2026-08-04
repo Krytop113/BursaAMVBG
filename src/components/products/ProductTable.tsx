@@ -201,7 +201,7 @@ function ActionButtons({
   );
 }
 
-export default function ProductTable({
+export function ProductTable({
   filteredProducts,
   isLoading,
   searchQuery,

@@ -12,7 +12,7 @@ interface DeleteTransactionModalProps {
   onSuccess: () => void;
 }
 
-export default function DeleteTransactionModal({
+export function DeleteTransactionModal({
   transaction,
   onClose,
   onSuccess,

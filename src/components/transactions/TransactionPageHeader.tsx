@@ -6,7 +6,7 @@ interface TransactionPageHeaderProps {
   onAddClick: () => void;
 }
 
-export default function TransactionPageHeader({ onAddClick }: TransactionPageHeaderProps) {
+export function TransactionPageHeader({ onAddClick }: TransactionPageHeaderProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>

@@ -7,7 +7,7 @@ interface UserPageHeaderProps {
   onAddClick: () => void;
 }
 
-export default function UserPageHeader({
+export function UserPageHeader({
   onAddClick,
 }: UserPageHeaderProps) {
   return (

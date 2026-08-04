@@ -9,7 +9,7 @@ interface AddCategoryModalProps {
   onSuccess: () => void;
 }
 
-export default function AddCategoryModal({
+export function AddCategoryModal({
   onClose,
   onSuccess,
 }: AddCategoryModalProps) {
