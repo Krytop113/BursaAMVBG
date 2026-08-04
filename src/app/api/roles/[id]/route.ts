@@ -1,10 +1,19 @@
-import { roleController } from "@/controllers/roleController";
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/db';
+import { withErrorHandler } from '@/lib/apiHandler';
 
-export async function DELETE(
+export const DELETE = withErrorHandler('roles.DELETE', async (
     request: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
+    context?: unknown
+): Promise<NextResponse> => {
+    const { params } = context as { params: Promise<{ id: string }> };
     const resolvedParams = await params;
     const roleId = parseInt(resolvedParams.id, 10);
-    return roleController.deleteRole(roleId);
-}
+    await prisma.role.delete({
+        where: { id: roleId },
+    });
+    return NextResponse.json(
+        { message: 'Role berhasil dihapus!' },
+        { status: 200 }
+    );
+});

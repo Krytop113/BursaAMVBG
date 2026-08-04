@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { AppError, ValidationError, ConflictError } from './errors';
 
-export function withErrorHandler<T extends (...args: unknown[]) => Promise<NextResponse>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function withErrorHandler<T extends (...args: any[]) => Promise<NextResponse>>(
   label: string,
   handler: T
 ): T {
@@ -40,3 +41,4 @@ export function withErrorHandler<T extends (...args: unknown[]) => Promise<NextR
 
   return wrapped as T;
 }
+

@@ -1,9 +1,21 @@
-import { categoryController } from "@/controllers/categoryController";
+import { NextResponse } from 'next/server';
+import { categoryService } from '@/services/categoryService';
+import { withErrorHandler } from '@/lib/apiHandler';
+import { toCategoryResponse } from '@/dto/categoryDto';
 
-export async function GET() {
-    return categoryController.getAllCategories();
-}
+export const GET = withErrorHandler('categories.GET', async (): Promise<NextResponse> => {
+    const categories = await categoryService.getAll();
+    return NextResponse.json({
+        message: 'Daftar kategori berhasil diambil!',
+        categories: categories.map(toCategoryResponse),
+    });
+});
 
-export async function POST(request: Request) {
-    return categoryController.createCategory(request);
-}
+export const POST = withErrorHandler('categories.POST', async (request: Request): Promise<NextResponse> => {
+    const body = await request.json();
+    const category = await categoryService.create(body.name);
+    return NextResponse.json(
+        { message: 'Kategori berhasil dibuat!', category: toCategoryResponse(category) },
+        { status: 201 }
+    );
+});

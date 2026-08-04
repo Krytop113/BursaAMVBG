@@ -1,10 +1,18 @@
-import { categoryController } from "@/controllers/categoryController";
+import { NextResponse } from 'next/server';
+import { categoryService } from '@/services/categoryService';
+import { withErrorHandler } from '@/lib/apiHandler';
 
-export async function DELETE(
+export const DELETE = withErrorHandler('categories.DELETE', async (
     request: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
+    context?: unknown
+): Promise<NextResponse> => {
+    const { params } = context as { params: Promise<{ id: string }> };
     const resolvedParams = await params;
     const categoryId = parseInt(resolvedParams.id, 10);
-    return categoryController.deleteCategory(categoryId);
-}
+    await categoryService.delete(categoryId);
+    return NextResponse.json(
+        { message: 'Kategori berhasil dihapus!' },
+        { status: 200 }
+    );
+});
+

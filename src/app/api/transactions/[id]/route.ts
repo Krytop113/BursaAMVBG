@@ -1,9 +1,17 @@
-import { transactionController } from "@/controllers/transactionController";
+import { NextResponse } from 'next/server';
+import { transactionService } from '@/services/transactionService';
+import { withErrorHandler } from '@/lib/apiHandler';
 
-export async function DELETE(
+export const DELETE = withErrorHandler('transactions.DELETE', async (
     request: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
+    context?: unknown
+): Promise<NextResponse> => {
+    const { params } = context as { params: Promise<{ id: string }> };
     const resolvedParams = await params;
-    return transactionController.deleteTransaction(resolvedParams.id);
-}
+    await transactionService.delete(resolvedParams.id);
+    return NextResponse.json(
+        { message: 'Transaksi berhasil dihapus dan stok produk telah diperbarui!' },
+        { status: 200 }
+    );
+});
+
