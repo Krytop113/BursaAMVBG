@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { X, UserPlus, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
-import type { Role } from "./types";
+import type { Role } from "@/types";
+
 
 interface AddUserModalProps {
   roles: Role[];

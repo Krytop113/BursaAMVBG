@@ -7,7 +7,8 @@ import {
   AddCategoryModal,
   DeleteCategoryModal,
 } from "@/components/categories";
-import type { Category } from "@/components/categories";
+import type { Category } from "@/types";
+
 import { useCategories } from "@/hooks/useCategories";
 
 export default function CategoriesPage() {

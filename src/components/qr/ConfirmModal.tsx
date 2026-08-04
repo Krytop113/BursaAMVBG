@@ -2,7 +2,8 @@
 
 import React from "react";
 import { ShoppingCart, X, Minus, Plus } from "lucide-react";
-import type { Product } from "@/components/products/types";
+import type { Product } from "@/types";
+
 
 interface ConfirmModalProps {
   product: Product;

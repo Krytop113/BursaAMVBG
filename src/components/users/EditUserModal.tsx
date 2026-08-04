@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { X, Edit2, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
-import type { User, Role } from "./types";
+import type { User, Role } from "@/types";
+
 
 interface EditUserModalProps {
   user: User;

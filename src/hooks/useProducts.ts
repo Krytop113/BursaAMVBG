@@ -1,7 +1,7 @@
 "use client";
 
 import { createResourceHook } from "./useResource";
-import type { Product } from "@/components/products/types";
+import type { Product } from "@/types";
 import { ROUTES } from "@/lib/paths";
 
 export const useProducts = createResourceHook<{ products: Product[] }>(
@@ -9,3 +9,4 @@ export const useProducts = createResourceHook<{ products: Product[] }>(
   ROUTES.api.products,
   "Gagal mengambil data produk"
 );
+

@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { Trash2, Loader2, AlertTriangle } from "lucide-react";
-import type { User } from "./types";
+import type { User } from "@/types";
+
 
 interface DeleteUserModalProps {
   user: User;

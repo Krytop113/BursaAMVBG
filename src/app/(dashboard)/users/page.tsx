@@ -9,7 +9,8 @@ import {
   EditUserModal,
   DeleteUserModal,
 } from "@/components/users";
-import type { User, Role } from "@/components/users";
+import type { User, Role } from "@/types";
+
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);

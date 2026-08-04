@@ -3,7 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { Maximize2, Tag } from "lucide-react";
-import type { Product } from "@/components/products/types";
+import type { Product } from "@/types";
+
 
 interface QrCatalogCardProps {
   product: Product;

@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Trash2, AlertCircle, Edit2, Eye } from "lucide-react";
-import type { User } from "./types";
+import type { User } from "@/types";
+
 
 interface UserTableProps {
   users: User[];

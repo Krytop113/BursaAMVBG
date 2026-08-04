@@ -33,7 +33,8 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(ROUTES.api.forgotPassword, {
+      const response = await fetch(ROUTES.api.auth.forgotPassword, {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +70,8 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(ROUTES.api.forgotPassword, {
+      const response = await fetch(ROUTES.api.auth.forgotPassword, {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +111,8 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(ROUTES.api.forgotPassword, {
+      const response = await fetch(ROUTES.api.auth.forgotPassword, {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",

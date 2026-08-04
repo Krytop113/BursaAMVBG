@@ -2,7 +2,8 @@
 
 import React from "react";
 import { Search } from "lucide-react";
-import type { Category } from "./types";
+import type { Category } from "@/types";
+
 
 interface ProductFiltersProps {
   categories: Category[];

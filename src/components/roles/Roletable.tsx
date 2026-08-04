@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
-import type { Role } from "./types";
+import type { Role } from "@/types";
+
 
 interface RoleTableProps {
   roles: Role[];

@@ -4,4 +4,4 @@ export * from './EditUserModal';
 export * from './UserFilters';
 export * from './UserPageHeader';
 export * from './UserTable';
-export * from './types';
+

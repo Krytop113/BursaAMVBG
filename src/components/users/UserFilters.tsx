@@ -1,7 +1,8 @@
 "use client";
 
 import { Search } from "lucide-react";
-import type { Role } from "./types";
+import type { Role } from "@/types";
+
 
 interface UserFiltersProps {
   roles: Role[];

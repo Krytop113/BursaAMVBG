@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { BookOpen, X, Plus, Package } from "lucide-react";
-import type { Product, Category } from "@/components/products/types";
+import type { Product, Category } from "@/types";
+
 import { CatalogFilterBar } from "./CatalogFilterBar";
 
 interface CatalogModalProps {

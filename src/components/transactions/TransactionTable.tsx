@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Trash2, AlertCircle, Calendar, ArrowUpRight, ArrowDownLeft } from "lucide-react";
-import type { Transaction } from "./types";
+import type { Transaction } from "@/types";
+
 
 interface TransactionTableProps {
   transactions: Transaction[];

@@ -9,7 +9,8 @@ import {
   DeleteTransactionModal,
   TransactionOverview,
 } from "@/components/transactions";
-import type { Transaction } from "@/components/transactions";
+import type { Transaction } from "@/types";
+
 import { useTransactions } from "@/hooks/useTransactions";
 import { useProducts } from "@/hooks/useProducts";
 

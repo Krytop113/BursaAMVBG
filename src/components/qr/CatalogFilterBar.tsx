@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Search, Tag } from "lucide-react";
-import type { Category } from "@/components/products/types";
+import type { Category, Product } from "@/types";
 
 interface CatalogFilterBarProps {
   searchQuery: string;

@@ -11,9 +11,6 @@ export const ROUTES = {
   qrCatalog: '/qr/catalog',
   invoice: '/invoice',
   api: {
-    login: '/api/auth/login',
-    logout: '/api/auth/logout',
-    forgotPassword: '/api/auth/forgot-password',
     auth: {
       login: '/api/auth/login',
       logout: '/api/auth/logout',
@@ -32,3 +29,4 @@ export const ROUTES = {
 } as const;
 
 export type Routes = typeof ROUTES;
+

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
-import type { Product } from "@/components/products/types";
+import type { Product } from "@/types";
+
 
 interface UseQrScannerProps {
   scannerId: string;

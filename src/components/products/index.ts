@@ -6,4 +6,4 @@ export * from './ProductFilters';
 export * from './ProductPageHeader';
 export * from './ProductTable';
 export * from './QRModal';
-export * from './types';
+

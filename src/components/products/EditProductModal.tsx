@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { Package, Save, Edit2 } from "lucide-react";
-import type { Product, Category } from "./types";
+import type { Product, Category } from "@/types";
+
 import { validateProductForm, type ProductFieldErrors } from "@/validators/productValidator";
 import { Modal, FieldError, inputCls, Button } from "@/components/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

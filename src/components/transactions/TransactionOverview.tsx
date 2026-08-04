@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowUpRight, ArrowDownLeft, Wallet } from "lucide-react";
-import type { Transaction } from "./types";
+import type { Transaction } from "@/types";
 import { StatCard } from "@/components/ui";
 
 interface TransactionOverviewProps {

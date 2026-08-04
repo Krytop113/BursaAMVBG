@@ -1,7 +1,7 @@
 "use client";
 
 import { createResourceHook } from "./useResource";
-import type { Category } from "@/components/products/types";
+import type { Category } from "@/types";
 import { ROUTES } from "@/lib/paths";
 
 export const useCategories = createResourceHook<{ categories: Category[] }>(
@@ -9,3 +9,4 @@ export const useCategories = createResourceHook<{ categories: Category[] }>(
   ROUTES.api.categories,
   "Gagal mengambil data kategori"
 );
+

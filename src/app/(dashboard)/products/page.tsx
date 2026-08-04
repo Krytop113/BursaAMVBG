@@ -9,7 +9,8 @@ import {
   EditProductModal,
   DeleteProductModal,
 } from "@/components/products";
-import type { Product } from "@/components/products";
+import type { Product } from "@/types";
+
 import { useProducts } from "@/hooks/useProducts";
 import { useCategories } from "@/hooks/useCategories";
 

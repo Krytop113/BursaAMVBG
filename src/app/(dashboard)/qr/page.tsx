@@ -11,7 +11,7 @@ import { ConfirmModal } from "@/components/qr/ConfirmModal";
 import { CatalogModal } from "@/components/qr/CatalogModal";
 import { useQrScanner } from "@/hooks/useQrScanner";
 import { useQrCart } from "@/hooks/useQrCart";
-import type { Product } from "@/components/products/types";
+import type { Product, Category } from "@/types";
 
 export default function QrScannerPage() {
   const { data: productsData, isLoading: isLoadingProducts } = useProducts();

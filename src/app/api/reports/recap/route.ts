@@ -23,10 +23,12 @@ export async function GET(request: Request) {
 
     if (categoryId) {
       where.product = {
-        ...(typeof where.product === "object" && where.product !== null ? where.product : {}),
-        categoryId: parseInt(categoryId, 10),
+        is: {
+          categoryId: parseInt(categoryId, 10),
+        },
       };
     }
+
 
     if (productId) {
       where.productId = productId;

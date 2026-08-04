@@ -1,8 +1,8 @@
 "use client";
 
 import { Calendar, Tag, ShoppingBag } from "lucide-react";
-import type { Category } from "@/components/products/types";
-import type { Product } from "@/components/products/types";
+import type { Category, Product } from "@/types";
+
 
 interface InvoiceFiltersProps {
   startDate: string;

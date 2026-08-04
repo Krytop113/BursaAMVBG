@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { Trash2, Loader2, AlertTriangle } from "lucide-react";
-import type { Role } from "./types";
+import type { Role } from "@/types";
+
 
 interface DeleteRoleModalProps {
   role: Role;

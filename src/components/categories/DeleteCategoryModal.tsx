@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { Trash2, Loader2, AlertTriangle } from "lucide-react";
-import type { Category } from "./types";
+import type { Category } from "@/types";
+
 import { useQueryClient } from "@tanstack/react-query";
 
 interface DeleteCategoryModalProps {

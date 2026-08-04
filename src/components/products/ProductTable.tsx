@@ -13,7 +13,8 @@ import {
   RotateCcw,
   QrCode,
 } from "lucide-react";
-import type { Product } from "./types";
+import type { Product } from "@/types";
+
 import { QRModal } from "./QRModal";
 
 function ImageLightbox({

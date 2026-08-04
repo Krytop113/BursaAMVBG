@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
-import type { Category } from "./types";
+import type { Category } from "@/types";
+
 
 interface CategoryTableProps {
   categories: Category[];

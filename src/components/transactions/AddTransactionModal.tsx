@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { Plus, ArrowRightLeft } from "lucide-react";
-import type { Product } from "./types";
+import type { Product } from "@/types";
+
 import { validateTransactionForm, type TransactionFieldErrors } from "@/validators/transactionValidator";
 import { Modal, FieldError, inputCls, Button } from "@/components/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

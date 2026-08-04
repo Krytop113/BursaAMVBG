@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyTokenEdge, COOKIE_NAME } from '@/lib/auth';
+import { ROLES } from '@/lib/constants';
 
 export async function withRole(request: NextRequest, next: () => Promise<NextResponse>) {
     const token = request.cookies.get(COOKIE_NAME)?.value;
@@ -9,7 +10,7 @@ export async function withRole(request: NextRequest, next: () => Promise<NextRes
     }
 
     const payload = await verifyTokenEdge(token);
-    if (!payload || payload.role !== 1) {
+    if (!payload || payload.role !== ROLES.ADMIN) {
         if (request.nextUrl.pathname.startsWith('/api/')) {
             return NextResponse.json(
                 { error: 'Akses ditolak! Anda bukan Admin.' },
@@ -20,4 +21,4 @@ export async function withRole(request: NextRequest, next: () => Promise<NextRes
     }
 
     return next();
-}
+}

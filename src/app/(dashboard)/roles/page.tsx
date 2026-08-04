@@ -7,7 +7,8 @@ import {
   AddRoleModal,
   DeleteRoleModal,
 } from "@/components/roles";
-import type { Role } from "@/components/roles";
+import type { Role } from "@/types";
+
 
 export default function RolesPage() {
   const [roles, setRoles] = useState<Role[]>([]);
